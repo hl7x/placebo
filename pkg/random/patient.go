@@ -23,15 +23,11 @@ type Patient struct {
 
 func NewPatients(max int) Collection {
 	var tmp []Patient
-//	patientInstance := NewPatient()
 
 	for i := 0; i < max; i++ {
 		patientInstance := NewPatient()
 		tmp = append(tmp, patientInstance)
 	}
-
-	// testing
-	fmt.Println(tmp)
 
 	return Collection{tmp}
 
