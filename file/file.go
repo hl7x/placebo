@@ -24,6 +24,7 @@ func Create(patients random.Collection) {
 
 	csvHeaders := templates.ConstructFileHeaders()
 	patientTemplateActions := templates.PatientInfo()
+
 	fileText := append(csvHeaders, patientTemplateActions...)
 
 // write template with placeholders
