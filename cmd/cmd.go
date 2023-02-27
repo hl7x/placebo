@@ -33,13 +33,12 @@ func PatientFile(f string) error {
 
 		amount := int(intParse)
 
-		if amount == 0 {
-			patients := random.NewPatients(1)
+		if amount > 0 {
+			patients := random.NewPatients(amount)
 			file.Create(patients)
 			return nil
 		} else {
-			patients := random.NewPatients(amount)
-			file.Create(patients)
+
 			return nil
 		}
 	default:
