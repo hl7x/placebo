@@ -1,17 +1,16 @@
 package templates
 
 import (
-//	"fmt"
+// "fmt"
 )
 
 func ConstructFileHeaders() []byte {
-	
+
 	csvHeaders := []byte(`PatientMRN,PatientEncounterId,PatientFirstName,PatientLastName,PatientDOB,PatientGender,PatientAddress1,PatientAddress2,PatientCity,PatientState,PatientPostCode,PatientCountry,PatientArrivalDate,PatientArrivalTime,DepartmentReferenceId,PatientPhonePrimary,PrimaryLanguage,VisitProvider,AppointmentBeginDate,AppointmentStatus,AltID
 `)
 
 	return csvHeaders
 
-	
 }
 
 func PatientInfo() []byte {

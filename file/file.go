@@ -16,7 +16,7 @@ var dir = "/tmp/"
 func Create(patient *random.Patient) {
 
 	csvFile := dir + FileName()
-	
+
 	f, err := os.Create(csvFile)
 	if err != nil {
 		fmt.Println(err)
@@ -26,7 +26,7 @@ func Create(patient *random.Patient) {
 	patientTemplateActions := templates.PatientInfo()
 	fileText := append(csvHeaders, patientTemplateActions...)
 
-// write template with placeholders
+	// write template with placeholders
 	f.Write(fileText)
 
 	t, err := template.ParseFiles(csvFile)
@@ -49,14 +49,14 @@ func Create(patient *random.Patient) {
 }
 
 func FileName() string {
-	
-        currentTime := time.Now()
 
-        month := currentTime.Month()
-        day := currentTime.Day()
-        year := currentTime.Year()
+	currentTime := time.Now()
 
-        date := fmt.Sprintf("%v%v%v", year, int(month), day)
+	month := currentTime.Month()
+	day := currentTime.Day()
+	year := currentTime.Year()
+
+	date := fmt.Sprintf("%v%v%v", year, int(month), day)
 
 	fileName := date + "_patient_import.csv"
 

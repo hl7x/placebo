@@ -1,15 +1,14 @@
-
 package cmd
 
 import (
 	"fmt"
-	
+
 	"placebo/file"
 	"placebo/pkg/random"
 )
 
 func PatientFile(f string) error {
-	
+
 	switch f {
 	case "":
 		return nil
@@ -23,4 +22,3 @@ func PatientFile(f string) error {
 	}
 	return nil
 }
-
