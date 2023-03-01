@@ -6,6 +6,10 @@ import (
 	"time"
 )
 
+type Collection struct { 
+	Patients []Patient
+}
+
 type Patient struct {
 	FirstName	string
 	LastName	string
@@ -17,7 +21,19 @@ type Patient struct {
 	DischargeDate	string
 }
 
-func NewPatient() *Patient {
+func NewPatients(max int) Collection {
+	var tmp []Patient
+
+	for i := 0; i < max; i++ {
+		patientInstance := NewPatient()
+		tmp = append(tmp, patientInstance)
+	}
+
+	return Collection{tmp}
+
+}
+
+func NewPatient() Patient {
 	
 	fakePatient := Name().
 		MrnAndEncounterID().
@@ -30,7 +46,7 @@ func NewPatient() *Patient {
 
 }
 
-func Name() *Patient {
+func Name() Patient {
 
 	first := []string{
 		"alpha", 
@@ -94,10 +110,10 @@ func Name() *Patient {
 
 	number2 := rand.Intn(max - min)
 
-	return &Patient{ FirstName: first[number], LastName: last[number2] }
+	return Patient{ FirstName: first[number], LastName: last[number2] }
 }
 
-func (p *Patient) MrnAndEncounterID() *Patient {
+func (p Patient) MrnAndEncounterID() Patient {
 	
 	rand.Seed(time.Now().UnixNano())
 	randomMrn := rand.Intn(1000000000)
@@ -105,19 +121,19 @@ func (p *Patient) MrnAndEncounterID() *Patient {
 	rand.Seed(time.Now().UnixNano())
 	randomEncounterID := rand.Intn(1000000000)
 
-	return &Patient{FirstName: p.FirstName, LastName: p.LastName, MRN: randomMrn, EncounterId: randomEncounterID, Phone: p.Phone, DOB: p.DOB }
+	return Patient{FirstName: p.FirstName, LastName: p.LastName, MRN: randomMrn, EncounterId: randomEncounterID, Phone: p.Phone, DOB: p.DOB }
 
 }
 
-func (p *Patient) PhoneNumber() *Patient {
+func (p Patient) PhoneNumber() Patient {
 
 	number := 8065550109
 
-	return &Patient{ FirstName: p.FirstName, LastName: p.LastName, MRN: p.MRN, EncounterId: p.EncounterId, Phone: number, DOB: p.DOB }
+	return Patient{ FirstName: p.FirstName, LastName: p.LastName, MRN: p.MRN, EncounterId: p.EncounterId, Phone: number, DOB: p.DOB }
 
 }
 
-func (p *Patient) DateOfBirth() *Patient {
+func (p Patient) DateOfBirth() Patient {
 	
 	currentTime := time.Now()
 	
@@ -127,18 +143,18 @@ func (p *Patient) DateOfBirth() *Patient {
 
 	date := fmt.Sprintf("%v-%v-%v", int(month), day, year)
 
-	return &Patient{ FirstName: p.FirstName, LastName: p.LastName, MRN: p.MRN, EncounterId: p.EncounterId, Phone: p.Phone, DOB: date }
+	return Patient{ FirstName: p.FirstName, LastName: p.LastName, MRN: p.MRN, EncounterId: p.EncounterId, Phone: p.Phone, DOB: date }
 
 }
 
-func (p *Patient) Arrival() *Patient {
+func (p Patient) Arrival() Patient {
 
 	//stub
-	return &Patient{ FirstName: p.FirstName, LastName: p.LastName, MRN: p.MRN, EncounterId: p.EncounterId, Phone: p.Phone, DOB: p.DOB, ArrivalDate: "10/10/2022", DischargeDate: p.DischargeDate }
+	return Patient{ FirstName: p.FirstName, LastName: p.LastName, MRN: p.MRN, EncounterId: p.EncounterId, Phone: p.Phone, DOB: p.DOB, ArrivalDate: "10/10/2022", DischargeDate: p.DischargeDate }
 }
 
-func (p *Patient) Discharge() *Patient {
+func (p Patient) Discharge() Patient {
 
 	//stub
-	return &Patient{ FirstName: p.FirstName, LastName: p.LastName, MRN: p.MRN, EncounterId: p.EncounterId, Phone: p.Phone, DOB: p.DOB, ArrivalDate: p.ArrivalDate, DischargeDate: "10/12/2022" }
+	return Patient{ FirstName: p.FirstName, LastName: p.LastName, MRN: p.MRN, EncounterId: p.EncounterId, Phone: p.Phone, DOB: p.DOB, ArrivalDate: p.ArrivalDate, DischargeDate: "10/12/2022" }
 }
