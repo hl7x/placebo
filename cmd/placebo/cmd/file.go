@@ -10,7 +10,7 @@ import (
 	"placebo/pkg/random"
 )
 
-func PatientFile(f string) error {
+func File(f string) error {
 	
 	switch f {
 	case "":
