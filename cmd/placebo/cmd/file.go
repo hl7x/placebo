@@ -2,7 +2,7 @@
 package cmd
 
 import (
-	"fmt"
+	"errors"
 	"os"
 	"strconv"
 	
@@ -27,8 +27,7 @@ func File(f string) error {
 
 		intParse, err := strconv.ParseInt(os.Args[3], 10, 0)
 		if err != nil {
-			fmt.Println("Integer Required")
-			return nil
+			return err
 		}
 
 		amount := int(intParse)
@@ -42,8 +41,7 @@ func File(f string) error {
 			return nil
 		}
 	default:
-		fmt.Println("Not A Valid Command")
-		return nil
+		return errors.New("Not a Valid Command!")
 	}
 	return nil
 }

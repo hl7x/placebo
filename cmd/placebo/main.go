@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	
 	"placebo/cmd/placebo/cmd"
 )
@@ -11,6 +12,8 @@ var randomFile = flag.String("file", "", "Creates a csv file with a fake patient
 func main() {
 	flag.Parse()
 	
-	cmd.File(*randomFile)
-
+	err := cmd.File(*randomFile)
+	if err != nil {
+		fmt.Println("ERROR: ", err)
+	}
 }
