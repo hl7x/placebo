@@ -23,7 +23,7 @@ func (p *Patient) NewAddress() *Patient {
 
 func Street() *Address {
 
-	address1 := []string{
+	streetAddress := []string{
 			"main",
 			"first",	
 			"second",
@@ -46,7 +46,7 @@ func Street() *Address {
 			"blue",
 			"purple"}
 
-	address2 := []string{
+	roadSign := []string{
 			"street",
 			"avenue",
 			"way",
@@ -55,7 +55,10 @@ func Street() *Address {
 }
 
 func (a *Address) Number() *Address {
-
+	
+	streetNumber := rand.Intn(1000)
+	
+	return &Address{Street: a.Street, Number: streetNumber, PostalCode: a.PostalCode, State: a.State}
 
 }
 
