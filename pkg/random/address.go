@@ -66,7 +66,7 @@ func (a *Address) Number() *Address {
 
 func (a *Address) RegionSpecific() *Address {
 
-	state := map[string][]string{
+	pair := map[string][]string{
 		"AL":["Mobile", "Montgomery", "Birmingham"],
 		"AK":["Anchorage", "Juneau", "Fairbanks"],
 		"AZ":["Phoenix", "Tucson", "Mesa"],
@@ -116,7 +116,13 @@ func (a *Address) RegionSpecific() *Address {
 		"VA":["Virginia Beach", "Norfolk", "Richmond"],
 		"WA":["Seattle", "Spokane", "Tacoma"],
 		"WV":["Charleston", "Huntington", "Morgantown"],
-		"WI":["Milwaukee", "Madison", "Green Bay"]
+		"WI":["Milwaukee", "Madison", "Green Bay"],
 		"WY":["Cheyenne", "Casper", "Laramie"]}
+		
+		rand.Seed(time.Now().UnixNano())
+		stateNumber := rand.Intn(49)
 
+		for k, v := range pair {
+			fmt.Println(k[stateNumber])
+		}
 }
