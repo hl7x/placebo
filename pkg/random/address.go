@@ -7,11 +7,14 @@ import (
 type Address struct {
 	Street		string
 	Number		string
-	PostalCode	string
-	State		string
-	Country		string
-	City		string
+	RegionInfo	Region
 }
+
+type Region struct {
+	State		string
+	City		string
+	PostalCode	int
+}	
 
 func (p *Patient) NewAddress() *Patient {
 	
@@ -19,11 +22,22 @@ func (p *Patient) NewAddress() *Patient {
 		Number().
 		RegionSpecific()
 	
-	return &Patient{}
+	return &Patient{Adress: address}
 
 }
 
-func Street() *Address {
+func (a *Address) RegionSpecific() *Address {
+	
+	newRegion := Region{}
+
+	state := State()
+	city := City(state)
+
+	return &return Address{Street: a.street, Number: a.Number, Region: newRegion{State: state, City: city}}
+
+}
+
+func (a *Address) Street() *Address {
 
 	streetAddress := []string{
 			"main",
@@ -53,14 +67,16 @@ func Street() *Address {
 			"avenue",
 			"way",
 			"road"}
-
+	
+	//Stub
+	&Address{Street: streetAddres[0]+roadSign[0], Number: a.Number, RegionSpecific: a.RegionSpecific}
 }
 
 func (a *Address) Number() *Address {
 	
 	streetNumber := rand.Intn(1000)
 	
-	return &Address{Street: a.Street, Number: streetNumber, PostalCode: a.PostalCode, State: a.State}
+	return &Address{Street: a.Street, Number: streetNumber, RegionSpecific: a.RegionSpecific}
 
 }
 
