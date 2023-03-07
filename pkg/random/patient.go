@@ -17,6 +17,7 @@ type Patient struct {
 	EncounterId	int
 	Phone		int
 	DOB		string
+	Address		*Address
 	ArrivalDate	string
 	DischargeDate	string
 }

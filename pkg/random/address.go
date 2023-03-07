@@ -1,19 +1,21 @@
 package random
 
 import (
-	"fmt"
+	"math/rand"
+	"time"
+	"strings"
 )
 
 type Address struct {
-	Street		string
-	Number		string
-	RegionInfo	Region
+	Street			string
+	StructureNumber		int
+	RegionInfo		Region
 }
 
 type Region struct {
-	State		string
-	City		string
-	PostalCode	int
+	State			string
+	City			string
+	PostalCode		int
 }	
 
 func (p *Patient) NewAddress() *Patient {
@@ -22,22 +24,21 @@ func (p *Patient) NewAddress() *Patient {
 		Number().
 		RegionSpecific()
 	
-	return &Patient{Adress: address}
+	return &Patient{Address: address}
 
 }
 
 func (a *Address) RegionSpecific() *Address {
 	
-	newRegion := Region{}
 
 	state := State()
 	city := City(state)
 
-	return &return Address{Street: a.street, Number: a.Number, Region: newRegion{State: state, City: city}}
+	return &Address{Street: a.Street, StructureNumber: a.StructureNumber, RegionInfo: Region{State: state, City: city}}
 
 }
 
-func (a *Address) Street() *Address {
+func Street() *Address {
 
 	streetAddress := []string{
 			"main",
@@ -53,7 +54,7 @@ func (a *Address) Street() *Address {
 			"tenth",
 			"eleventh",
 			"twelfth",
-			"maple"
+			"maple",
 			"elm",
 			"birch",
 			"red",
@@ -69,14 +70,14 @@ func (a *Address) Street() *Address {
 			"road"}
 	
 	//Stub
-	&Address{Street: streetAddres[0]+roadSign[0], Number: a.Number, RegionSpecific: a.RegionSpecific}
+	return &Address{Street: streetAddress[0]+roadSign[0]}
 }
 
 func (a *Address) Number() *Address {
 	
 	streetNumber := rand.Intn(1000)
 	
-	return &Address{Street: a.Street, Number: streetNumber, RegionSpecific: a.RegionSpecific}
+	return &Address{Street: a.Street, StructureNumber: int(streetNumber), RegionInfo: a.RegionInfo}
 
 }
 
@@ -142,6 +143,7 @@ func City(s string) string {
 				return v[rand.Intn(len(v))]
 			}
 		}
+	return ""
 }
 
 func State() string {
@@ -206,6 +208,6 @@ func State() string {
 
 	randomState := rand.Intn(max - min)
 	
-	return randomState
+	return string(randomState)
 
 }
