@@ -70,7 +70,7 @@ func Street() *Address {
 			"road"}
 	
 	//Stub
-	return &Address{Street: streetAddress[0]+roadSign[0]}
+	return &Address{Street: streetAddress[0]+" "+roadSign[0]}
 }
 
 func (a *Address) Number() *Address {
@@ -206,8 +206,8 @@ func State() string {
 	min := 0
 	max := len(stateAbbr)
 
-	randomState := rand.Intn(max - min)
-	
-	return string(randomState)
+	randomNumber := rand.Intn(max - min)
+
+	return string(stateAbbr[randomNumber])
 
 }
