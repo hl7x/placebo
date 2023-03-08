@@ -86,7 +86,7 @@ func Street() *Address {
 
 func (a *Address) Number() *Address {
 	
-	streetNumber := rand.Intn(1000)
+	streetNumber := rand.Intn(10000)
 	
 	return &Address{Street: a.Street, StructureNumber: int(streetNumber), RegionInfo: a.RegionInfo}
 
@@ -151,7 +151,7 @@ func City(s string) string {
 
 		for k, v := range pair {
 			if strings.Contains(k, s) {
-				return v[rand.Intn(len(v))]
+				return v[rand.Intn(len(v) - 0)]
 			}
 		}
 	return ""
