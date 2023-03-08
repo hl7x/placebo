@@ -42,33 +42,33 @@ func (a *Address) RegionSpecific() *Address {
 func Street() *Address {
 
 	streetAddress := []string{
-			"main",
-			"first",	
-			"second",
-			"third",
-			"fourth",
-			"fifth",
-			"sixth",
-			"seventh",
-			"eigth",
-			"ninth",
-			"tenth",
-			"eleventh",
-			"twelfth",
-			"maple",
-			"elm",
-			"birch",
-			"red",
-			"orange",
-			"yellow",
-			"blue",
-			"purple"}
+			"MAIN",
+			"FIRST",
+			"SECOND",
+			"THIRD",
+			"FOURTH",
+			"FIFTH",
+			"SIXTH",
+			"SEVENTH",
+			"EIGTH",
+			"NINTH",
+			"TENTH",
+			"ELEVENTH",
+			"TWELFTH",
+			"MAPLE",
+			"ELM",
+			"BIRCH",
+			"RED",
+			"ORANGE",
+			"YELLOW",
+			"BLUE",
+			"PURPLE"}
 
 	roadSign := []string{
-			"street",
-			"avenue",
-			"way",
-			"road"}
+			"STREET",
+			"AVENUE",
+			"WAY",
+			"ROAD"}
 
 	min := 0
 	maxStreet := len(streetAddress)
