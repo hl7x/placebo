@@ -24,7 +24,7 @@ func (p *Patient) NewAddress() *Patient {
 		Number().
 		RegionSpecific()
 	
-	return &Patient{Address: address}
+	return &Patient{FirstName: p.FirstName, LastName: p.LastName, MRN: p.MRN, EncounterId: p.EncounterId, Phone: p.Phone, DOB: p.DOB, PatientAddress: address}
 
 }
 

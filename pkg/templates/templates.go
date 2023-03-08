@@ -16,7 +16,7 @@ func ConstructFileHeaders() []byte {
 func PatientInfo() []byte {
 
 	patientTemplate := []byte(`{{ range .Patients}}
-{{.MRN}},{{.EncounterId}},{{.FirstName}},{{.LastName}},{{.DOB}},M,1 PENNSYLVANIA PLAZA,PENN1,NEW YORK,NY,10119,USA,11/15/2022 06:00 PM,17:30 EDT,DEP1,19737719600,English,JACK RYAN,11/15/2022 06:00 PM,Scheduled,TESTALTID283860873785909398765{{ end  }}
+{{.MRN}},{{.EncounterId}},{{.FirstName}},{{.LastName}},{{.DOB}},M,{{.PatientAddress.StructureNumber}} {{.PatientAddress.Street}},PENN1,{{.PatientAddress.RegionInfo.City}},{{.PatientAddress.RegionInfo.State}},10119,USA,11/15/2022 06:00 PM,17:30 EDT,DEP1,19737719600,English,JACK RYAN,11/15/2022 06:00 PM,Scheduled,TESTALTID283860873785909398765{{ end  }}
 `)
 	return patientTemplate
 
