@@ -68,9 +68,20 @@ func Street() *Address {
 			"avenue",
 			"way",
 			"road"}
+
+	min := 0
+	maxStreet := len(streetAddress)
+	maxRoad := len(roadSign)
 	
-	//Stub
-	return &Address{Street: streetAddress[0]+" "+roadSign[0]}
+	rand.Seed(time.Now().UnixNano())
+
+	streetInt := rand.Intn(maxStreet - min)
+	
+	rand.Seed(time.Now().UnixNano())
+
+	roadInt := rand.Intn(maxRoad - min)	
+	
+	return &Address{Street: streetAddress[streetInt]+" "+roadSign[roadInt]}
 }
 
 func (a *Address) Number() *Address {
