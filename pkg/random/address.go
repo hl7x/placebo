@@ -1,0 +1,225 @@
+package random
+
+import (
+	"math/rand"
+	"time"
+	"strings"
+)
+
+type Address struct {
+	Street			string
+	StructureNumber		int
+	RegionInfo		Region
+}
+
+// PostalCode will be added later
+type Region struct {
+	State			string
+	City			string
+	PostalCode		int
+}	
+
+func (p *Patient) NewAddress() *Patient {
+	
+	address := Street().
+		Number().
+		RegionSpecific()
+	
+	return &Patient{FirstName: p.FirstName, LastName: p.LastName, MRN: p.MRN, EncounterId: p.EncounterId, Phone: p.Phone, DOB: p.DOB, PatientAddress: address}
+
+}
+
+func (a *Address) RegionSpecific() *Address {
+	
+
+	state := State()
+	city := City(state)
+
+	return &Address{Street: a.Street, StructureNumber: a.StructureNumber, RegionInfo: Region{State: state, City: city}}
+
+}
+
+func Street() *Address {
+
+	streetAddress := []string{
+			"MAIN",
+			"FIRST",
+			"SECOND",
+			"THIRD",
+			"FOURTH",
+			"FIFTH",
+			"SIXTH",
+			"SEVENTH",
+			"EIGTH",
+			"NINTH",
+			"TENTH",
+			"ELEVENTH",
+			"TWELFTH",
+			"MAPLE",
+			"ELM",
+			"BIRCH",
+			"RED",
+			"ORANGE",
+			"YELLOW",
+			"BLUE",
+			"PURPLE"}
+
+	roadSign := []string{
+			"STREET",
+			"AVENUE",
+			"WAY",
+			"ROAD"}
+
+	min := 0
+	maxStreet := len(streetAddress)
+	maxRoad := len(roadSign)
+	
+	rand.Seed(time.Now().UnixNano())
+
+	streetInt := rand.Intn(maxStreet - min)
+	
+	rand.Seed(time.Now().UnixNano())
+
+	roadInt := rand.Intn(maxRoad - min)	
+	
+	return &Address{Street: streetAddress[streetInt]+" "+roadSign[roadInt]}
+}
+
+func (a *Address) Number() *Address {
+	
+	streetNumber := rand.Intn(10000)
+	
+	return &Address{Street: a.Street, StructureNumber: int(streetNumber), RegionInfo: a.RegionInfo}
+
+}
+
+func City(s string) string {
+
+		pair := map[string][]string{
+			"AL": {"MOBILE", "MONTGOMERY", "BIRMINGHAM"},
+			"AK": {"ANCHORAGE", "JUNEAU", "FAIRBANKS"},
+			"AZ": {"PHOENIX", "TUCSON", "MESA"},
+			"AR": {"LITTLE ROCK", "FAYETTEVILLE", "SPRINGDALE"},
+			"CA": {"LOS ANGELES", "SAN DIEGO", "SAN JOSE"},
+			"CO": {"DENVER", "COLORADO SPRINGS", "AURORA"},
+			"CT": {"BRIDGEPORT", "STAMFORD", "NEW HAVEN"},
+			"DE": {"WILMINGTON", "DOVER", "NEWARK"},
+			"DC": {"WASHINGTON DC"},
+			"FL": {"JACKSONVILLE", "MIAMI", "TAMPA"},
+			"GA": {"ATLANTA", "COLUMBUS", "AUGUSTA"},
+			"HI": {"HONOLULU", "PEARL CITY", "HILO"},
+			"ID": {"BOISE", "MERIDIAN", "NAMPA"},
+			"IL": {"CHICAGO", "AURORA", "NAPERVILLE"},
+			"IN": {"INDIANAPOLIS", "FORT WAYNE", "EVANSVILLE"},
+			"IA": {"DES MOINES", "CEDAR RAPIDS", "DAVENPORT"},
+			"KS": {"WICHITA", "OVERLAND PARK", "KANSAS CITY"},
+			"KY": {"LOUISVILLE", "LEXINGTON", "BOWLING GREEN"},
+			"LA": {"NEW ORLEANS", "BATON ROUGE", "SHERVEPORT"},
+			"ME": {"PORTLAND", "BANGOR", "LEWISTON"},
+			"MD": {"BALTIMORE", "COLUMBIA", "GERMANTOWN"},
+			"MA": {"BOSTON", "WORCESTER", "SPRINGFIELD"},
+			"MI": {"DETROIT", "GRAND RAPIDS", "WARREN"},
+			"MN": {"MINNEAPOLIS", "SAINT PAUL", "ROCHESTER"},
+			"MS": {"JACKSON", "GULFPORT", "SOUTHAVEN"},
+			"MO": {"KANSAS CITY", "SAINT LOUIS", "SPRINGFIELD"},
+			"MT": {"BILLINGS", "MISSOULA", "GREAT FALLS"},
+			"NE": {"OMAHA", "LINCOLN", "BELLEVUE"},
+			"NV": {"LAS VEGAS", "HENDERSON", "RENO"},
+			"NH": {"MANCHESTER", "NASHUA", "CONCORD"},
+			"NJ": {"NEWARK", "JERSEY CITY", "PATERSON"},
+			"NM": {"ALBUQUERQUE", "LAS CRUCES", "SANTA FE"},
+			"NY": {"NEW YORK CITY", "BUFFALO", "YONKERS"},
+			"NC": {"CHARLOTTE", "RALEIGH", "GREENSBORO"},
+			"ND": {"FARGO", "BISMARK", "GRAND FORKS"},
+			"OH": {"COLUMBUS", "CLEVELAND", "CINCINNATI"},
+			"OK": {"OKLAHOMA CITY", "TULSA", "NORMAN"},
+			"OR": {"PORTLAND", "SALEM", "EUGENE"},
+			"PA": {"PHILADELPHIA", "PITTSBURGH", "ALLENTOWN"},
+			"RI": {"PROVIDENCE", "CRANSTON", "WARWICK"},
+			"SC": {"CHARLESTON", "COLUMBIA", "MOUNT PLEASANT"},
+			"SD": {"SIOUX FALLS", "RAPID CITY", "ABERDEEN"},
+			"TN": {"NASHVILLE", "MEMPHIS", "KNOXVILLE"},
+			"TX": {"DALLAS", "HOUSTON", "AUSTIN"},
+			"UT": {"SALT LAKE CITY", "PROVO", "WEST JORDAN"},
+			"VT": {"BURLINGTON", "COLCHESTER", "RUTLAND"},
+			"VA": {"VIRGINIA BEACH", "NORFOLK", "RICHMOND"},
+			"WA": {"SEATTLE", "SPOKANE", "TACOMA"},
+			"WV": {"CHARLESTON", "HUNTINGTON", "MORGANTOWN"},
+			"WI": {"MILWAUKEE", "MADISON", "GREEN BAY"},
+			"WY": {"CHEYENNE", "CASPER", "LARAMIE"}}
+
+		rand.Seed(time.Now().UnixNano())
+
+		for k, v := range pair {
+			if strings.Contains(k, s) {
+				return v[rand.Intn(len(v) - 0)]
+			}
+		}
+	return ""
+}
+
+func State() string {
+	
+	stateAbbr := []string{
+		"AL",
+		"AK",
+		"AZ",
+		"AR",
+		"CA",
+		"CO",
+		"CT",
+		"DE",
+		"DC",
+		"FL",
+		"GA",
+		"HI",
+		"ID",
+		"IL",
+		"IN",
+		"IA",
+		"KS",
+		"KY",
+		"LA",
+		"ME",
+		"MD",
+		"MA",
+		"MI",
+		"MN",
+		"MS",
+		"MO",
+		"MT",
+		"NE",
+		"NV",
+		"NH",
+		"NJ",
+		"NM",
+		"NY",
+		"NC",
+		"ND",
+		"OH",
+		"OK",
+		"OR",
+		"PA",
+		"RI",
+		"SC",
+		"SD",
+		"TN",
+		"TX",
+		"UT",
+		"VT",
+		"VA",
+		"WA",
+		"WV",
+		"WI",
+		"WY"}
+
+	rand.Seed(time.Now().UnixNano())
+	
+	min := 0
+	max := len(stateAbbr)
+
+	randomNumber := rand.Intn(max - min)
+
+	return string(stateAbbr[randomNumber])
+
+}
