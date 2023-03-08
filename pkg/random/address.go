@@ -124,7 +124,7 @@ func City(s string) string {
 		"OR": {"Portland", "Salem", "Eugene"},
 		"PA": {"Philadelphia", "Pittsburgh", "Allentown"},
 		"RI": {"Providence", "Cranston", "Warwick"},
-		"SC": {"Charlseton", "Columbia", "Mount Pleasant"},
+		"SC": {"Charleston", "Columbia", "Mount Pleasant"},
 		"SD": {"Sioux Falls", "Rapid City", "Aberdeen"},
 		"TN": {"Nashville", "Memphis", "Knoxville"},
 		"TX": {"Dallas", "Houston", "Austin"},
