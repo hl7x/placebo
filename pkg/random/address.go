@@ -12,6 +12,7 @@ type Address struct {
 	RegionInfo		Region
 }
 
+// PostalCode will be added later
 type Region struct {
 	State			string
 	City			string
