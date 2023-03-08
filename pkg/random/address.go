@@ -2,10 +2,8 @@ package random
 
 import (
 	"math/rand"
-	"strings"
-	"time"
-
 	"placebo/internal/tools"
+	"strings"
 )
 
 type Address struct {
@@ -140,11 +138,10 @@ func City(s string) string {
 		"WI": {"MILWAUKEE", "MADISON", "GREEN BAY"},
 		"WY": {"CHEYENNE", "CASPER", "LARAMIE"}}
 
-	rand.Seed(time.Now().UnixNano())
-
 	for k, v := range pair {
+		valueInt := tools.RandomSelector(v)
 		if strings.Contains(k, s) {
-			return v[rand.Intn(len(v)-0)]
+			return v[valueInt]
 		}
 	}
 	return ""
@@ -205,12 +202,7 @@ func State() string {
 		"WI",
 		"WY"}
 
-	rand.Seed(time.Now().UnixNano())
-
-	min := 0
-	max := len(stateAbbr)
-
-	randomNumber := rand.Intn(max - min)
+	randomNumber := tools.RandomSelector(stateAbbr)
 
 	return string(stateAbbr[randomNumber])
 
