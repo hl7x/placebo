@@ -12,25 +12,16 @@ import (
 
 var dir = "/tmp/"
 
-// stub for a quick function to create the csv file
 func Create(patients random.Collection) {
 
 	csvFile := dir + FileName()
-
-	f, err := os.Create(csvFile)
-	if err != nil {
-		fmt.Println(err)
-	}
 
 	csvHeaders := templates.ConstructFileHeaders()
 	patientTemplateActions := templates.PatientInfo()
 
 	fileText := append(csvHeaders, patientTemplateActions...)
 
-	// write template with placeholders
-	f.Write(fileText)
-
-	t, err := template.ParseFiles(csvFile)
+	t, err := template.New("csv").Parse(string(fileText))
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -44,8 +35,6 @@ func Create(patients random.Collection) {
 	if err != nil {
 		fmt.Println(err)
 	}
-
-	file.Close()
 
 }
 
