@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/rand"
 	"time"
+	"placebo/internal/tools"
 )
 
 type Collection struct { 
@@ -102,15 +103,10 @@ func Name() *Patient {
 		"psi", 
 		"omega"}
 
-	min := 0
-	max  := len(first)
-	rand.Seed(time.Now().UnixNano())
 
-	number := rand.Intn(max - min)
+	number := tools.RandomSelector(first)
 	
-	rand.Seed(time.Now().UnixNano())
-
-	number2 := rand.Intn(max - min)
+	number2 := tools.RandomSelector(last)
 
 	return &Patient{ FirstName: first[number], LastName: last[number2] }
 }
