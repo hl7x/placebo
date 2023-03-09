@@ -1,22 +1,21 @@
-
 package cmd
 
 import (
 	"errors"
 	"os"
 	"strconv"
-	
+
 	"placebo/file"
 	"placebo/pkg/random"
 )
 
 func File(f string) error {
-	
+
 	switch f {
 	case "":
 		return nil
 	case "init":
-		
+
 		command := os.Args[3:]
 
 		if len(command) == 0 {
@@ -45,4 +44,3 @@ func File(f string) error {
 	}
 	return nil
 }
-
