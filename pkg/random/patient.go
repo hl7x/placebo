@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/rand"
 	"placebo/internal/tools"
+	"sync"
 	"time"
 )
 
@@ -24,15 +25,29 @@ type Patient struct {
 }
 
 func NewPatients(max int) Collection {
-	var tmp []*Patient
+	c := make(chan *Patient)
+	var wg sync.WaitGroup
 
 	for i := 0; i < max; i++ {
-		patientInstance := NewPatient()
+		wg.Add(1)
+		go func() {
+			patientInstance := NewPatient()
+			c <- patientInstance
+			wg.Done()
+		}()
+	}
+
+	go func() {
+		wg.Wait()
+		close(c)
+	}()
+
+	var tmp []*Patient
+	for patientInstance := range c {
 		tmp = append(tmp, patientInstance)
 	}
 
 	return Collection{tmp}
-
 }
 
 func NewPatient() *Patient {
