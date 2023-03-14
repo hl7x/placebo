@@ -25,16 +25,22 @@ func (p *Patient) NewAddress() *Patient {
 		Number().
 		RegionSpecific()
 
-	return &Patient{FirstName: p.FirstName, LastName: p.LastName, MRN: p.MRN, EncounterId: p.EncounterId, Phone: p.Phone, DOB: p.DOB, PatientAddress: address}
+	p.PatientAddress = address
 
+	return p
 }
 
 func (a *Address) RegionSpecific() *Address {
 
+	r := Region{}
 	state := State()
 	city := City(state)
 
-	return &Address{Street: a.Street, StructureNumber: a.StructureNumber, RegionInfo: Region{State: state, City: city}}
+	r.State = state
+	r.City = city
+
+	a.RegionInfo = r
+	return a
 
 }
 
@@ -79,7 +85,9 @@ func (a *Address) Number() *Address {
 
 	streetNumber := rand.Intn(10000)
 
-	return &Address{Street: a.Street, StructureNumber: int(streetNumber), RegionInfo: a.RegionInfo}
+	a.StructureNumber = int(streetNumber)
+
+	return a
 
 }
 
