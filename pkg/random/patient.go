@@ -16,7 +16,7 @@ type Patient struct {
 	LastName       string
 	MRN            int
 	EncounterId    int
-	Phone          int
+	Phone          string
 	DOB            string
 	PatientAddress *Address
 	ArrivalDate    string
@@ -125,15 +125,6 @@ func (p *Patient) MrnAndEncounterID() *Patient {
 
 	p.MRN = randomMrn
 	p.EncounterId = randomEncounterID
-
-	return p
-}
-
-func (p *Patient) PhoneNumber() *Patient {
-
-	number := 8065550109
-
-	p.Phone = number
 
 	return p
 }
