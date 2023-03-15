@@ -51,6 +51,8 @@ func NewPatient() *Patient {
 
 func Name() *Patient {
 
+	p := &Patient{}
+
 	first := []string{
 		"alpha",
 		"beta",
@@ -107,7 +109,10 @@ func Name() *Patient {
 
 	number2 := tools.RandomSelector(last)
 
-	return &Patient{FirstName: first[number], LastName: last[number2]}
+	p.FirstName = first[number]
+	p.LastName = last[number2]
+
+	return p
 }
 
 func (p *Patient) MrnAndEncounterID() *Patient {
@@ -118,16 +123,19 @@ func (p *Patient) MrnAndEncounterID() *Patient {
 	rand.Seed(time.Now().UnixNano())
 	randomEncounterID := rand.Intn(1000000000)
 
-	return &Patient{FirstName: p.FirstName, LastName: p.LastName, MRN: randomMrn, EncounterId: randomEncounterID, Phone: p.Phone, DOB: p.DOB, PatientAddress: p.PatientAddress}
+	p.MRN = randomMrn
+	p.EncounterId = randomEncounterID
 
+	return p
 }
 
 func (p *Patient) PhoneNumber() *Patient {
 
 	number := 8065550109
 
-	return &Patient{FirstName: p.FirstName, LastName: p.LastName, MRN: p.MRN, EncounterId: p.EncounterId, Phone: number, DOB: p.DOB, PatientAddress: p.PatientAddress}
+	p.Phone = number
 
+	return p
 }
 
 func (p *Patient) DateOfBirth() *Patient {
@@ -140,18 +148,23 @@ func (p *Patient) DateOfBirth() *Patient {
 
 	date := fmt.Sprintf("%v-%v-%v", int(month), day, year)
 
-	return &Patient{FirstName: p.FirstName, LastName: p.LastName, MRN: p.MRN, EncounterId: p.EncounterId, Phone: p.Phone, DOB: date, PatientAddress: p.PatientAddress}
+	p.DOB = date
 
+	return p
 }
 
 func (p *Patient) Arrival() *Patient {
 
 	//stub
-	return &Patient{FirstName: p.FirstName, LastName: p.LastName, MRN: p.MRN, EncounterId: p.EncounterId, Phone: p.Phone, DOB: p.DOB, ArrivalDate: "10/10/2022", DischargeDate: p.DischargeDate, PatientAddress: p.PatientAddress}
+	p.ArrivalDate = "10/10/2022"
+
+	return p
 }
 
 func (p *Patient) Discharge() *Patient {
 
 	//stub
-	return &Patient{FirstName: p.FirstName, LastName: p.LastName, MRN: p.MRN, EncounterId: p.EncounterId, Phone: p.Phone, DOB: p.DOB, ArrivalDate: p.ArrivalDate, DischargeDate: "10/12/2022", PatientAddress: p.PatientAddress}
+	p.DischargeDate = "10/12/2022"
+
+	return p
 }
