@@ -1,45 +1,170 @@
 package random
 
-/*
-LIST OF EXAMPLE AREA CODES FOR STATE PHONE NUMBER GENERATION:
+import "strings"
 
-AL "205", "251", "256", "334"
-AK "907"
-AZ "480", "520", "602", "623", "928"
-AR "479", "501", "870"
-CA "209", "213", "310", "323", "408", "415", "510", "530", "559", "562", "619", "626", "650", "661", "707", "714", "760", "805", "818", "831", "858", "909", "916", "925", "949", "951"
-CO "303", "719", "720", "970"
-CT "203", "860"
-DE "302"
-FL "239", "305", "321", "352", "386", "407", "561", "727", "754", "772", "813", "850", "863", "904", "941", "954"
-GA "229", "404", "470", "478", "678", "706", "762", "770", "912"
-HI "808"
-ID "208"
-IL "217", "309", "312", "618", "630", "708", "773", "815", "847"
-IN "219", "260", "317", "574", "765", "812"
-IA "319", "515", "563", "641", "712"
-KS "316", "620", "785", "913"
-KY "270", "502", "606", "859"
-LA "225", "318", "337", "504", "985"
-ME "207"
-MD "240", "301", "410", "443"
-MA "339", "351", "413", "508", "617", "774", "781", "857", "978"
-MI "231", "248", "269", "313", "517", "586", "616", "734", "810", "906", "989"
-MN "218", "320", "507", "612", "651", "763", "952"
-MS "228", "601", "662", "769"
-MO "314", "417", "573", "636", "660", "816"
-MT "406"
-NE "308", "402", "531"
-NV "702", "775"
-NH "603"
-NJ "201", "551", "609", "732", "848", "856", "862", "908", "973"
-NM "505", "575"
-NY "212", "315", "347", "516", "518", "585", "607", "631", "646", "716", "718", "845", "914", "917", "929"
-NC "252", "336", "704", "828", "910", "919", "980", "984"
-ND "701"
-OH "216", "234", "330", "419", "440", "513", "614", "740", "937"
-OK "405", "539", "580", "918"
-OR "458", "503", "541", "971"
-PA "215"
+func (p *Patient) PhoneNumber() *Patient {
+	city := p.PatientAddress.RegionInfo.City
 
-*/
+	regionAreaCode := AreaCode(city)
+
+	phoneNumber := regionAreaCode + "1234567"
+
+	p.Phone = phoneNumber
+
+	return p
+}
+
+func AreaCode(city string) string {
+	areaCodeByCity := map[string]string{
+		"MOBILE":           "251",
+		"MONTGOMERY":       "334",
+		"BIRMINGHAM":       "205",
+		"ANCHORAGE":        "907",
+		"JUNEAU":           "907",
+		"FAIRBANKS":        "907",
+		"PHOENIX":          "602",
+		"TUCSON":           "520",
+		"MESA":             "480",
+		"LITTLE ROCK":      "501",
+		"FAYETTEVILLE":     "479",
+		"SPRINGDALE":       "479",
+		"LOS ANGELES":      "213",
+		"SAN DIEGO":        "619",
+		"SAN JOSE":         "408",
+		"DENVER":           "303",
+		"COLORADO SPRINGS": "719",
+		"BRIDGEPORT":       "203",
+		"STAMFORD":         "203",
+		"NEW HAVEN":        "203",
+		"WILMINGTON":       "302",
+		"DOVER":            "302",
+		"WASHINGTON DC":    "202",
+		"JACKSONVILLE":     "904",
+		"MIAMI":            "305",
+		"TAMPA":            "813",
+		"ATLANTA":          "404",
+		"AUGUSTA":          "706",
+		"HONOLULU":         "808",
+		"PEARL CITY":       "808",
+		"HILO":             "808",
+		"BOISE":            "208",
+		"MERIDIAN":         "208",
+		"NAMPA":            "208",
+		"CHICAGO":          "312",
+		"AURORA":           "630",
+		"NAPERVILLE":       "630",
+		"INDIANAPOLIS":     "317",
+		"FORT WAYNE":       "260",
+		"EVANSVILLE":       "812",
+		"DES MOINES":       "515",
+		"CEDAR RAPIDS":     "319",
+		"DAVENPORT":        "563",
+		"WICHITA":          "316",
+		"OVERLAND PARK":    "913",
+		"LOUISVILLE":       "502",
+		"LEXINGTON":        "859",
+		"BOWLING GREEN":    "270",
+		"NEW ORLEANS":      "504",
+		"BATON ROUGE":      "225",
+		"SHERVEPORT":       "318",
+		"BANGOR":           "207",
+		"LEWISTON":         "207",
+		"BALTIMORE":        "410",
+		"GERMANTOWN":       "301",
+		"BOSTON":           "617",
+		"WORCESTER":        "508",
+		"DETROIT":          "313",
+		"GRAND RAPIDS":     "616",
+		"WARREN":           "586",
+		"MINNEAPOLIS":      "612",
+		"SAINT PAUL":       "651",
+		"ROCHESTER":        "507",
+		"JACKSON":          "601",
+		"GULFPORT":         "228",
+		"SOUTHAVEN":        "662",
+		"KANSAS CITY":      "816",
+		"SAINT LOUIS":      "314",
+		"SPRINGFIELD":      "417",
+		"BILLINGS":         "406",
+		"MISSOULA":         "406",
+		"GREAT FALLS":      "406",
+		"OMAHA":            "402",
+		"LINCOLN":          "402",
+		"BELLEVUE":         "402",
+		"LAS VEGAS":        "702",
+		"HENDERSON":        "702",
+		"RENO":             "775",
+		"MANCHESTER":       "603",
+		"NASHUA":           "603",
+		"CONCORD":          "603",
+		"NEWARK":           "973",
+		"JERSEY CITY":      "201",
+		"PATERSON":         "973",
+		"ALBUQUERQUE":      "505",
+		"LAS CRUCES":       "575",
+		"SANTA FE":         "505",
+		"NEW YORK CITY":    "212",
+		"BUFFALO":          "716",
+		"YONKERS":          "914",
+		"CHARLOTTE":        "704",
+		"RALEIGH":          "919",
+		"GREENSBORO":       "336",
+		"FARGO":            "701",
+		"BISMARK":          "701",
+		"GRAND FORKS":      "701",
+		"COLUMBUS":         "614",
+		"CLEVELAND":        "216",
+		"CINCINNATI":       "513",
+		"OKLAHOMA CITY":    "405",
+		"TULSA":            "918",
+		"NORMAN":           "405",
+		"PORTLAND":         "503",
+		"SALEM":            "503",
+		"EUGENE":           "541",
+		"PHILADELPHIA":     "215",
+		"PITTSBURGH":       "412",
+		"ALLENTOWN":        "610",
+		"PROVIDENCE":       "401",
+		"CRANSTON":         "401",
+		"WARWICK":          "401",
+		"COLUMBIA":         "803",
+		"MOUNT PLEASANT":   "843",
+		"SIOUX FALLS":      "605",
+		"RAPID CITY":       "605",
+		"ABERDEEN":         "605",
+		"NASHVILLE":        "615",
+		"MEMPHIS":          "901",
+		"KNOXVILLE":        "865",
+		"DALLAS":           "214",
+		"HOUSTON":          "713",
+		"AUSTIN":           "512",
+		"SALT LAKE CITY":   "801",
+		"PROVO":            "385",
+		"WEST JORDAN":      "385",
+		"BURLINGTON":       "802",
+		"COLCHESTER":       "802",
+		"RUTLAND":          "802",
+		"VIRGINIA BEACH":   "757",
+		"NORFOLK":          "757",
+		"RICHMOND":         "804",
+		"SEATTLE":          "206",
+		"SPOKANE":          "509",
+		"TACOMA":           "253",
+		"CHARLESTON":       "304",
+		"HUNTINGTON":       "304",
+		"MORGANTOWN":       "304",
+		"MILWAUKEE":        "414",
+		"MADISON":          "608",
+		"GREEN BAY":        "920",
+		"CHEYENNE":         "307",
+		"CASPER":           "307",
+		"LARAMIE":          "307"}
+
+	for k, v := range areaCodeByCity {
+		if strings.Contains(k, city) {
+			return v
+		}
+	}
+
+	return ""
+}
