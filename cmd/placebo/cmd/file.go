@@ -14,7 +14,7 @@ func File(f string) error {
 	switch f {
 	case "":
 		return nil
-	case "init":
+	case "csv":
 
 		command := os.Args[3:]
 
