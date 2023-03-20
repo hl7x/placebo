@@ -2,10 +2,14 @@ package cmd
 
 import (
 	"errors"
+	"os"
 	"testing"
 )
 
 func TestFile(t *testing.T) {
+
+	os.Args = []string{"placebo", "csv", ""}
+
 	var tests = []struct {
 		description string
 		want        error
@@ -13,6 +17,7 @@ func TestFile(t *testing.T) {
 	}{
 		{"Empty String", nil, ""},
 		{"Invalid Input", errors.New("not a Valid Command"), "taco"},
+		{"Default 'csv' command", nil, "csv"},
 	}
 	for _, tc := range tests {
 		t.Run(tc.description, func(t *testing.T) {
