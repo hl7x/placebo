@@ -8,8 +8,6 @@ import (
 
 func TestFile(t *testing.T) {
 
-	//os.Args = []string{"placebo", "csv", ""}
-
 	var tests = []struct {
 		description string
 		want        error
@@ -21,6 +19,7 @@ func TestFile(t *testing.T) {
 		{"Default 'csv' command", nil, "csv", []string{"placebo", "csv", ""}},
 		{"Pass in Numbers", nil, "csv", []string{"placebo", "csv", "3"}},
 	}
+
 	for _, tc := range tests {
 		t.Run(tc.description, func(t *testing.T) {
 			os.Args = tc.args
