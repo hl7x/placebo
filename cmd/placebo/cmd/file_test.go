@@ -17,8 +17,8 @@ func TestFile(t *testing.T) {
 	for _, tc := range tests {
 		t.Run(tc.description, func(t *testing.T) {
 			got := File(tc.input)
-			if got != tc.want {
-				t.Fatalf("File(%s)=%#v, want %#v", tc.input, got, tc.want)
+			if (got == nil) != (tc.want == nil) || (got != nil && got.Error() != tc.want.Error()) {
+				t.Errorf("File(%s)=%v, want %v", tc.input, got, tc.want)
 			}
 		})
 	}
