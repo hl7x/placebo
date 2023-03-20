@@ -16,8 +16,8 @@ func Create(patients random.Collection) {
 
 	csvFile := dir + FileName()
 
-	csvHeaders := templates.ConstructFileHeaders()
-	patientTemplateActions := templates.PatientInfo()
+	csvHeaders := templates.DefaultFileHeaders()
+	patientTemplateActions := templates.DefaultPatientInfo()
 
 	fileText := append(csvHeaders, patientTemplateActions...)
 
