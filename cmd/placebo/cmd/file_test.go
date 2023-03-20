@@ -16,8 +16,9 @@ func TestFile(t *testing.T) {
 	}{
 		{"Empty String", nil, "", []string{""}},
 		{"Invalid Input", errors.New("not a Valid Command"), "taco", []string{""}},
-		{"Default 'csv' command", nil, "csv", []string{"placebo", "csv", ""}},
-		{"Pass in Numbers", nil, "csv", []string{"placebo", "csv", "3"}},
+		{"Default 'csv' command", nil, "csv", []string{"placebo", "--file", "csv"}},
+		{"Pass in Numbers", nil, "csv", []string{"placebo", "--file", "csv", "3"}},
+		{"Passing Wrong Arg Type", errors.New("strconv.ParseInt: parsing \"test\": invalid syntax"), "csv", []string{"placebo", "--file", "csv", "test"}},
 	}
 
 	for _, tc := range tests {
