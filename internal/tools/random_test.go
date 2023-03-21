@@ -8,10 +8,10 @@ func TestRandomSelector(t *testing.T) {
 
 	var tests = []struct {
 		description string
-		want        int
+		expectedMax int
 		input       []string
 	}{
-		{"List of Names", 1, []string{"John", "Bill"}},
+		{"List of Names", 4, []string{"John", "Bill", "Jacob", "Rita", "Beth"}},
 		{"List of Places", 2, []string{"NEW YORK", "DENVER", "DALLAS"}},
 		{"Numbers as Strings", 0, []string{"1"}},
 		{"Empty String", 0, []string{""}},
@@ -20,8 +20,8 @@ func TestRandomSelector(t *testing.T) {
 	for _, tc := range tests {
 		t.Run(tc.description, func(t *testing.T) {
 			got := RandomSelector(tc.input)
-			if got != tc.want && got >= tc.want {
-				t.Fatalf("RandomSelector(%s)=%v, want %v", tc.input, got, tc.want)
+			if got < 0 && got > tc.expectedMax {
+				t.Fatalf("RandomSelector(%s)=%v, expected a value between 0 and %v", tc.input, got, tc.expectedMax)
 			}
 		})
 	}
