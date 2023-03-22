@@ -20,7 +20,10 @@ func File(f string) error {
 
 		if len(command) == 0 {
 			patients := random.NewPatients(1)
-			file.Create(patients)
+			err := file.Create(patients)
+			if err != nil {
+				return err
+			}
 			return nil
 		}
 
@@ -33,14 +36,16 @@ func File(f string) error {
 
 		if amount > 0 {
 			patients := random.NewPatients(amount)
-			file.Create(patients)
+			err := file.Create(patients)
+			if err != nil {
+				return err
+			}
 			return nil
 		} else {
 
 			return nil
 		}
 	default:
-		return errors.New("Not a Valid Command!")
+		return errors.New("not a Valid Command")
 	}
-	return nil
 }
