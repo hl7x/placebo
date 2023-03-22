@@ -21,8 +21,6 @@ func TestCreate(t *testing.T) {
 
 	dir = tempDir + "/"
 
-	fmt.Println(dir)
-
 	examplePatient := &random.Patient{
 		FirstName:      "Bill",
 		LastName:       "Test",
@@ -49,12 +47,9 @@ func TestCreate(t *testing.T) {
 		t.Fatal("Failed to read temp dir:", err)
 	}
 
-	fmt.Println(files)
 	if len(files) != 1 {
 		t.Fatalf("Expected 1 file in temp dir, got %d", len(files))
 	}
-
-	fmt.Println(dir + files[0].Name())
 
 	csvFilePath := dir + files[0].Name()
 	csvContentBytes, err := os.ReadFile(csvFilePath)
