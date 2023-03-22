@@ -12,7 +12,7 @@ import (
 
 var dir = "/tmp/"
 
-func Create(patients random.Collection) {
+func Create(patients random.Collection) error {
 
 	csvFile := dir + FileName()
 
@@ -23,18 +23,20 @@ func Create(patients random.Collection) {
 
 	t, err := template.New("csv").Parse(string(fileText))
 	if err != nil {
-		fmt.Println(err)
+		return err
 	}
 
 	file, err := os.Create(csvFile)
 	if err != nil {
-		fmt.Println(err)
+		return err
 	}
 
 	err = t.Execute(file, patients)
 	if err != nil {
-		fmt.Println(err)
+		return err
 	}
+
+	return nil
 
 }
 

@@ -2,7 +2,7 @@ package file
 
 import (
 	"fmt"
-	"io/ioutil"
+	"log"
 	"os"
 	"placebo/pkg/random"
 	"strings"
@@ -12,18 +12,21 @@ import (
 
 func TestCreate(t *testing.T) {
 	// Create a temporary directory for the test
-	tempDir, err := ioutil.TempDir("", "test_create")
+	tempDir, err := os.MkdirTemp("../tests/", "")
 	if err != nil {
-		t.Fatal("Failed to create temp dir:", err)
+		log.Fatal(err)
 	}
+
 	defer os.RemoveAll(tempDir)
 
-	dir = tempDir
+	dir = tempDir + "/"
+
+	fmt.Println(dir)
 
 	examplePatient := &random.Patient{
 		FirstName:      "Bill",
 		LastName:       "Test",
-		MRN:            000,
+		MRN:            123,
 		EncounterId:    123,
 		Phone:          "0000000",
 		DOB:            "00/00/0000",
@@ -36,19 +39,25 @@ func TestCreate(t *testing.T) {
 		Patients: []*random.Patient{examplePatient},
 	}
 
-	Create(mockPatients)
+	err = Create(mockPatients)
+	if err != nil {
+		t.Errorf("Expected no error, got %v", err)
+	}
 
-	files, err := ioutil.ReadDir(tempDir)
+	files, err := os.ReadDir(dir)
 	if err != nil {
 		t.Fatal("Failed to read temp dir:", err)
 	}
 
+	fmt.Println(files)
 	if len(files) != 1 {
 		t.Fatalf("Expected 1 file in temp dir, got %d", len(files))
 	}
 
-	csvFilePath := tempDir + "/" + files[0].Name()
-	csvContentBytes, err := ioutil.ReadFile(csvFilePath)
+	fmt.Println(dir + files[0].Name())
+
+	csvFilePath := dir + files[0].Name()
+	csvContentBytes, err := os.ReadFile(csvFilePath)
 	if err != nil {
 		t.Fatal("Failed to read CSV file:", err)
 	}
@@ -56,7 +65,7 @@ func TestCreate(t *testing.T) {
 	csvContent := string(csvContentBytes)
 
 	expectedHeaders := "PatientMRN,PatientEncounterId,PatientFirstName,PatientLastName,PatientDOB,PatientGender,PatientAddress,PatientCity,PatientState,PatientPostCode,PatientCountry,PatientArrivalDate,PatientArrivalTime,DepartmentReferenceId,PatientPhonePrimary,PrimaryLanguage,VisitProvider,AppointmentBeginDate,AppointmentStatus,AltID"
-	expectedPatientData := ""
+	expectedPatientData := "Test"
 
 	if !strings.Contains(csvContent, expectedHeaders) {
 		t.Errorf("CSV content does not contain the expected headers: %s", expectedHeaders)
