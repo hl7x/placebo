@@ -72,19 +72,19 @@ func TestCreate(t *testing.T) {
 	csvContent := string(csvContentBytes)
 
 	expectedHeaders := "PatientMRN,PatientEncounterId,PatientFirstName,PatientLastName,PatientDOB,PatientGender,PatientAddress,PatientCity,PatientState,PatientPostCode,PatientCountry,PatientArrivalDate,PatientArrivalTime,DepartmentReferenceId,PatientPhonePrimary,PrimaryLanguage,VisitProvider,AppointmentBeginDate,AppointmentStatus,AltID"
-	expectedExample1PatientData := fmt.Sprintf("%v,%v,%v", examplePatient1.MRN, examplePatient1.EncounterId, examplePatient1.FirstName)
-	expectedExample2PatientData := fmt.Sprintf("%v,%v,%v", examplePatient2.MRN, examplePatient2.EncounterId, examplePatient2.FirstName)
+	expectedExamplePatient1Data := fmt.Sprintf("%v,%v,%v", examplePatient1.MRN, examplePatient1.EncounterId, examplePatient1.FirstName)
+	expectedExamplePatient2Data := fmt.Sprintf("%v,%v,%v", examplePatient2.MRN, examplePatient2.EncounterId, examplePatient2.FirstName)
 
 	if !strings.Contains(csvContent, expectedHeaders) {
 		t.Errorf("CSV content does not contain the expected headers: %s", expectedHeaders)
 	}
 
-	if !strings.Contains(csvContent, expectedExample1PatientData) {
-		t.Errorf("CSV content does not contain the expected patient data: %s", expectedExample1PatientData)
+	if !strings.Contains(csvContent, expectedExamplePatient1Data) {
+		t.Errorf("CSV content does not contain the expected patient data: %s", expectedExamplePatient1Data)
 	}
 
-	if !strings.Contains(csvContent, expectedExample2PatientData) {
-		t.Errorf("CSV content does not contain the expected patient data: %s", expectedExample2PatientData)
+	if !strings.Contains(csvContent, expectedExamplePatient2Data) {
+		t.Errorf("CSV content does not contain the expected patient data: %s", expectedExamplePatient2Data)
 	}
 
 }
