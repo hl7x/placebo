@@ -16,3 +16,14 @@ func DefaultPatientInfo() []byte {
 	return patientTemplate
 
 }
+
+// TODO: Incorporate some abstraction to make the function more reusable
+func AppendDefaultWithCustom(h string) []byte {
+
+	customHeader := []byte(h)
+	defaultHeaders := DefaultFileHeaders()
+
+	defaultHeaders = append(defaultHeaders, customHeader...)
+
+	return defaultHeaders
+}
