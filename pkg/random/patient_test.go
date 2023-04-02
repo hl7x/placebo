@@ -77,17 +77,19 @@ func TestName(t *testing.T) {
 		description string
 		expected    []string
 	}{
-		{"Default Names", names},
+		{"First Names Test", names},
+		{"Last Names Test", names},
 	}
 
 	for _, tc := range tests {
+		got := Name()
 		t.Run(tc.description, func(t *testing.T) {
-			got := Name()
 			for _, name := range tc.expected {
 				if strings.Contains(got.FirstName, name) {
-					break
+					return
 				}
 			}
+			t.Fatalf("Name()=%v expected one of %v got %v", got.FirstName, tc.expected, got.FirstName)
 		})
 	}
 }
