@@ -1,6 +1,7 @@
 package random
 
 import (
+	"strings"
 	"testing"
 )
 
@@ -41,4 +42,52 @@ func TestNewPatient(t *testing.T) {
 			t.Fatalf("NewPatient()=%v should not be empty", got.DOB)
 		}
 	})
+}
+
+// Placeholder
+func TestName(t *testing.T) {
+
+	names := []string{
+		"alpha",
+		"beta",
+		"gamma",
+		"delta",
+		"epsilon",
+		"zeta",
+		"eta",
+		"theta",
+		"iota",
+		"kappa",
+		"lambda",
+		"mu",
+		"nu",
+		"xi",
+		"omicron",
+		"pi",
+		"rho",
+		"sigma",
+		"tau",
+		"upsilon",
+		"phi",
+		"chi",
+		"psi",
+		"omega"}
+
+	var tests = []struct {
+		description string
+		expected    []string
+	}{
+		{"Default Names", names},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
+			got := Name()
+			for _, name := range tc.expected {
+				if strings.Contains(got.FirstName, name) {
+					break
+				}
+			}
+		})
+	}
 }
