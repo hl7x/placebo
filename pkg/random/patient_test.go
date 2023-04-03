@@ -1,8 +1,10 @@
 package random
 
 import (
+	"fmt"
 	"strings"
 	"testing"
+	"time"
 )
 
 func TestNewPatients(t *testing.T) {
@@ -94,9 +96,9 @@ func TestName(t *testing.T) {
 	}
 }
 
-func TestMrnAndEncounterID(t *testing.T) {
+func TestPatient_MrnAndEncounterID(t *testing.T) {
 
-	testPatient := Patient{}
+	testPatient := &Patient{}
 
 	var tests = []struct {
 		description string
@@ -114,6 +116,29 @@ func TestMrnAndEncounterID(t *testing.T) {
 			}
 			if (got.EncounterId < 0) || (got.EncounterId > tc.maxExpected) {
 				t.Fatalf("MrnAndencounterID()=%v expected range max to %v and got %v, out of range", got.EncounterId, tc.maxExpected, got.EncounterId)
+			}
+		})
+	}
+}
+
+func TestPatient_DateOfBirth(t *testing.T) {
+
+	testPatient := &Patient{}
+
+	date := fmt.Sprintf("%v-%v-%v", int(time.Now().Month()), time.Now().Day(), time.Now().Year())
+
+	var tests = []struct {
+		description string
+		expected    string
+	}{
+		{"Default Case", date},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
+			got := testPatient.DateOfBirth()
+			if got.DOB != tc.expected {
+				t.Fatalf("DateOfBirth()=%v got %v expected %v", got.DOB, got.DOB, tc.expected)
 			}
 		})
 	}
