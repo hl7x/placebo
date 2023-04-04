@@ -143,3 +143,46 @@ func TestPatient_DateOfBirth(t *testing.T) {
 		})
 	}
 }
+
+func TestPatient_Arrival(t *testing.T) {
+
+	testPatient := &Patient{}
+
+	arrival := "10/10/2022"
+
+	var test = struct {
+		description string
+		expected    string
+	}{
+		"Default Case", arrival,
+	}
+
+	t.Run(test.description, func(t *testing.T) {
+		got := testPatient.Arrival()
+		if got.ArrivalDate != test.expected {
+			t.Fatalf("ArrivalDate()=%v got %v and expected %v", got.ArrivalDate, got.ArrivalDate, test.expected)
+		}
+	})
+
+}
+
+func TestPatient_Discharge(t *testing.T) {
+
+	testPatient := Patient{}
+
+	discharge := "10/12/2022"
+
+	var test = struct {
+		description string
+		expected    string
+	}{
+		"Default Test Case", discharge,
+	}
+
+	t.Run(test.description, func(t *testing.T) {
+		got := testPatient.Discharge()
+		if got.DischargeDate != test.expected {
+			t.Fatalf("DischargeDate()=%v got %v and expected %v", got.DischargeDate, got.DischargeDate, test.expected)
+		}
+	})
+}
