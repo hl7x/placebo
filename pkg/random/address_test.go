@@ -1,6 +1,9 @@
 package random
 
-import "testing"
+import (
+	"strings"
+	"testing"
+)
 
 func TestPatient_NewAddress(t *testing.T) {
 
@@ -16,4 +19,28 @@ func TestPatient_NewAddress(t *testing.T) {
 			t.Fatalf("Got %v, City Should not be empty", got.PatientAddress.RegionInfo.City)
 		}
 	})
+}
+
+// TODO: Correct the test
+func TestAddress_RegionSpecific(t *testing.T) {
+	testAddress := Address{}
+
+	var tests = []struct {
+		description string
+		expected    string
+	}{
+		{"Region should include State", ""},
+		{"Region should include City", ""},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
+			got := testAddress.RegionSpecific()
+			if !strings.Contains(got.RegionInfo.City, tc.expected) {
+				t.Fatalf("Test Failed %v", got.RegionInfo.City)
+			} else if !strings.Contains(got.RegionInfo.State, tc.expected) {
+				t.Fatalf("Test Failed %v", got.RegionInfo.State)
+			}
+		})
+	}
 }
