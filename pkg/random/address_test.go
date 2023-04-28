@@ -44,3 +44,45 @@ func TestAddress_RegionSpecific(t *testing.T) {
 		})
 	}
 }
+
+func TestStreet(t *testing.T) {
+
+	streetAddress := []string{
+		"MAIN",
+		"FIRST",
+		"SECOND",
+		"THIRD",
+		"FOURTH",
+		"FIFTH",
+		"SIXTH",
+		"SEVENTH",
+		"EIGTH",
+		"NINTH",
+		"TENTH",
+		"ELEVENTH",
+		"TWELFTH",
+		"MAPLE",
+		"ELM",
+		"BIRCH",
+		"RED",
+		"ORANGE",
+		"YELLOW",
+		"BLUE",
+		"PURPLE"}
+
+	var tests = []struct{
+		description	string
+		expected	[]string
+	}{
+		{"Function Should Return Street From List", streetAddress},
+	}
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T){
+		got := Street()
+		if got != strings.Contains() {
+			t.Fatalf("Street()=%v, incorrect amount, expected %v", got.Street.len(), tc.maxExpected)
+		}
+
+		})
+	}
+}
