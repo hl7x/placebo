@@ -89,3 +89,22 @@ func TestStreet(t *testing.T) {
 		})
 	}
 }
+
+func TestAddress_Number(t *testing.T) {
+	testAddress := Address{}
+	var tests = []struct{
+		description	string
+		maxExpected	int
+	}{
+		{"Default should return a number between 0 and 100000", 100000},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T){
+			got := testAddress.Number()
+			if got.StructureNumber > tc.maxExpected {
+				t.Fatalf("Number()=%v, expected number less than %v", got.StructureNumber, tc.maxExpected)
+			}
+		})
+	}
+}
