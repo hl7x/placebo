@@ -78,10 +78,13 @@ func TestStreet(t *testing.T) {
 	}
 	for _, tc := range tests {
 		t.Run(tc.description, func(t *testing.T){
-		got := Street()
-		if got != strings.Contains() {
-			t.Fatalf("Street()=%v, incorrect amount, expected %v", got.Street.len(), tc.maxExpected)
-		}
+			got := Street()
+			for _, street := range tc.expected {
+				if strings.Contains(got.Street, street) {
+					return
+				}
+			}
+			t.Fatalf("Street()=%v, expected %v", got, tc.expected)
 
 		})
 	}
