@@ -108,3 +108,27 @@ func TestAddress_Number(t *testing.T) {
 		})
 	}
 }
+
+func TestCity(t *testing.T) {
+	Cities := []string{"MOBILE", "MONTGOMERY", "BIRMINGHAM"}
+
+	var tests = []struct{
+		description	string
+		input		string
+		expected	[]string
+	}{
+		{"State Abbreviation should return city", "AL", Cities},
+	}
+
+	for _, tc := range tests{
+		t.Run(tc.description, func(t *testing.T){
+			got := City(tc.input)
+			for _, city := range Cities{
+				if got == city {
+					return
+				}
+			}
+			t.Fatalf("City(%v)=%v, wanted one of %v, got %v", tc.input, got, tc.expected, got )
+		})
+	}
+}
