@@ -132,3 +132,77 @@ func TestCity(t *testing.T) {
 		})
 	}
 }
+
+func TestState(t *testing.T) {
+	testState := []string{
+		"AL",
+		"AK",
+		"AZ",
+		"AR",
+		"CA",
+		"CO",
+		"CT",
+		"DE",
+		"DC",
+		"FL",
+		"GA",
+		"HI",
+		"ID",
+		"IL",
+		"IN",
+		"IA",
+		"KS",
+		"KY",
+		"LA",
+		"ME",
+		"MD",
+		"MA",
+		"MI",
+		"MN",
+		"MS",
+		"MO",
+		"MT",
+		"NE",
+		"NV",
+		"NH",
+		"NJ",
+		"NM",
+		"NY",
+		"NC",
+		"ND",
+		"OH",
+		"OK",
+		"OR",
+		"PA",
+		"RI",
+		"SC",
+		"SD",
+		"TN",
+		"TX",
+		"UT",
+		"VT",
+		"VA",
+		"WA",
+		"WV",
+		"WI",
+		"WY"}
+
+	var tests = []struct {
+		description		string
+		expected		[]string
+	}{
+		{"Should Return Random State Abbreviation", testState},
+	}
+
+	for _, tc := range tests{
+		t.Run(tc.description, func(t *testing.T){
+			got := State()
+			for _, state := range tc.expected {
+				if got == state {
+					return
+				}
+			}
+			t.Fatalf("State()=%v, got %v expected %v", got, got, tc.expected)
+		})
+	}
+}
