@@ -1,7 +1,6 @@
 package random
 
 import (
-	"fmt"
 	"math/rand"
 	"placebo/internal/tools"
 	"time"
@@ -83,13 +82,16 @@ func (p *Patient) MrnAndEncounterID() *Patient {
 
 func (p *Patient) DateOfBirth() *Patient {
 
-	currentTime := time.Now()
+/*	currentTime := time.Now()
 
 	month := currentTime.Month()
 	day := currentTime.Day()
 	year := currentTime.Year()
 
 	date := fmt.Sprintf("%v-%v-%v", int(month), day, year)
+*/
+	
+	date := randomDate()
 
 	p.DOB = date
 
