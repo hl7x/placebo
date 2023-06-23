@@ -53,57 +53,9 @@ func Name() *Patient {
 
 	p := &Patient{}
 
-	first := []string{
-		"alpha",
-		"beta",
-		"gamma",
-		"delta",
-		"epsilon",
-		"zeta",
-		"eta",
-		"theta",
-		"iota",
-		"kappa",
-		"lambda",
-		"mu",
-		"nu",
-		"xi",
-		"omicron",
-		"pi",
-		"rho",
-		"sigma",
-		"tau",
-		"upsilon",
-		"phi",
-		"chi",
-		"psi",
-		"omega"}
+	first := FIRSTNAME
 
-	last := []string{
-		"alpha",
-		"beta",
-		"gamma",
-		"delta",
-		"epsilon",
-		"zeta",
-		"eta",
-		"theta",
-		"iota",
-		"kappa",
-		"lambda",
-		"mu",
-		"nu",
-		"xi",
-		"omicron",
-		"pi",
-		"rho",
-		"sigma",
-		"tau",
-		"upsilon",
-		"phi",
-		"chi",
-		"psi",
-		"omega"}
+	last := LASTNAME
 
 	number := tools.RandomSelector(first)
 

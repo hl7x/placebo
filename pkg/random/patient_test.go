@@ -49,31 +49,7 @@ func TestNewPatient(t *testing.T) {
 // Placeholder
 func TestName(t *testing.T) {
 
-	names := []string{
-		"alpha",
-		"beta",
-		"gamma",
-		"delta",
-		"epsilon",
-		"zeta",
-		"eta",
-		"theta",
-		"iota",
-		"kappa",
-		"lambda",
-		"mu",
-		"nu",
-		"xi",
-		"omicron",
-		"pi",
-		"rho",
-		"sigma",
-		"tau",
-		"upsilon",
-		"phi",
-		"chi",
-		"psi",
-		"omega"}
+	names := append(FIRSTNAME, LASTNAME...)
 
 	var tests = []struct {
 		description string
