@@ -20,7 +20,7 @@ func Date() string {
 
 func Month() int {
 
-	max := 5
+	max := 6
 	min := 1
 
 	month := rand.Intn(max - min) + max
