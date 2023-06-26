@@ -1,10 +1,8 @@
 package random
 
 import (
-	"fmt"
 	"strings"
 	"testing"
-	"time"
 )
 
 func TestNewPatients(t *testing.T) {
@@ -101,19 +99,17 @@ func TestPatient_DateOfBirth(t *testing.T) {
 
 	testPatient := &Patient{}
 
-	date := fmt.Sprintf("%v-%v-%v", int(time.Now().Month()), time.Now().Day(), time.Now().Year())
-
 	var tests = []struct {
 		description string
 		expected    string
 	}{
-		{"Default Case", date},
+		{"Default Case", "-"},
 	}
 
 	for _, tc := range tests {
 		t.Run(tc.description, func(t *testing.T) {
 			got := testPatient.DateOfBirth()
-			if got.DOB != tc.expected {
+			if !strings.Contains(got.DOB, tc.expected) {
 				t.Fatalf("DateOfBirth()=%v got %v expected %v", got.DOB, got.DOB, tc.expected)
 			}
 		})

@@ -82,7 +82,7 @@ func (p *Patient) MrnAndEncounterID() *Patient {
 
 func (p *Patient) DateOfBirth() *Patient {
 
-	date := randomDate()
+	date := Date()
 
 	p.DOB = date
 

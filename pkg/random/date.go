@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-func randomDate() string {
+func Date() string {
 	
 	month := Month()
 	day := Day()

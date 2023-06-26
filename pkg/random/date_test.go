@@ -1,0 +1,86 @@
+package random
+
+import (
+	"testing"
+	"strings"
+)
+
+func TestDate(t *testing.T) {
+
+	var tests = []struct{
+		description	string
+		expected	string
+	}{
+		{"Should produce a random date.", "-"},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
+			got := Date()
+			if !strings.Contains(got, tc.expected) {
+				t.Fatalf("Date=%v, expected a date with %v", got, tc.expected)
+			}
+		})
+	}
+
+}
+
+func TestMonth(t *testing.T) {
+	
+	var tests = []struct {
+		description	string
+		expected 	int
+	}{
+		{"Number 12 or Less", 12},
+	}
+
+	for _, tc := range tests {	
+		t.Run(tc.description, func(t *testing.T) {
+			got := Month()
+			if (got > tc.expected) || (got < 0) {
+				t.Fatalf("Month()=%v expected %v", got, tc.expected)
+			}
+		})
+	}
+
+}
+
+func TestDay(t *testing.T) {
+	
+	var tests = []struct {
+		description	string
+		expected	int
+	}{
+		{"Should Produce a Number Less Than 28", 28},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
+			got := Day()
+			if got > tc.expected {
+				t.Fatalf("Day()=%v expected %v", got, tc.expected)
+			}
+		})
+	}
+
+}
+
+func TestYear(t *testing.T) {
+	
+	var tests = []struct {
+		description	string
+		expected	int
+	}{
+		{"Should Produce a Number Greater Than 1920", 1920},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
+			got := Year()
+			if got < tc.expected {
+				t.Fatalf("Year()=%v expected %v", got, tc.expected)
+			}
+		})
+	}
+
+} 		
