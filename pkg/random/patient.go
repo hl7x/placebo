@@ -4,6 +4,7 @@ import (
 	"math/rand"
 	"placebo/internal/tools"
 	"time"
+	"fmt"
 )
 
 type Collection struct {
@@ -91,16 +92,22 @@ func (p *Patient) DateOfBirth() *Patient {
 
 func (p *Patient) Arrival() *Patient {
 
-	//stub
-	p.ArrivalDate = "10/10/2022"
+	currentTime := time.Now()
+
+	Arrival := currentTime.AddDate(0, 0, -5)
+	
+	p.ArrivalDate = fmt.Sprintf("%v/%v/%v", int(Arrival.Month()), Arrival.Day(), Arrival.Year())
 
 	return p
 }
 
 func (p *Patient) Discharge() *Patient {
 
-	//stub
-	p.DischargeDate = "10/12/2022"
+	currentTime := time.Now()
+
+	Discharge := currentTime.AddDate(0, 0, -3)
+
+	p.DischargeDate = fmt.Sprintf("%v/%v/%v", int(Discharge.Month()), Discharge.Day(), Discharge.Year())
 
 	return p
 }
