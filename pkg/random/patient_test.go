@@ -1,6 +1,8 @@
 package random
 
 import (
+	"fmt"
+	"time"
 	"strings"
 	"testing"
 )
@@ -120,7 +122,9 @@ func TestPatient_Arrival(t *testing.T) {
 
 	testPatient := &Patient{}
 
-	arrival := "10/10/2022"
+	testTime := time.Now().AddDate(0, 0, -5)
+
+	arrival := fmt.Sprintf("%v/%v/%v", int(testTime.Month()), testTime.Day(), testTime.Year())
 
 	var test = struct {
 		description string
@@ -142,7 +146,9 @@ func TestPatient_Discharge(t *testing.T) {
 
 	testPatient := Patient{}
 
-	discharge := "10/12/2022"
+        testTime := time.Now().AddDate(0, 0, -3)
+
+        discharge := fmt.Sprintf("%v/%v/%v", int(testTime.Month()), testTime.Day(), testTime.Year())
 
 	var test = struct {
 		description string
