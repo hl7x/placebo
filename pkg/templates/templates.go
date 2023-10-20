@@ -1,6 +1,6 @@
 package templates
 
-func ConstructFileHeaders() []byte {
+func ConstructCSVFileHeaders() []byte {
 
 	csvHeaders := []byte(`PatientMRN,PatientEncounterId,PatientFirstName,PatientLastName,PatientDOB,PatientGender,PatientAddress,PatientCity,PatientState,PatientPostCode,PatientCountry,PatientArrivalDate,PatientArrivalTime,DepartmentReferenceId,PatientPhonePrimary,PrimaryLanguage,VisitProvider,AppointmentBeginDate,AppointmentStatus,AltID`)
 
@@ -8,11 +8,25 @@ func ConstructFileHeaders() []byte {
 
 }
 
-func PatientInfo() []byte {
+func CSVPatientInfo() []byte {
 
 	patientTemplate := []byte(`{{ range .Patients}}
 {{.MRN}},{{.EncounterId}},{{.FirstName}},{{.LastName}},{{.DOB}},M,{{.PatientAddress.StructureNumber}} {{.PatientAddress.Street}},{{.PatientAddress.RegionInfo.City}},{{.PatientAddress.RegionInfo.State}},10119,USA,{{.ArrivalDate}} 06:00 PM,17:30 EDT,DEP1,{{.Phone}},English,JACK RYAN,{{.Appointment}} 03:00 PM,Scheduled,TESTALTID283860873785909398765{{ end  }}
 `)
 	return patientTemplate
+
+}
+
+// ADT^A01 is an event type for Admiting the Patient
+func SimpleHl7Info() []byte {
+
+	hl7Example := []byte(`
+MSH|^~\&|SENDAPP|PLACEBO|RECVAPP|LAB|202310060800||ADT^A01|12345|P|2.3|
+EVN|A01|202310060800||
+PID|1|56789|{{.MRN}}||{{.FirstName}}^{{.LastName}}||19900101|M|||{{.PatientAddress.StructureNumber}} {{.PatientAddress.Street}}^^{{.PatientAddress.RegionInfo.City}}^{{.PatientAddress.RegionInfo.State}}^12345|
+PV1|1|IP|PXMH4E^PX 480^P^PXMHSP|ER|||1497161673^TSANG^MAZIE|1255568135^ROSENTHAL^ALLISON|30104384^HAM^KEALY|HIM||||Phys/Clinic|||1255568135^ROSENTHAL^ALLISON|TRANSPLANT R|{{.EncounterId}}|
+`)
+
+	return hl7Example
 
 }
