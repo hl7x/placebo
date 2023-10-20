@@ -5,6 +5,8 @@ import (
 	"placebo/internal/tools"
 	"time"
 	"fmt"
+	"strings"
+	"strconv"
 )
 
 type Collection struct {
@@ -12,15 +14,16 @@ type Collection struct {
 }
 
 type Patient struct {
-	FirstName      string
-	LastName       string
-	MRN            int
-	EncounterId    int
-	Phone          string
-	DOB            string
-	PatientAddress *Address
-	ArrivalDate    string
-	DischargeDate  string
+	FirstName      	string
+	LastName       	string
+	MRN            	int
+	EncounterId    	int
+	Phone          	string
+	DOB            	string
+	PatientAddress 	*Address
+	ArrivalDate    	string
+	DischargeDate  	string
+	Appointment	string
 }
 
 func NewPatients(max int) Collection {
@@ -43,7 +46,8 @@ func NewPatient() *Patient {
 		PhoneNumber().
 		DateOfBirth().
 		Arrival().
-		Discharge()
+		Discharge().
+		AppointmentDate()
 
 	return fakePatient
 
@@ -111,3 +115,26 @@ func (p *Patient) Discharge() *Patient {
 
 	return p
 }
+
+func ( p *Patient) AppointmentDate() *Patient {
+
+	date := p.ArrivalDate
+
+	splitDate := strings.Split(date, "/")
+
+	month, err := strconv.Atoi(splitDate[0])
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	if month +1 > 12 {
+		month = 1
+	} else {
+		month++
+	}
+
+	p.Appointment = fmt.Sprintf("%v/%v/%v", month, splitDate[1], splitDate[2])
+
+	return p
+}
+
