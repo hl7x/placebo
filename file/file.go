@@ -12,12 +12,12 @@ import (
 
 var dir = "/tmp/"
 
-func Create(patients random.Collection) error {
+func CreateCSV(patients random.Collection) error {
 
-	csvFile := dir + FileName()
+	csvFile := dir + CSVFileName()
 
-	csvHeaders := templates.ConstructFileHeaders()
-	patientTemplateActions := templates.PatientInfo()
+	csvHeaders := templates.ConstructCSVFileHeaders()
+	patientTemplateActions := templates.CSVPatientInfo()
 
 	fileText := append(csvHeaders, patientTemplateActions...)
 
@@ -40,7 +40,32 @@ func Create(patients random.Collection) error {
 
 }
 
-func FileName() string {
+func CreateHl7(patient *random.Patient) error {
+
+	hl7File := dir + Hl7FileName()
+
+	fileText := templates.SimpleHl7Info()
+	
+	t, err := template.New("txt").Parse(string(fileText))
+	if err != nil {
+		return err
+	}
+
+	file, err := os.Create(hl7File)
+	if err != nil {
+		return err
+	}
+
+	err = t.Execute(file, patient)
+	if err != nil {
+		return err
+	}
+
+	return nil
+
+}
+
+func CSVFileName() string {
 
 	currentTime := time.Now()
 
@@ -51,6 +76,21 @@ func FileName() string {
 	date := fmt.Sprintf("%v%v%v", year, int(month), day)
 
 	fileName := date + "_patient_import.csv"
+
+	return fileName
+}
+
+func Hl7FileName() string {
+
+	currentTime := time.Now()
+
+	month := currentTime.Month()
+	day := currentTime.Day()
+	year := currentTime.Year()
+
+	date := fmt.Sprintf("%v%v%v", year, int(month), day)
+
+	fileName := date + "hl7__patient_import.txt"
 
 	return fileName
 }
