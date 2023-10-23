@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-func TestCreate(t *testing.T) {
+func TestCreateCSV(t *testing.T) {
 	// Create a temporary directory for the test
 	tempDir, err := os.MkdirTemp("", "")
 	if err != nil {
@@ -49,7 +49,7 @@ func TestCreate(t *testing.T) {
 		Patients: []*random.Patient{examplePatient1, examplePatient2},
 	}
 
-	err = Create(mockPatients)
+	err = CreateCSV(mockPatients)
 	if err != nil {
 		t.Errorf("Expected no error, got %v", err)
 	}
@@ -89,7 +89,7 @@ func TestCreate(t *testing.T) {
 
 }
 
-func TestFileName(t *testing.T) {
+func TestCSVFileName(t *testing.T) {
 	currentTime := time.Now()
 	date := fmt.Sprintf("%v%v%v", currentTime.Year(), int(currentTime.Month()), currentTime.Day())
 
@@ -102,7 +102,7 @@ func TestFileName(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.description, func(t *testing.T) {
-			got := FileName()
+			got := CSVFileName()
 			if got != tc.expected {
 				t.Fatalf("FileName()=%v expected %v", got, tc.expected)
 			}
