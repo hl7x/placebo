@@ -89,6 +89,61 @@ func TestCreateCSV(t *testing.T) {
 
 }
 
+func TestCreateHl7(t *testing.T) {
+	// Create a temporary directory for the test
+	tempDir, err := os.MkdirTemp("", "")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer os.RemoveAll(tempDir)
+
+	dir = tempDir + "/"
+
+	examplePatient := &random.Patient{
+		FirstName:      "Bill",
+		LastName:       "Test",
+		MRN:            123,
+		EncounterId:    123,
+		Phone:          "0000000",
+		DOB:            "00/00/0000",
+		PatientAddress: &random.Address{},
+		ArrivalDate:    "00/00/0000",
+		DischargeDate:  "00/00/0000",
+	}
+
+
+	err = CreateHl7(examplePatient)
+	if err != nil {
+		t.Errorf("Expected no error, got %v", err)
+	}
+
+	files, err := os.ReadDir(dir)
+	if err != nil {
+		t.Fatal("Failed to read temp dir:", err)
+	}
+
+	if len(files) != 1 {
+		t.Fatalf("Expected 1 file in temp dir, got %d", len(files))
+	}
+
+	hl7FilePath := dir + files[0].Name()
+	hl7ContentBytes, err := os.ReadFile(hl7FilePath)
+	if err != nil {
+		t.Fatal("Failed to read HL7 file:", err)
+	}
+
+	hl7Content := string(hl7ContentBytes)
+
+	expectedExamplePatientData := fmt.Sprintf("%v", examplePatient.MRN)
+
+
+	if !strings.Contains(hl7Content, expectedExamplePatientData) {
+		t.Errorf("HL7 content does not contain the expected patient data: %s", expectedExamplePatientData)
+	}
+
+}
+
 func TestCSVFileName(t *testing.T) {
 	currentTime := time.Now()
 	date := fmt.Sprintf("%v%v%v", currentTime.Year(), int(currentTime.Month()), currentTime.Day())
@@ -103,6 +158,27 @@ func TestCSVFileName(t *testing.T) {
 	for _, tc := range tests {
 		t.Run(tc.description, func(t *testing.T) {
 			got := CSVFileName()
+			if got != tc.expected {
+				t.Fatalf("FileName()=%v expected %v", got, tc.expected)
+			}
+		})
+	}
+}
+
+func TestHl7FileName(t *testing.T) {
+	currentTime := time.Now()
+	date := fmt.Sprintf("%v%v%v", currentTime.Year(), int(currentTime.Month()), currentTime.Day())
+
+	var tests = []struct {
+		description string
+		expected    string
+	}{
+		{"Default Case", date + "hl7__patient_import.txt"},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
+			got := Hl7FileName()
 			if got != tc.expected {
 				t.Fatalf("FileName()=%v expected %v", got, tc.expected)
 			}
