@@ -9,7 +9,7 @@ import (
 
 var randomFile = flag.String("file", "", "Creates a csv file with a fake patient at /tmp/.\n\t'csv' command creates a random csv file.\n\t\tadding numbers to the 'csv' command will produce multiple fake patients i.e. 'placebo --file csv 4'")
 
-var sendHl7 = flag.String("send", "", "")
+var sendHl7 = flag.String("send", "", "Send a hl7 message with fake patient data.\n\t'hl7' creates an hl7 message")
 
 func main() {
 	flag.Parse()
