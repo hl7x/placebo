@@ -2,7 +2,6 @@ package cmd
 
 import (	
 	"text/template"
-//	"os"
 	"bytes"
 	"fmt"
 	
@@ -53,6 +52,9 @@ func Hl7Format(p *random.Patient) string {
 
 }
 
+/* Local dev environment hl7_server to accept messages over 127.0.0.1:9700
+this can be used as default
+*/
 func DefaultSend(templatePatient string) error {
 
 	address := "127.0.0.1"
