@@ -6,7 +6,7 @@ import (
 	"bytes"
 	"fmt"
 	
-//	"placebo/internal/network"
+	"placebo/internal/network"
 	"placebo/pkg/random"
 	"placebo/pkg/templates"
 )
@@ -20,7 +20,12 @@ func SendHl7Message(f string) error {
 		patient := random.NewPatient()
 		hl7 := Hl7Format(patient)
 
-		fmt.Println(hl7)
+		err := DefaultSend(hl7)
+		if err != nil {
+			return err
+		}
+
+		fmt.Printf("HL7 Sent:\n %v", hl7)
 
 		return nil
 
@@ -46,4 +51,17 @@ func Hl7Format(p *random.Patient) string {
 
 	return result
 
+}
+
+func DefaultSend(templatePatient string) error {
+
+	address := "127.0.0.1"
+	port := "9700"
+
+	err := network.SendClient(address, port, templatePatient)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
