@@ -23,8 +23,8 @@ func SimpleHl7Info() []byte {
 	hl7Example := []byte(`
 MSH|^~\&|SENDAPP|PLACEBO|RECVAPP|LAB|202310060800||ADT^A01|12345|P|2.3|
 EVN|A01|202310060800||
-PID|1|56789|{{.MRN}}||{{.FirstName}}^{{.LastName}}||19900101|M|||{{.PatientAddress.StructureNumber}} {{.PatientAddress.Street}}^^{{.PatientAddress.RegionInfo.City}}^{{.PatientAddress.RegionInfo.State}}^12345|
-PV1|1|IP|PXMH4E^PX 480^P^PXMHSP|ER|||1497161673^TSANG^MAZIE|1255568135^ROSENTHAL^ALLISON|30104384^HAM^KEALY|HIM||||Phys/Clinic|||1255568135^ROSENTHAL^ALLISON|TRANSPLANT R|{{.EncounterId}}|
+PID|1|56789|{{.MRN}}||{{.LastName}}^{{.FirstName}}||{{.DOB}}|M|||{{.PatientAddress.StructureNumber}} {{.PatientAddress.Street}}^^{{.PatientAddress.RegionInfo.City}}^{{.PatientAddress.RegionInfo.State}}^12345|
+PV1|1|IP|PUNIT^RM 123^P^PUNIT|ER|||15551234567^HOUSE^GREG|1255568135^ROSENTHAL^ALLISON|30104384^HAM^KEALY|HIM||||Phys/Clinic|||123456789^ROSENTHAL^ALLISON|TESTX|{{.EncounterId}}|
 `)
 
 	return hl7Example

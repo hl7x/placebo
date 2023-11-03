@@ -72,7 +72,7 @@ func TestName(t *testing.T) {
 	}
 }
 
-func TestPatient_MrnAndEncounterID(t *testing.T) {
+func TestPatient_Mrn(t *testing.T) {
 
 	testPatient := &Patient{}
 
@@ -81,15 +81,33 @@ func TestPatient_MrnAndEncounterID(t *testing.T) {
 		maxExpected int
 	}{
 		{"Default Case for MRN", 1000000000},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
+			got := testPatient.Mrn()
+			if (got.MRN < 0) || (got.MRN > tc.maxExpected) {
+				t.Fatalf("MrnAndencounterID()=%v expected range max to %v and got %v, out of range", got.MRN, tc.maxExpected, got.MRN)
+			}
+		})
+	}
+}
+
+func TestPatient_EncounterID(t *testing.T) {
+
+	testPatient := &Patient{}
+
+	var tests = []struct {
+		description string
+		maxExpected int
+	}{
 		{"Default Case for Encounter ID", 1000000000},
 	}
 
 	for _, tc := range tests {
 		t.Run(tc.description, func(t *testing.T) {
-			got := testPatient.MrnAndEncounterID()
-			if (got.MRN < 0) || (got.MRN > tc.maxExpected) {
-				t.Fatalf("MrnAndencounterID()=%v expected range max to %v and got %v, out of range", got.MRN, tc.maxExpected, got.MRN)
-			}
+			got := testPatient.EncounterID()
+	
 			if (got.EncounterId < 0) || (got.EncounterId > tc.maxExpected) {
 				t.Fatalf("MrnAndencounterID()=%v expected range max to %v and got %v, out of range", got.EncounterId, tc.maxExpected, got.EncounterId)
 			}

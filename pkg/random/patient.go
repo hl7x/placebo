@@ -42,7 +42,8 @@ func NewPatient() *Patient {
 
 	fakePatient := Name().
 		NewAddress().
-		MrnAndEncounterID().
+		Mrn().
+		EncounterID().
 		PhoneNumber().
 		DateOfBirth().
 		Arrival().
@@ -71,15 +72,21 @@ func Name() *Patient {
 	return p
 }
 
-func (p *Patient) MrnAndEncounterID() *Patient {
+func (p *Patient) Mrn() *Patient {
 
 	rand.Seed(time.Now().UnixNano())
 	randomMrn := rand.Intn(1000000000)
 
+	p.MRN = randomMrn
+
+	return p
+}
+
+func (p *Patient) EncounterID() *Patient {
+
 	rand.Seed(time.Now().UnixNano())
 	randomEncounterID := rand.Intn(1000000000)
-
-	p.MRN = randomMrn
+	
 	p.EncounterId = randomEncounterID
 
 	return p
