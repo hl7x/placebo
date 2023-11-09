@@ -136,6 +136,31 @@ func TestPatient_DateOfBirth(t *testing.T) {
 	}
 }
 
+func TestPatient_Hl7DateOfBirthFmt(t *testing.T) {
+	
+	firstTestPatient := &Patient{DOB: "9-18-1988"}
+	secondTestPatient := &Patient{DOB: "12-2-2001"}
+
+	var tests = []struct{
+		description	string
+		input		*Patient
+		expected	string
+	}{
+		{"Should Return Reformatted Date For HL7 Message Format", firstTestPatient, "19880918"},
+		{"Should Ensure That Reformatting Handles Single Digits Well", secondTestPatient, "20011202"},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
+			got := tc.input.Hl7DateOfBirthFmt()
+
+			if got.Hl7DOB != tc.expected {
+				t.Fatalf("Hl7DateOfBirth(%v)=%v expected %v", tc.input, got, tc.expected)
+			}
+		})
+	}
+}
+
 func TestPatient_Arrival(t *testing.T) {
 
 	testPatient := &Patient{}
