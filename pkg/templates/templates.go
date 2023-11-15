@@ -30,3 +30,12 @@ PV1|1|IP|PUNIT^RM 123^P^PUNIT|ER|||15551234567^HOUSE^GREG|1255568135^ROSENTHAL^A
 	return hl7Example
 
 }
+
+// ADT^03 us an event type for Discharging the Patient
+func DischargeHl7Info() []byte {
+	dischargeHl7 := []byte(`
+MSH|^~\&|SENDAPP|PLACEBO|RECVAPP|LAB|202310060800||ADT^A03|12345|P|2.3|
+EVN|A03|202310060800||
+PID|1|56789|{{.MRN}}||{{.LastName}}^{{.FirstName}}||{{.Hl7DOB}}|M|||{{.PatientAddress.StructureNumber}} {{.PatientAddress.Street}}^^{{.PatientAddress.RegionInfo.City}}^{{.PatientAddress.RegionInfo.State}}^12345|
+PV1|1|DC|PUNIT^RM 123^P^PUNIT|ER|||15551234567^HOUSE^GREG|1255568135^BETA^ALPHA|30104384^SMITH^JOHN|HIM||||Phys/Clinic|||123456789^BETA^ALPHA|TESTX|{{.EncounterId}}|
+`)
