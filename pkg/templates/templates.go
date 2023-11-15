@@ -31,8 +31,9 @@ PV1|1|IP|PUNIT^RM 123^P^PUNIT|ER|||15551234567^HOUSE^GREG|1255568135^BETA^ALPHA|
 
 }
 
-// ADT^03 us an event type for Discharging the Patient
+// ADT^03 is an event type for Discharging the Patient
 func DischargeHl7Info() []byte {
+
 	dischargeHl7 := []byte(`
 MSH|^~\&|SENDAPP|PLACEBO|RECVAPP|LAB|202310060800||ADT^A03|12345|P|2.3|
 EVN|A03|202310060800||
@@ -40,5 +41,19 @@ PID|1|56789|{{.MRN}}||{{.LastName}}^{{.FirstName}}||{{.Hl7DOB}}|M|||{{.PatientAd
 PV1|1|DC|PUNIT^RM 123^P^PUNIT|ER|||15551234567^HOUSE^GREG|1255568135^BETA^ALPHA|30104384^SMITH^JOHN|HIM||||Phys/Clinic|||123456789^BETA^ALPHA|TESTX|{{.EncounterId}}|
 `)
 	return dischargeHl7
+
+}
+
+//SIU^12 is an appointment scheduling structure for Pre-Admitting the Patient on a scheduled appointment
+func ScheduledPatientInfo() []byte {
+
+	scheduleSiu := []byte(`
+MSH|^~\&|SENDAPP|PLACEBO|RECVAPP|LAB|202310060800||SIU^S12|12345|P|2.3|
+SCH|12345|12345|OFFICE^123^PUNIT|20231010|0800|||60|M^Minutes|Regular Appointment||{{.AppointmentId}}|||Scheduled|
+PID|1|56789|{{.MRN}}||{{.LastName}}^{{.FirstName}}||{{.Hl7DOB}}|M|||{{.PatientAddress.StructureNumber}} {{.PatientAddress.Street}}^^{{.PatientAddress.RegionInfo.City}}^{{.PatientAddress.RegionInfo.State}}^12345|
+RGS|1|A|
+`)
+
+	return scheduleSiu
 
 }
