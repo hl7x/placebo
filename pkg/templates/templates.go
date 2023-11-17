@@ -17,6 +17,10 @@ func CSVPatientInfo() []byte {
 
 }
 
+
+/* QUICK HL7 TEMPLATES*/
+
+
 // ADT^A01 is an event type for Admiting the Patient. This is the deafult message template.
 func SimpleHl7Info() []byte {
 
