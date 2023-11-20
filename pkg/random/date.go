@@ -3,6 +3,7 @@ package random
 import (
 	"math/rand"
 	"fmt"
+	"strings"
 	"strconv"
 )
 
