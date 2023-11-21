@@ -186,6 +186,16 @@ func (p *Patient) AppointmentDate() *Patient {
 	return p
 }
 
+func EventDate() string {
+	
+	currentTime := time.Now()
+
+	time := fmt.Sprintf("%v/%v/%v", int(currentTime.Month()), currentTime.Day(), currentTime.Year())
+
+	return time
+
+}
+
 func (p *Patient) HL7Info() *Patient {
 	
 	p.Hl7Info = HL7DateConstructor(p.ArrivalDate, p.DischargeDate, p.DOB)
@@ -197,14 +207,17 @@ func (p *Patient) HL7Info() *Patient {
 func HL7DateConstructor(arrival string, discharge string, dob string) *Hl7Dates {
 
 	dates := &Hl7Dates{}
+	event := EventDate()
 
 	a := Hl7DateFormatter(arrival)
 	d := Hl7DateFormatter(discharge)
 	b := Hl7DateFormatter(dob)
+	e := Hl7DateFormatter(event)
 
 	dates.HL7Arrival = a
 	dates.HL7Discharge = d
 	dates.HL7DOB = b
+	dates.HL7Event = e
 
 	return dates
  
