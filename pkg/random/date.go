@@ -51,7 +51,7 @@ func Year() int {
 	return year
 }
 
-func Hl7Formatter(date string) string {
+func Hl7DateFormatter(date string) string {
 	
 	split := strings.Split(date, "-")
 
