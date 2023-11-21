@@ -32,6 +32,7 @@ type Hl7Dates struct {
 	HL7Arrival	string
 	HL7Discharge	string
 	HL7Event	string
+	HL7DOB		string
 }
 
 func NewPatients(max int) Collection {
@@ -111,6 +112,7 @@ func (p *Patient) DateOfBirth() *Patient {
 	return p
 }
 
+// Obsolete
 func (p *Patient) Hl7DateOfBirthFmt() *Patient {
 
 	date := p.DOB
@@ -186,23 +188,25 @@ func (p *Patient) AppointmentDate() *Patient {
 
 func (p *Patient) HL7Info() *Patient {
 	
-	p.Hl7Info = HL7DateConstructor(p.ArrivalDate, p.DischargeDate)
+	p.Hl7Info = HL7DateConstructor(p.ArrivalDate, p.DischargeDate, p.DOB)
 
 	return p
 
 }
 
-func HL7DateConstructor(arrival string, discharge string) *Hl7Dates {
+func HL7DateConstructor(arrival string, discharge string, dob string) *Hl7Dates {
 
 	dates := &Hl7Dates{}
 
 	a := Hl7DateFormatter(arrival)
 	d := Hl7DateFormatter(discharge)
+	b := Hl7DateFormatter(dob)
 
 	dates.HL7Arrival = a
 	dates.HL7Discharge = d
+	dates.HL7DOB = b
 
 	return dates
-
+ 
 }
 
