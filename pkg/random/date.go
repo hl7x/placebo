@@ -53,26 +53,55 @@ func Year() int {
 
 func Hl7DateFormatter(date string) string {
 	
-	split := strings.Split(date, "/")
+	switch d := date; {
+	case strings.Contains(d, "/") == true:
 
-	var digits []string
+		split := strings.Split(date, "/")
 
-	for _, number := range split {
-		parse, err := strconv.Atoi(number)
-		if err != nil {
-			panic(err)
+		var digits []string
+
+		for _, number := range split {
+			parse, err := strconv.Atoi(number)
+			if err != nil {
+				panic(err)
+			}
+
+			if parse < 10 {
+				number = "0" + number
+			}
+
+			digits = append(digits, number)
 		}
 
-		if parse < 10 {
-			number = "0" + number
+		format := fmt.Sprintf("%v%v%v", digits[2], digits[0], digits[1])
+
+		return format
+	case strings.Contains(d, "-") == true:
+
+		split := strings.Split(date, "-")
+
+		var digits []string
+
+		for _, number := range split {
+			parse, err := strconv.Atoi(number)
+			if err != nil {
+				panic(err)
+			}
+
+			if parse < 10 {
+				number = "0" + number
+			}
+
+			digits = append(digits, number)
 		}
 
-		digits = append(digits, number)
+		format := fmt.Sprintf("%v%v%v", digits[2], digits[0], digits[1])
+
+		return format
+	default:
+		return ""
 	}
 
-	format := fmt.Sprintf("%v%v%v", digits[2], digits[0], digits[1])
-
-	return format
 
 }
 
