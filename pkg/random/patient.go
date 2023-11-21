@@ -25,6 +25,13 @@ type Patient struct {
 	ArrivalDate    	string
 	DischargeDate  	string
 	Appointment	string
+	Hl7Info		*Hl7Dates
+}
+
+type Hl7Dates struct {
+	HL7Arrival	string
+	HL7Discharge	string
+	HL7Event	string
 }
 
 func NewPatients(max int) Collection {
@@ -50,7 +57,8 @@ func NewPatient() *Patient {
 		Hl7DateOfBirthFmt().
 		Arrival().
 		Discharge().
-		AppointmentDate()
+		AppointmentDate().
+		HL7Info()
 
 	return fakePatient
 
@@ -154,7 +162,7 @@ func (p *Patient) Discharge() *Patient {
 	return p
 }
 
-func ( p *Patient) AppointmentDate() *Patient {
+func (p *Patient) AppointmentDate() *Patient {
 
 	date := p.ArrivalDate
 
@@ -174,5 +182,27 @@ func ( p *Patient) AppointmentDate() *Patient {
 	p.Appointment = fmt.Sprintf("%v/%v/%v", month, splitDate[1], splitDate[2])
 
 	return p
+}
+
+func (p *Patient) HL7Info() *Patient {
+	
+	p.Hl7Info = HL7DateConstructor(p.ArrivalDate, p.DischargeDate)
+
+	return p
+
+}
+
+func HL7DateConstructor(arrival string, discharge string) *Hl7Dates {
+
+	dates := &Hl7Dates{}
+
+	a := Hl7DateFormatter(arrival)
+	d := Hl7DateFormatter(discharge)
+
+	dates.HL7Arrival = a
+	dates.HL7Discharge = d
+
+	return dates
+
 }
 

@@ -53,7 +53,7 @@ func Year() int {
 
 func Hl7DateFormatter(date string) string {
 	
-	split := strings.Split(date, "-")
+	split := strings.Split(date, "/")
 
 	var digits []string
 

@@ -110,6 +110,7 @@ func TestCreateHl7(t *testing.T) {
 		PatientAddress: &random.Address{},
 		ArrivalDate:    "00/00/0000",
 		DischargeDate:  "00/00/0000",
+		Hl7Info:	&random.Hl7Dates{},
 	}
 
 
