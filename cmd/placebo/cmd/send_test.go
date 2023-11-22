@@ -30,7 +30,7 @@ func TestSendHl7Message(t *testing.T) {
 
 func TestHl7Format(t *testing.T) {
 	
-	patientTest := &random.Patient{FirstName: "Joe"}
+	patientTest := &random.Patient{FirstName: "Joe", Hl7Info: &random.Hl7Dates{}}
 
 	var tests = []struct{
 		description	string
