@@ -209,16 +209,17 @@ func HL7DateConstructor(arrival string, discharge string, dob string) *Hl7Dates 
 	dates := &Hl7Dates{}
 	event := EventDate()
 
-	a := Hl7DateFormatter(arrival)
-	d := Hl7DateFormatter(discharge)
-	b := Hl7DateFormatter(dob)
-	e := Hl7DateFormatter(event)
+	dates.HL7Arrival = Hl7DateFormatter(arrival)
+	dates.HL7Discharge = Hl7DateFormatter(discharge)
+	dates.HL7DOB = Hl7DateFormatter(dob)
+	dates.HL7Event = Hl7DateFormatter(event)
 
+	/*
 	dates.HL7Arrival = a
 	dates.HL7Discharge = d
 	dates.HL7DOB = b
 	dates.HL7Event = e
-
+	*/
 	return dates
  
 }
