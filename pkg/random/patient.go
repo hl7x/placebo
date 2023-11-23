@@ -214,12 +214,6 @@ func HL7DateConstructor(arrival string, discharge string, dob string) *Hl7Dates 
 	dates.HL7DOB = Hl7DateFormatter(dob)
 	dates.HL7Event = Hl7DateFormatter(event)
 
-	/*
-	dates.HL7Arrival = a
-	dates.HL7Discharge = d
-	dates.HL7DOB = b
-	dates.HL7Event = e
-	*/
 	return dates
  
 }
