@@ -72,7 +72,7 @@ func TestName(t *testing.T) {
 	}
 }
 
-func TestPatient_MrnAndEncounterID(t *testing.T) {
+func TestPatient_Mrn(t *testing.T) {
 
 	testPatient := &Patient{}
 
@@ -81,15 +81,33 @@ func TestPatient_MrnAndEncounterID(t *testing.T) {
 		maxExpected int
 	}{
 		{"Default Case for MRN", 1000000000},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
+			got := testPatient.Mrn()
+			if (got.MRN < 0) || (got.MRN > tc.maxExpected) {
+				t.Fatalf("MrnAndencounterID()=%v expected range max to %v and got %v, out of range", got.MRN, tc.maxExpected, got.MRN)
+			}
+		})
+	}
+}
+
+func TestPatient_EncounterID(t *testing.T) {
+
+	testPatient := &Patient{}
+
+	var tests = []struct {
+		description string
+		maxExpected int
+	}{
 		{"Default Case for Encounter ID", 1000000000},
 	}
 
 	for _, tc := range tests {
 		t.Run(tc.description, func(t *testing.T) {
-			got := testPatient.MrnAndEncounterID()
-			if (got.MRN < 0) || (got.MRN > tc.maxExpected) {
-				t.Fatalf("MrnAndencounterID()=%v expected range max to %v and got %v, out of range", got.MRN, tc.maxExpected, got.MRN)
-			}
+			got := testPatient.EncounterID()
+	
 			if (got.EncounterId < 0) || (got.EncounterId > tc.maxExpected) {
 				t.Fatalf("MrnAndencounterID()=%v expected range max to %v and got %v, out of range", got.EncounterId, tc.maxExpected, got.EncounterId)
 			}
@@ -113,6 +131,31 @@ func TestPatient_DateOfBirth(t *testing.T) {
 			got := testPatient.DateOfBirth()
 			if !strings.Contains(got.DOB, tc.expected) {
 				t.Fatalf("DateOfBirth()=%v got %v expected %v", got.DOB, got.DOB, tc.expected)
+			}
+		})
+	}
+}
+
+func TestPatient_Hl7DateOfBirthFmt(t *testing.T) {
+	
+	firstTestPatient := &Patient{DOB: "9-18-1988"}
+	secondTestPatient := &Patient{DOB: "12-2-2001"}
+
+	var tests = []struct{
+		description	string
+		input		*Patient
+		expected	string
+	}{
+		{"Should Return Reformatted Date For HL7 Message Format", firstTestPatient, "19880918"},
+		{"Should Ensure That Reformatting Handles Single Digits Well", secondTestPatient, "20011202"},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
+			got := tc.input.Hl7DateOfBirthFmt()
+
+			if got.Hl7DOB != tc.expected {
+				t.Fatalf("Hl7DateOfBirth(%v)=%v expected %v", tc.input, got, tc.expected)
 			}
 		})
 	}
@@ -164,3 +207,84 @@ func TestPatient_Discharge(t *testing.T) {
 		}
 	})
 }
+
+func TestEventDate(t *testing.T) {
+
+	time := time.Now()
+
+	timeFormated := fmt.Sprintf("%v/%v/%v", int(time.Month()), time.Day(), time.Year())
+
+	var tests = []struct {
+		description	string
+		expected	string
+	}{
+		{"Should Return Matching Current Date", timeFormated},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
+			got := EventDate()
+
+			if got != tc.expected {
+				t.Fatalf("EventDate()=%v expected %v", got, tc.expected)
+			}
+		})
+	}
+
+}
+
+func TestPatient_HL7Info(t *testing.T) {
+	
+	testPatient := &Patient{ArrivalDate: "12/10/1998", DischargeDate: "12/11/1998", DOB: "3/10/1978"}
+
+	hl7Info := &Hl7Dates{HL7Arrival: "19981210", HL7Discharge: "19981211", HL7DOB: "19780310"}
+
+	var tests = []struct {
+		description	string
+		input		*Patient
+		expected	*Hl7Dates
+	}{
+		{"Should Return HL7 Info Based On Earlier Constructed Data", testPatient, hl7Info},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
+			got := tc.input.HL7Info()
+
+			if got.Hl7Info.HL7Arrival != tc.expected.HL7Arrival {
+				t.Fatalf("got %v, expected %v", got.Hl7Info.HL7Arrival, tc.expected.HL7Arrival)
+			}
+
+			if got.Hl7Info.HL7Discharge != tc.expected.HL7Discharge {
+				t.Fatalf("got %v, expected %v", got.Hl7Info.HL7Discharge, tc.expected.HL7Discharge)
+			}
+
+			if got.Hl7Info.HL7DOB != tc.expected.HL7DOB {
+				t.Fatalf("got %v, expected %v", got.Hl7Info.HL7DOB, tc.expected.HL7DOB)
+			}
+		})
+	}
+}
+
+func TestHL7DateConstructor(t *testing.T) {
+
+	var tests = []struct {
+		description	string
+		input		string
+		expected	string
+	}{
+		{"Should Return a Date Formatted for HL7", "7/4/1776", "17760704"},
+
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
+			got := HL7DateConstructor(tc.input, "", "")
+
+			if got.HL7Arrival != tc.expected {
+				t.Fatalf("HL7DateConstructor(%v)=%v expected %v", tc.input, got.HL7Arrival, tc.expected)
+			}
+		})
+	}
+}
+

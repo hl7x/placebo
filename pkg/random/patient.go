@@ -20,10 +20,19 @@ type Patient struct {
 	EncounterId    	int
 	Phone          	string
 	DOB            	string
+	Hl7DOB		string
 	PatientAddress 	*Address
 	ArrivalDate    	string
 	DischargeDate  	string
 	Appointment	string
+	Hl7Info		*Hl7Dates
+}
+
+type Hl7Dates struct {
+	HL7Arrival	string
+	HL7Discharge	string
+	HL7Event	string
+	HL7DOB		string
 }
 
 func NewPatients(max int) Collection {
@@ -42,12 +51,15 @@ func NewPatient() *Patient {
 
 	fakePatient := Name().
 		NewAddress().
-		MrnAndEncounterID().
+		Mrn().
+		EncounterID().
 		PhoneNumber().
 		DateOfBirth().
+		Hl7DateOfBirthFmt().
 		Arrival().
 		Discharge().
-		AppointmentDate()
+		AppointmentDate().
+		HL7Info()
 
 	return fakePatient
 
@@ -71,15 +83,21 @@ func Name() *Patient {
 	return p
 }
 
-func (p *Patient) MrnAndEncounterID() *Patient {
+func (p *Patient) Mrn() *Patient {
 
 	rand.Seed(time.Now().UnixNano())
 	randomMrn := rand.Intn(1000000000)
 
+	p.MRN = randomMrn
+
+	return p
+}
+
+func (p *Patient) EncounterID() *Patient {
+
 	rand.Seed(time.Now().UnixNano())
 	randomEncounterID := rand.Intn(1000000000)
-
-	p.MRN = randomMrn
+	
 	p.EncounterId = randomEncounterID
 
 	return p
@@ -92,6 +110,36 @@ func (p *Patient) DateOfBirth() *Patient {
 	p.DOB = date
 
 	return p
+}
+
+// Obsolete
+func (p *Patient) Hl7DateOfBirthFmt() *Patient {
+
+	date := p.DOB
+
+	split := strings.Split(date, "-")
+
+	var digits []string
+
+	for _, number := range split {
+		parse, err := strconv.Atoi(number)
+		if err != nil {
+			panic(err)
+		}
+
+		if parse < 10 {
+			number = "0" + number
+		}
+
+		digits = append(digits, number)
+	}
+
+	format := fmt.Sprintf("%v%v%v", digits[2], digits[0], digits[1])
+
+	p.Hl7DOB = format
+
+	return p
+
 }
 
 func (p *Patient) Arrival() *Patient {
@@ -116,7 +164,7 @@ func (p *Patient) Discharge() *Patient {
 	return p
 }
 
-func ( p *Patient) AppointmentDate() *Patient {
+func (p *Patient) AppointmentDate() *Patient {
 
 	date := p.ArrivalDate
 
@@ -136,5 +184,37 @@ func ( p *Patient) AppointmentDate() *Patient {
 	p.Appointment = fmt.Sprintf("%v/%v/%v", month, splitDate[1], splitDate[2])
 
 	return p
+}
+
+func EventDate() string {
+	
+	currentTime := time.Now()
+
+	time := fmt.Sprintf("%v/%v/%v", int(currentTime.Month()), currentTime.Day(), currentTime.Year())
+
+	return time
+
+}
+
+func (p *Patient) HL7Info() *Patient {
+	
+	p.Hl7Info = HL7DateConstructor(p.ArrivalDate, p.DischargeDate, p.DOB)
+
+	return p
+
+}
+
+func HL7DateConstructor(arrival string, discharge string, dob string) *Hl7Dates {
+
+	dates := &Hl7Dates{}
+	event := EventDate()
+
+	dates.HL7Arrival = Hl7DateFormatter(arrival)
+	dates.HL7Discharge = Hl7DateFormatter(discharge)
+	dates.HL7DOB = Hl7DateFormatter(dob)
+	dates.HL7Event = Hl7DateFormatter(event)
+
+	return dates
+ 
 }
 
