@@ -6,6 +6,10 @@ import (
 
 )
 
+func init() {
+	go mockServer()
+}
+
 func mockServer() {
 	l, err := net.Listen("tcp", "127.0.0.1:9700")
 	if err != nil {
@@ -52,8 +56,6 @@ func TestSendHl7Message(t *testing.T) {
 }
 
 func TestMultiSender(t *testing.T) {
-	
-	go mockServer()
 
 	message := []string{"admit"}
 
