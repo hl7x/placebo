@@ -2,9 +2,7 @@ package cmd
 
 import (
 	"testing"
-	"strings"
 
-	"placebo/pkg/random"
 )
 
 func TestSendHl7Message(t *testing.T) {
@@ -28,26 +26,50 @@ func TestSendHl7Message(t *testing.T) {
 	}
 }
 
-func TestHl7Format(t *testing.T) {
-	
-	patientTest := &random.Patient{FirstName: "Joe", Hl7Info: &random.Hl7Dates{}}
+func TestMultiSender(t *testing.T) {
+
+	message := []string{"admit"}
 
 	var tests = []struct{
 		description	string
-		input		*random.Patient
-		expected	string
+		input		[]string
+		expected	error
 	}{
-		{"Should Return Templated Data", patientTest, "MSH"},
-		{"Should Return Patient Data", patientTest, "Joe"},
+		{"Send Multiple Messages", message, nil},
 	}
 
 	for _, tc := range tests {
 		t.Run(tc.description, func(t *testing.T) {
-			got := Hl7Format(tc.input)
+			got := MultiSender(tc.input)
 
-			if !strings.Contains(got, tc.expected) {
-				t.Fatalf("Hl7Format(%v)=%v expected %v", tc.input, got, tc.expected)
+			if got != tc.expected {
+				t.Fatalf("MultiSender(%v)=%v expected %v", tc.input, got, tc.expected)
 			}
 		})
 	}
+
+}
+
+func TestEventSelector(t *testing.T) {
+
+	command := "post_discharge"
+
+	var tests = []struct{
+		description	string
+		input		string
+		expected	error
+	}{
+		{"Should Return Nil When command selector is correct", command, nil},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
+			got := EventSelector(tc.input)
+
+			if got != tc.expected {
+				t.Fatalf("EventSelector(%v)=%v expected %v", tc.input, got, tc.expected)
+			}
+		})
+	}
+
 }
