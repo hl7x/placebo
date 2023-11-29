@@ -279,7 +279,7 @@ func TestHL7DateConstructor(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.description, func(t *testing.T) {
-			got := HL7DateConstructor(tc.input, "", "")
+			got := HL7DateConstructor(tc.input, "", "", "")
 
 			if got.HL7Arrival != tc.expected {
 				t.Fatalf("HL7DateConstructor(%v)=%v expected %v", tc.input, got.HL7Arrival, tc.expected)

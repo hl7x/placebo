@@ -37,8 +37,8 @@ func TemplateFinder(s string) []byte {
 		return templates.SimpleHl7Info()
 	case "discharge":
 		return templates.DischargeHl7Info()
-	case "schedule":
-		return templates.ScheduledPatientInfo()
+	case "preadmit":
+		return templates.PreadmitHl7Info()
 	default:
 		return templates.SimpleHl7Info()
 	}

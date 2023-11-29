@@ -75,13 +75,23 @@ func EventSelector(s string) error {
 	
 	dischargeEvent  := []string{"admit", "discharge"}
 	admitEvent	:= []string{"admit"}
-//	scheduleEvent	:= []string{"schedule"}
+	preadmitEvent	:= []string{"preadmit"}
 
 	switch s {
 	case "post_discharge":
 		messages := event.Builder(dischargeEvent)
 		sent := MultiSender(messages)
 		
+		return sent
+	case "post_admit":
+		message := event.Builder(admitEvent)
+		sent := MultiSender(message)
+
+		return sent
+	case "pre_admit":
+		message := event.Builder(preadmitEvent)
+		sent := MultiSender(message)
+
 		return sent
 	default:
 		message := event.Builder(admitEvent)
