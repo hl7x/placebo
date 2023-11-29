@@ -1,14 +1,15 @@
 package cmd
 
 import (	
-	"text/template"
-	"bytes"
+//	"text/template"
+//	"bytes"
 	"fmt"
 	"os"
 	
 	"placebo/internal/network"
-	"placebo/pkg/random"
-	"placebo/pkg/templates"
+//	"placebo/pkg/random"
+//	"placebo/pkg/templates"
+	"placebo/pkg/event"
 )
 
 func SendHl7Message(f string) error {
@@ -21,29 +22,12 @@ func SendHl7Message(f string) error {
 		command := os.Args[3:]
 
 		if len(command) == 0 {
-			
-			patient := random.NewPatient()
-			template := templates.SimpleHl7Info()
-
-			hl7 := Hl7Format(patient, template)
-
-			err := DefaultSend(hl7)
+			err := EventSelector("")
 			if err != nil {
 				return err
 			}
 
-			fmt.Printf("HL7 Sent:\n %v", hl7)
-
-			return nil
-
-		} else if command[0] == "post_admit" {
-			//post_admit hl7 event
-		} else if command[0] == "appointment" {
-			//appointment siu event
-		} else if command[0] == "pre_admit" {
-			// scheduled pre-admit event
-		} else if command[0] == "post_discharge" {
-			//post_discharge hl7 event
+		} else {
 			err := EventSelector(command[0])
 			if err != nil {
 				return err
@@ -53,24 +37,6 @@ func SendHl7Message(f string) error {
 	}
 
 	return nil
-
-}
-
-func Hl7Format(p *random.Patient, temp []byte) string {
-
-//	temp := templates.SimpleHl7Info()
-
-	t, err := template.New("hl7").Parse(string(temp))
-	if err != nil {
-		panic(err)
-	}
-
-	var tpl bytes.Buffer
-	t.Execute(&tpl, p)
-
-	result := tpl.String()
-
-	return result
 
 }
 
@@ -90,35 +56,39 @@ func DefaultSend(templatePatient string) error {
 	return nil
 }
 
-func EventSelector(s string) error {
+func MultiSender(mes []string) error {
 
-	switch s {
-	case "":
-		return nil
-	case "post_discharge":
-		patient := random.NewPatient()
-		admitTemp := templates.SimpleHl7Info()
-
-		admitHl7 := Hl7Format(patient, admitTemp)
-		err := DefaultSend(admitHl7)
+	for _, message := range mes {
+		err := DefaultSend(message)
 		if err != nil {
 			return err
 		}
 
-		fmt.Println("hl7 sent: \n", admitHl7)
-		fmt.Println("\n")
-
-		dischargeTemp := templates.DischargeHl7Info()
-
-		dischargeHl7 := Hl7Format(patient, dischargeTemp)
-		
-		err = DefaultSend(dischargeHl7)
-		if err != nil {
-			return nil
-		}
-
-		fmt.Println("hl7 sent: \n", dischargeHl7)
+		fmt.Printf("HL7 Sent: \n%v\n", message)
 	}
 
 	return nil
 }
+
+func EventSelector(s string) error {
+	
+	dischargeEvent  := []string{"admit", "discharge"}
+	admitEvent	:= []string{"admit"}
+//	scheduleEvent	:= []string{"schedule"}
+
+	switch s {
+	case "post_discharge":
+		messages := event.Builder(dischargeEvent)
+		sent := MultiSender(messages)
+		
+		return sent
+	default:
+		message := event.Builder(admitEvent)
+		sent := MultiSender(message)
+
+		return sent
+	}
+
+	return nil
+}
+
