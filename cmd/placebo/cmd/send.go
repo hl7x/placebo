@@ -12,6 +12,9 @@ import (
 	"placebo/pkg/event"
 )
 
+var Address = "127.0.0.1"
+var Port = "9700"
+
 func SendHl7Message(f string) error {
 	
 	switch f {
@@ -45,10 +48,8 @@ this can be used as default
 */
 func DefaultSend(templatePatient string) error {
 
-	address := "127.0.0.1"
-	port := "9700"
 
-	err := network.SendClient(address, port, templatePatient)
+	err := network.SendClient(Address, Port, templatePatient)
 	if err != nil {
 		return err
 	}

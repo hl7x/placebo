@@ -2,8 +2,33 @@ package cmd
 
 import (
 	"testing"
+	"net"
 
 )
+
+func mockServer() {
+	l, err := net.Listen("tcp", "127.0.0.1:9700")
+	if err != nil {
+		panic(err)
+	}
+	defer l.Close()
+
+	for {
+		conn, err := l.Accept()
+		if err != nil {
+			return
+		}
+		go func(c net.Conn) {
+			defer c.Close()
+			buf := make([]byte, 1024)
+			_, err := c.Read(buf)
+			if err != nil {
+				return
+			}
+			// You can add logic here to respond to certain messages if necessary
+		}(conn)
+	}
+}
 
 func TestSendHl7Message(t *testing.T) {
 
@@ -27,6 +52,8 @@ func TestSendHl7Message(t *testing.T) {
 }
 
 func TestMultiSender(t *testing.T) {
+	
+	go mockServer()
 
 	message := []string{"admit"}
 
@@ -51,6 +78,8 @@ func TestMultiSender(t *testing.T) {
 }
 
 func TestEventSelector(t *testing.T) {
+	
+	go mockServer()
 
 	command := "post_discharge"
 
