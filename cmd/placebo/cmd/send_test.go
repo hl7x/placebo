@@ -79,8 +79,6 @@ func TestMultiSender(t *testing.T) {
 
 func TestEventSelector(t *testing.T) {
 	
-	go mockServer()
-
 	command := "post_discharge"
 
 	var tests = []struct{
