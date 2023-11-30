@@ -34,3 +34,30 @@ func TestBuilder(t *testing.T) {
 	}
 
 }
+
+func TestTemplateFinder(t *testing.T) {
+
+	admitEventType := "ADT^A01"
+	dischargeEventType := "ADT^A03"
+
+	var tests = []struct {
+		description	string
+		input		string
+		expected	string
+	}{
+		{"Should Return Admit Event Based Template", "admit", admitEventType},
+		{"Should Return Discharge Event Based Template", "discharge", dischargeEventType},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
+			got := TemplateFinder(tc.input)
+
+			gotString := string(got)
+
+			if !strings.Contains(gotString, tc.expected) {
+				t.Fatalf("TemplateFinder(%v)=%v expected %v", tc.input, gotString, tc.expected)
+			}
+		})
+	}
+}
