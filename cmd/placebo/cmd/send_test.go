@@ -19,7 +19,7 @@ func mockServer() {
 	defer l.Close()
 
 	// Delay for GitHub Actions test assessment
-	time.Sleep(100 * time.Millisecond)
+	time.Sleep(10000 * time.Millisecond)
 
 	for {
 		conn, err := l.Accept()
