@@ -1,14 +1,10 @@
 package cmd
 
 import (	
-//	"text/template"
-//	"bytes"
 	"fmt"
 	"os"
 	
 	"placebo/internal/network"
-//	"placebo/pkg/random"
-//	"placebo/pkg/templates"
 	"placebo/pkg/event"
 )
 
