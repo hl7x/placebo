@@ -4,6 +4,9 @@ import (
 	"testing"
 	"strings"
 
+	"placebo/pkg/random"
+	"placebo/pkg/templates"
+
 )
 
 func TestBuilder(t *testing.T) {
@@ -57,6 +60,35 @@ func TestTemplateFinder(t *testing.T) {
 
 			if !strings.Contains(gotString, tc.expected) {
 				t.Fatalf("TemplateFinder(%v)=%v expected %v", tc.input, gotString, tc.expected)
+			}
+		})
+	}
+}
+
+func TestTemplateMapper(t *testing.T) {
+
+	testPatient := random.NewPatient()
+
+	testPatient.FirstName = "John"
+
+	testTemplate := templates.SimpleHl7Info()
+
+	var tests = []struct {
+		description	string
+		patient		*random.Patient
+		template	[]byte
+		expected	string
+	}{
+		{"Should Return Patient Info Mapped to HL7 template", testPatient, testTemplate, "John"},
+		{"Shoule Return the Right Template", testPatient, testTemplate, "ADT^A01"},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
+			got := TemplateMapper(tc.patient, tc.template)
+
+			if !strings.Contains(got, tc.expected) {
+				t.Fatalf("TemplateMapper(%v, %v)=%v expected to include: %v", tc.patient, tc.template, got, tc.expected)
 			}
 		})
 	}
