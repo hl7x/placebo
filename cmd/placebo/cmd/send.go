@@ -1,14 +1,15 @@
 package cmd
 
 import (	
-	"text/template"
-	"bytes"
 	"fmt"
+	"os"
 	
 	"placebo/internal/network"
-	"placebo/pkg/random"
-	"placebo/pkg/templates"
+	"placebo/pkg/event"
 )
+
+var Address = "127.0.0.1"
+var Port = "9700"
 
 func SendHl7Message(f string) error {
 	
@@ -16,39 +17,25 @@ func SendHl7Message(f string) error {
 	case "":
 		return nil
 	case "hl7":
-		patient := random.NewPatient()
-		hl7 := Hl7Format(patient)
+		
+		command := os.Args[3:]
 
-		err := DefaultSend(hl7)
-		if err != nil {
-			return err
+		if len(command) == 0 {
+			err := EventSelector("")
+			if err != nil {
+				return err
+			}
+
+		} else {
+			err := EventSelector(command[0])
+			if err != nil {
+				return err
+			}
 		}
-
-		fmt.Printf("HL7 Sent:\n %v", hl7)
-
-		return nil
 
 	}
 
 	return nil
-
-}
-
-func Hl7Format(p *random.Patient) string {
-
-	temp := templates.SimpleHl7Info()
-
-	t, err := template.New("hl7").Parse(string(temp))
-	if err != nil {
-		panic(err)
-	}
-
-	var tpl bytes.Buffer
-	t.Execute(&tpl, p)
-
-	result := tpl.String()
-
-	return result
 
 }
 
@@ -57,13 +44,58 @@ this can be used as default
 */
 func DefaultSend(templatePatient string) error {
 
-	address := "127.0.0.1"
-	port := "9700"
 
-	err := network.SendClient(address, port, templatePatient)
+	err := network.SendClient(Address, Port, templatePatient)
 	if err != nil {
 		return err
 	}
 
 	return nil
 }
+
+func MultiSender(mes []string) error {
+
+	for _, message := range mes {
+		err := DefaultSend(message)
+		if err != nil {
+			return err
+		}
+
+		fmt.Printf("HL7 Sent: \n%v\n", message)
+	}
+
+	return nil
+}
+
+func EventSelector(s string) error {
+	
+	dischargeEvent  := []string{"admit", "discharge"}
+	admitEvent	:= []string{"admit"}
+	preadmitEvent	:= []string{"preadmit"}
+
+	switch s {
+	case "post_discharge":
+		messages := event.Builder(dischargeEvent)
+		sent := MultiSender(messages)
+		
+		return sent
+	case "post_admit":
+		message := event.Builder(admitEvent)
+		sent := MultiSender(message)
+
+		return sent
+	case "pre_admit":
+		message := event.Builder(preadmitEvent)
+		sent := MultiSender(message)
+
+		return sent
+	default:
+		message := event.Builder(admitEvent)
+		sent := MultiSender(message)
+
+		return sent
+	}
+
+	return nil
+}
+

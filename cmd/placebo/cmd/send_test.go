@@ -2,10 +2,41 @@ package cmd
 
 import (
 	"testing"
-	"strings"
+	"net"
+	"time"
 
-	"placebo/pkg/random"
 )
+
+func init() {
+	go mockServer()
+}
+
+func mockServer() {
+	l, err := net.Listen("tcp", "127.0.0.1:9700")
+	if err != nil {
+		panic(err)
+	}
+	defer l.Close()
+
+	// Delay for GitHub Actions test assessment
+//	time.Sleep(10000 * time.Millisecond)
+
+	for {
+		conn, err := l.Accept()
+		if err != nil {
+			return
+		}
+		go func(c net.Conn) {
+			defer c.Close()
+			buf := make([]byte, 1024)
+			_, err := c.Read(buf)
+			if err != nil {
+				return
+			}
+			// You can add logic here to respond to certain messages if necessary
+		}(conn)
+	}
+}
 
 func TestSendHl7Message(t *testing.T) {
 
@@ -28,26 +59,52 @@ func TestSendHl7Message(t *testing.T) {
 	}
 }
 
-func TestHl7Format(t *testing.T) {
+func TestMultiSender(t *testing.T) {
 	
-	patientTest := &random.Patient{FirstName: "Joe", Hl7Info: &random.Hl7Dates{}}
+	time.Sleep(1000 * time.Millisecond)
+
+	message := []string{"admit"}
 
 	var tests = []struct{
 		description	string
-		input		*random.Patient
-		expected	string
+		input		[]string
+		expected	error
 	}{
-		{"Should Return Templated Data", patientTest, "MSH"},
-		{"Should Return Patient Data", patientTest, "Joe"},
+		{"Send Multiple Messages", message, nil},
 	}
 
 	for _, tc := range tests {
 		t.Run(tc.description, func(t *testing.T) {
-			got := Hl7Format(tc.input)
+			got := MultiSender(tc.input)
 
-			if !strings.Contains(got, tc.expected) {
-				t.Fatalf("Hl7Format(%v)=%v expected %v", tc.input, got, tc.expected)
+			if got != tc.expected {
+				t.Fatalf("MultiSender(%v)=%v expected %v", tc.input, got, tc.expected)
 			}
 		})
 	}
+
+}
+
+func TestEventSelector(t *testing.T) {
+	
+	command := "post_discharge"
+
+	var tests = []struct{
+		description	string
+		input		string
+		expected	error
+	}{
+		{"Should Return Nil When command selector is correct", command, nil},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
+			got := EventSelector(tc.input)
+
+			if got != tc.expected {
+				t.Fatalf("EventSelector(%v)=%v expected %v", tc.input, got, tc.expected)
+			}
+		})
+	}
+
 }
