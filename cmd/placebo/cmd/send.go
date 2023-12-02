@@ -37,7 +37,7 @@ func SendHl7Message(f string) error {
 
 			input, err := reader.ReadString('\n')
 			if err != nil {
-				fmt.Println(err)
+				return err
 			}
 
 			input = strings.TrimSpace(input)
