@@ -3,9 +3,13 @@ package cmd
 import (	
 	"fmt"
 	"os"
+	"bufio"
+	"strings"
 	
 	"placebo/internal/network"
 	"placebo/pkg/event"
+	"placebo/file"
+	"placebo/internal/sysCmd"
 )
 
 var Address = "127.0.0.1"
@@ -21,10 +25,36 @@ func SendHl7Message(f string) error {
 		command := os.Args[3:]
 
 		if len(command) == 0 {
-			err := EventSelector("")
+			
+			eventHolder := []string{"admit"}
+			hl7 := event.Builder(eventHolder)
+
+			openPath := file.CreateInteractiveHl7(hl7[0])
+			sysCmd.TextEditorOpen(openPath)
+
+			fmt.Println("\nSend The Message Out? [Y/n]")
+			reader := bufio.NewReader(os.Stdin)
+
+			input, err := reader.ReadString('\n')
 			if err != nil {
-				return err
+				fmt.Println(err)
 			}
+
+			input = strings.TrimSpace(input)
+
+			if input == "Y" {
+				messageText := file.ReadInteractiveHl7(openPath)
+				err = DefaultSend(messageText)
+				if err != nil {
+					return err
+				}
+			} else {
+				os.Exit(1)
+				return nil
+			}
+
+
+			return nil
 
 		} else {
 			err := EventSelector(command[0])
