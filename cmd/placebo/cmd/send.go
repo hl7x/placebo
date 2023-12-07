@@ -30,56 +30,35 @@ func SendHl7Message(f string) error {
 			hl7 := event.Builder(eventHolder)
 
 			openPath := file.CreateInteractiveHl7(hl7[0])
-			sysCmd.TextEditorOpen(openPath)
-
-			fmt.Println("\nSend The Message Out? [Y/n]")
-			reader := bufio.NewReader(os.Stdin)
-
-			input, err := reader.ReadString('\n')
+			sent, err := InteractivePrompt(openPath)
 			if err != nil {
 				return err
 			}
 
-			input = strings.TrimSpace(input)
-
-			if input == "Y" {
-				messageText := file.ReadInteractiveHl7(openPath)
-				err = DefaultSend(messageText)
-				if err != nil {
-					return err
-				}
+			if sent != "" {
+				fmt.Println("HL7 Sent: \n", sent)
 			} else {
-				os.Exit(1)
 				return nil
 			}
 
-
 			return nil
+
 		} else if command[0] == "file" {
 			path := command[1]
 
-			sysCmd.TextEditorOpen(path)
-
-			fmt.Println("\nSend The Message Out? [Y/n]")
-			reader := bufio.NewReader(os.Stdin)
-
-			input, err := reader.ReadString('\n')
+			sent, err := InteractivePrompt(path)
 			if err != nil {
 				return err
 			}
 
-			input = strings.TrimSpace(input)
-
-			if input == "Y" {
-				messageText := file.ReadInteractiveHl7(path)
-				err = DefaultSend(messageText)
-				if err != nil {
-					return nil
-				}
+			if sent != "" {
+				fmt.Println("HL7 Sent: \n", sent)
 			} else {
-				os.Exit(1)
 				return nil
 			}
+
+			return nil
+
 		} else {
 			err := EventSelector(command[0])
 			if err != nil {
@@ -144,16 +123,44 @@ func EventSelector(s string) error {
 
 		return sent
 	default:
-	/*:
-		message := event.Builder(admitEvent)
-		sent := MultiSender(message)
-
-		return sent
-	*/
 		fmt.Println("Command Not Found.")
 		return nil
 	}
 
 	return nil
+}
+
+func InteractivePrompt(filePath string) (string, error) {
+
+	sysCmd.TextEditorOpen(filePath)
+
+	fmt.Println("\nSend The Message Out? [Y/n]")
+	reader := bufio.NewReader(os.Stdin)
+
+	input, err := reader.ReadString('\n')
+	if err != nil {
+		return "", err
+	}
+
+	input = strings.TrimSpace(input)
+
+	if input == "Y" || input == "\r" {
+		
+		fileText := file.ReadInteractiveHl7(filePath)
+
+		err = DefaultSend(fileText)
+		if err != nil {
+			return "", err
+		}
+
+		return fileText, nil
+
+	} else {
+		os.Exit(1)
+		return "", nil
+	}
+
+	return "", nil
+
 }
 
