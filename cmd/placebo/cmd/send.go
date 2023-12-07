@@ -55,7 +55,31 @@ func SendHl7Message(f string) error {
 
 
 			return nil
+		} else if command[0] == "file" {
+			path := command[1]
 
+			sysCmd.TextEditorOpen(path)
+
+			fmt.Println("\nSend The Message Out? [Y/n]")
+			reader := bufio.NewReader(os.Stdin)
+
+			input, err := reader.ReadString('\n')
+			if err != nil {
+				return err
+			}
+
+			input = strings.TrimSpace(input)
+
+			if input == "Y" {
+				messageText := file.ReadInteractiveHl7(path)
+				err = DefaultSend(messageText)
+				if err != nil {
+					return nil
+				}
+			} else {
+				os.Exit(1)
+				return nil
+			}
 		} else {
 			err := EventSelector(command[0])
 			if err != nil {
@@ -120,10 +144,14 @@ func EventSelector(s string) error {
 
 		return sent
 	default:
+	/*:
 		message := event.Builder(admitEvent)
 		sent := MultiSender(message)
 
 		return sent
+	*/
+		fmt.Println("Command Not Found.")
+		return nil
 	}
 
 	return nil
