@@ -5,6 +5,7 @@ import (
 	"os"
 	"bufio"
 	"strings"
+	"errors"
 	
 	"placebo/internal/network"
 	"placebo/pkg/event"
@@ -123,8 +124,7 @@ func EventSelector(s string) error {
 
 		return sent
 	default:
-		fmt.Println("Command Not Found.")
-		return nil
+		return errors.New("Command Not Found.")
 	}
 
 	return nil

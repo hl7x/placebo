@@ -4,6 +4,8 @@ import (
 	"testing"
 	"net"
 	"time"
+	"os"
+	"errors"
 
 )
 
@@ -40,20 +42,30 @@ func mockServer() {
 
 func TestSendHl7Message(t *testing.T) {
 
+
 	var tests = []struct{
 		description	string
-		input		string
 		expected	error
+		input		string
+		args		[]string
 	}{
-		{"Should Return Nil When No Command Is Given", "", nil},
+		{"Should Return Nil When No Command Is Given", nil, "", []string{""}},
+//		{"Should Return Nil When 'hl7' Command Is Given", nil, "hl7", []string{"placebo", "--send", "hl7"}},
+		{"Should Return Nil When Given Proper Sub Command", nil, "hl7", []string{"placebo","--send", "hl7", "post_discharge"}},
+		{"Should Return Error When Given Bad Sub Command", errors.New("Command Not Found."), "hl7", []string{"placebo", "--send", "hl7", "taco"}},
 	}
 
 	for _, tc := range tests {
 		t.Run(tc.description, func(t *testing.T) {
+			os.Args = tc.args
 			got := SendHl7Message(tc.input)
 
-			if got != tc.expected {
-				t.Fatalf("SendHl7Message(%v)=%v expected %v", tc.input, got, tc.expected)
+			if got != nil && tc.expected != nil {
+				if got.Error() != tc.expected.Error() {
+					t.Fatalf("SendHl7Message(%v)=%v expected %v", tc.input, got, tc.expected)
+				}
+			} else if got != tc.expected {
+				t.Fatalf("SendHl7Message(%v)=%v, expected %v", tc.input, got, tc.expected)
 			}
 		})
 	}
