@@ -51,7 +51,7 @@ func TestSendHl7Message(t *testing.T) {
 	}{
 		{"Should Return Nil When No Command Is Given", nil, "", []string{""}},
 //		{"Should Return Nil When 'hl7' Command Is Given", nil, "hl7", []string{"placebo", "--send", "hl7"}},
-		{"Should Return Nil When Given Proper Sub Command", nil, "hl7", []string{"placebo","--send", "hl7", "post_discharge"}},
+		{"Should Return Nil When Given Proper Sub Command", nil, "hl7", []string{"placebo","--send", "hl7", "post_admit"}},
 		{"Should Return Error When Given Bad Sub Command", errors.New("Command Not Found."), "hl7", []string{"placebo", "--send", "hl7", "taco"}},
 	}
 
