@@ -42,6 +42,7 @@ func mockServer() {
 
 func TestSendHl7Message(t *testing.T) {
 
+	time.Sleep(1000 * time.Millisecond)
 
 	var tests = []struct{
 		description	string
