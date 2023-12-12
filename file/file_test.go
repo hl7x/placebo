@@ -235,3 +235,46 @@ func TestCreateInteractiveHl7(t *testing.T) {
 	}
 
 }
+
+func TestReadInteractiveHl7(t *testing.T) {
+	// Create a temporary directory for the test
+	tempDir, err := os.MkdirTemp("", "")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer os.RemoveAll(tempDir)
+
+	dir = tempDir + "/"
+
+	f, err := os.CreateTemp(dir, "test")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	writeTest := []byte("Testing")
+
+	_, err = f.Write(writeTest)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var tests =[]struct {
+		description	string
+		input		string
+		expected	string
+	}{
+		{"Should Return the Read File String", f.Name(), "Testing"},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
+			got := ReadInteractiveHl7(tc.input)
+
+			if got != tc.expected {
+				t.Fatalf("ReadInteractionHl7(%v)=%v expected %v", tc.input, got, tc.expected)
+			}
+		})
+	}
+
+}
