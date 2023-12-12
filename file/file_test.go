@@ -5,6 +5,8 @@ import (
 	"log"
 	"os"
 	"placebo/pkg/random"
+	"placebo/pkg/templates"
+	"placebo/pkg/event"
 	"strings"
 	"testing"
 	"time"
@@ -185,4 +187,51 @@ func TestHl7FileName(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestCreateInteractiveHl7(t *testing.T) {
+	// Create a temporary directory for the test
+	tempDir, err := os.MkdirTemp("", "")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer os.RemoveAll(tempDir)
+
+	dir = tempDir + "/"
+
+	patient := &random.Patient{
+		FirstName:      "Bill",
+		LastName:       "Test",
+		MRN:            123,
+		EncounterId:    123,
+		Phone:          "0000000",
+		DOB:            "00/00/0000",
+		PatientAddress: &random.Address{},
+		ArrivalDate:    "00/00/0000",
+		DischargeDate:  "00/00/0000",
+	}
+
+	template := templates.SimpleHl7Info()
+
+	patientAndTemplate := event.TemplateMapper(patient, template)
+
+	var tests = []struct{
+		description	string
+		input		string
+		expected	string
+	}{
+		{"Should Include Return File Path When Patient And Template Are Constructed", patientAndTemplate, dir},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
+			got := CreateInteractiveHl7(tc.input)
+
+			if !strings.Contains(got, tc.expected) {
+				t.Fatalf("CreateIneractiveHl7(%v)=%v expected to include %v", tc.input, got, tc.expected)
+			}
+		})
+	}
+
 }
