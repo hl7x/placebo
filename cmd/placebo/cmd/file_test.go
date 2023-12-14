@@ -15,7 +15,7 @@ func TestFile(t *testing.T) {
 		args        []string
 	}{
 		{"Empty String", nil, "", []string{""}},
-		{"Invalid Input", errors.New("not a Valid Command"), "taco", []string{""}},
+		{"Invalid Input", errors.New("Command Not Found."), "taco", []string{""}},
 		{"Default 'csv' command", nil, "csv", []string{"placebo", "--file", "csv"}},
 		{"Default HL7 file command", nil, "hl7", []string{"placebo", "--file", "hl7"}},
 		{"Pass in Numbers", nil, "csv", []string{"placebo", "--file", "csv", "3"}},

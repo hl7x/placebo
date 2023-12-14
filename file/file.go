@@ -5,12 +5,14 @@ import (
 	"os"
 	"text/template"
 	"time"
+	"io/ioutil"
 
 	"placebo/pkg/random"
 	"placebo/pkg/templates"
 )
 
 var dir = "/tmp/"
+var intFile = "ctmephl7.tmp"
 
 func CreateCSV(patients random.Collection) error {
 
@@ -64,6 +66,42 @@ func CreateHl7(patient *random.Patient) error {
 	return nil
 
 }
+
+// TODO: Panics used here should be fixed
+func CreateInteractiveHl7(tempAndPatient string) string {
+
+	hl7File := dir + intFile
+	
+	file, err := os.Create(hl7File)
+	if err != nil {
+		panic(err)
+	}
+
+	defer file.Close()
+
+	_, err = file.WriteString(tempAndPatient)
+	if err != nil {
+		panic(err)
+	}
+
+	file.Sync()
+
+
+	return hl7File
+
+}
+// TODO: Panics used here should be fixed
+func ReadInteractiveHl7(path string) string {
+	
+	data, err := ioutil.ReadFile(path)
+	if err != nil {
+		panic(err)
+	}
+
+	return string(data)
+
+}
+
 
 func CSVFileName() string {
 

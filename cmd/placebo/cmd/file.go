@@ -53,6 +53,6 @@ func File(f string) error {
 		}
 		return nil
 	default:
-		return errors.New("not a Valid Command")
+		return errors.New("Command Not Found.")
 	}
 }

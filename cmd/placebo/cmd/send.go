@@ -3,9 +3,14 @@ package cmd
 import (	
 	"fmt"
 	"os"
+	"bufio"
+	"strings"
+	"errors"
 	
 	"placebo/internal/network"
 	"placebo/pkg/event"
+	"placebo/file"
+	"placebo/internal/sysCmd"
 )
 
 var Address = "127.0.0.1"
@@ -21,10 +26,39 @@ func SendHl7Message(f string) error {
 		command := os.Args[3:]
 
 		if len(command) == 0 {
-			err := EventSelector("")
+			
+			eventHolder := []string{"admit"}
+			hl7 := event.Builder(eventHolder)
+
+			openPath := file.CreateInteractiveHl7(hl7[0])
+			sent, err := InteractivePrompt(openPath)
 			if err != nil {
 				return err
 			}
+
+			if sent != "" {
+				fmt.Println("HL7 Sent: \n", sent)
+			} else {
+				return nil
+			}
+
+			return nil
+
+		} else if command[0] == "file" {
+			path := command[1]
+
+			sent, err := InteractivePrompt(path)
+			if err != nil {
+				return err
+			}
+
+			if sent != "" {
+				fmt.Println("HL7 Sent: \n", sent)
+			} else {
+				return nil
+			}
+
+			return nil
 
 		} else {
 			err := EventSelector(command[0])
@@ -90,12 +124,43 @@ func EventSelector(s string) error {
 
 		return sent
 	default:
-		message := event.Builder(admitEvent)
-		sent := MultiSender(message)
-
-		return sent
+		return errors.New("Command Not Found.")
 	}
 
 	return nil
+}
+
+func InteractivePrompt(filePath string) (string, error) {
+
+	sysCmd.TextEditorOpen(filePath)
+
+	fmt.Println("\nSend The Message Out? [Y/n]")
+	reader := bufio.NewReader(os.Stdin)
+
+	input, err := reader.ReadString('\n')
+	if err != nil {
+		return "", err
+	}
+
+	input = strings.TrimSpace(input)
+
+	if input == "Y" || input == "\r" {
+		
+		fileText := file.ReadInteractiveHl7(filePath)
+
+		err = DefaultSend(fileText)
+		if err != nil {
+			return "", err
+		}
+
+		return fileText, nil
+
+	} else {
+		os.Exit(1)
+		return "", nil
+	}
+
+	return "", nil
+
 }
 
