@@ -8,7 +8,7 @@ import (
 )
 
 //var Address = "127.0.0.1"
-var listenPort = "9700"
+var listenPort = ":9700"
 
 func ListenHl7Message(f string) error {
 
