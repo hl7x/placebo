@@ -39,6 +39,8 @@ func TemplateFinder(s string) []byte {
 		return templates.DischargeHl7Info()
 	case "preadmit":
 		return templates.PreadmitHl7Info()
+	case "referral":
+		return templates.ReferralHl7()
 	default:
 		return templates.SimpleHl7Info()
 	}
