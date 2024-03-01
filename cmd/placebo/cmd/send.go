@@ -106,6 +106,7 @@ func EventSelector(s string) error {
 	dischargeEvent  := []string{"admit", "discharge"}
 	admitEvent	:= []string{"admit"}
 	preadmitEvent	:= []string{"preadmit"}
+	referralEvent	:= []string{"referral"}
 
 	switch s {
 	case "post_discharge":
@@ -120,6 +121,11 @@ func EventSelector(s string) error {
 		return sent
 	case "pre_admit":
 		message := event.Builder(preadmitEvent)
+		sent := MultiSender(message)
+
+		return sent
+	case "referral":
+		message := event.Builder(referralEvent)
 		sent := MultiSender(message)
 
 		return sent

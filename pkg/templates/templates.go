@@ -75,3 +75,18 @@ RGS|1|A|
 	return scheduleSiu
 
 }
+
+//Referral Message
+func ReferralHl7() []byte {
+
+	referral := []byte(`
+MSH|^~\&|SENDAPP|PLACEBO|CipherHealth||20240124151605757||REF^I12|0000|P|2.3.1|||2.3.1
+RF1|NEW|ASAP|NVgastro|||394445731811|202401241516|20250124|202401231139|Referral
+AUT||||20240124|
+PRD|||||||CENTER FOR TESTING 00
+PID|1|56789|{{.MRN}}||{{.LastName}}^{{.FirstName}}||{{.Hl7Info.HL7DOB}}|M|||{{.PatientAddress.StructureNumber}} {{.PatientAddress.Street}}^^{{.PatientAddress.RegionInfo.City}}^{{.PatientAddress.RegionInfo.State}}^12346|
+`)
+
+	return referral
+
+}
