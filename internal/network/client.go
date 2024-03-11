@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"io"
 )
 
 func SendClient(ip string, port string, data string) error {
@@ -31,12 +32,15 @@ func RequestHandler(conn net.Conn) {
 	
 	defer conn.Close()
 
-	message, err := bufio.NewReader(conn).ReadString('\n')
-	if err != nil { 
-		fmt.Println("Reading Error: ", err)
-	} else {
-		fmt.Printf("Message received: %v\n", message)
+	reader := bufio.NewReader(conn)
+	content, err := io.ReadAll(reader)
+	if err != nil {
+		fmt.Println(err)
 	}
+
+	message := string(content)
+
+	fmt.Printf("Recieved: %q\n", message)
 
 }
 
