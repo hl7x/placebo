@@ -20,9 +20,6 @@ func mockServer() {
 	}
 	defer l.Close()
 
-	// Delay for GitHub Actions test assessment
-//	time.Sleep(10000 * time.Millisecond)
-
 	for {
 		conn, err := l.Accept()
 		if err != nil {
@@ -35,7 +32,7 @@ func mockServer() {
 			if err != nil {
 				return
 			}
-			// You can add logic here to respond to certain messages if necessary
+
 		}(conn)
 	}
 }
