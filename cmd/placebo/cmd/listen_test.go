@@ -14,7 +14,7 @@ func TestListener(t *testing.T) {
 	duration := 2 * time.Second
 	timer := time.After(duration)
 	
-	port := ":9700"
+	port := ":9701"
 
 	var tests = []struct {
 		description 	string
