@@ -7,6 +7,8 @@ import (
 
 )
 
+//TODO: TestSendClient
+
 func TestRequestHandler(t *testing.T) {
 	
 	duration := 2 * time.Second
@@ -40,3 +42,5 @@ func TestRequestHandler(t *testing.T) {
 		})
 	}
 }
+
+//TODO: TestListenClient
