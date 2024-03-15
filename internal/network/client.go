@@ -1,8 +1,11 @@
 package network
 
 import (
+	"bufio"
+	"fmt"
 	"net"
 	"os"
+	"io"
 )
 
 func SendClient(ip string, port string, data string) error {
@@ -20,6 +23,45 @@ func SendClient(ip string, port string, data string) error {
 	_, err = conn.Write([]byte(data))
 	if err != nil {
 		return err
+	}
+
+	return nil
+}
+
+func RequestHandler(conn net.Conn) {
+	
+	defer conn.Close()
+
+	reader := bufio.NewReader(conn)
+	content, err := io.ReadAll(reader)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	message := string(content)
+
+	fmt.Printf("Recieved: %q\n", message)
+
+}
+
+func ListenClient(port string) error {
+	
+	ln, err := net.Listen("tcp", port)
+	if err != nil {
+		return err
+	}
+
+	defer ln.Close()
+
+	fmt.Printf("Listening on TCP port %v\n", port)
+
+	for {
+		conn, err := ln.Accept()
+		if err != nil {
+			return err
+		}
+
+		go RequestHandler(conn)
 	}
 
 	return nil
