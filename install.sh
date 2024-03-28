@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Installer script for 'yourtool'
-
-# Determine the script's directory
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 # Define the installation directory and the binary name
@@ -37,6 +34,7 @@ install_go() {
     go version
 }
 
+# Build the binary
 make_build() {
 	cd cmd/placebo/ && go build .
 }
@@ -75,6 +73,4 @@ else
     echo "Installation failed. Please check the permissions and try again."
     exit 1
 fi
-
-# End of the script
 
