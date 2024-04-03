@@ -60,6 +60,21 @@ func SendHl7Message(f string) error {
 
 			return nil
 
+		} else if command[0] == "last" {
+			lastFile := "/tmp/ctmephl7.tmp"
+
+			sent, err := InteractivePrompt(lastFile)
+			if err != nil {
+				return err
+			}
+
+			if sent != "" {
+				fmt.Println("HL7 Sent: \n", sent)
+			} else {
+				return nil
+			}
+
+
 		} else {
 			err := EventSelector(command[0])
 			if err != nil {
