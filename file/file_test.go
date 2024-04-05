@@ -14,14 +14,14 @@ import (
 
 func TestCreateCSV(t *testing.T) {
 	// Create a temporary directory for the test
-	tempDir, err := os.MkdirTemp("", "")
+	testDir, err := os.MkdirTemp("", "")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	defer os.RemoveAll(tempDir)
+	defer os.RemoveAll(testDir)
 
-	dir = tempDir + "/"
+	Tempdir = testDir + "/"
 
 	examplePatient1 := &random.Patient{
 		FirstName:      "Bill",
@@ -56,7 +56,7 @@ func TestCreateCSV(t *testing.T) {
 		t.Errorf("Expected no error, got %v", err)
 	}
 
-	files, err := os.ReadDir(dir)
+	files, err := os.ReadDir(Tempdir)
 	if err != nil {
 		t.Fatal("Failed to read temp dir:", err)
 	}
@@ -65,7 +65,7 @@ func TestCreateCSV(t *testing.T) {
 		t.Fatalf("Expected 1 file in temp dir, got %d", len(files))
 	}
 
-	csvFilePath := dir + files[0].Name()
+	csvFilePath := Tempdir + files[0].Name()
 	csvContentBytes, err := os.ReadFile(csvFilePath)
 	if err != nil {
 		t.Fatal("Failed to read CSV file:", err)
@@ -93,14 +93,14 @@ func TestCreateCSV(t *testing.T) {
 
 func TestCreateHl7(t *testing.T) {
 	// Create a temporary directory for the test
-	tempDir, err := os.MkdirTemp("", "")
+	testDir, err := os.MkdirTemp("", "")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	defer os.RemoveAll(tempDir)
+	defer os.RemoveAll(testDir)
 
-	dir = tempDir + "/"
+	Tempdir = testDir + "/"
 
 	examplePatient := &random.Patient{
 		FirstName:      "Bill",
@@ -121,7 +121,7 @@ func TestCreateHl7(t *testing.T) {
 		t.Errorf("Expected no error, got %v", err)
 	}
 
-	files, err := os.ReadDir(dir)
+	files, err := os.ReadDir(Tempdir)
 	if err != nil {
 		t.Fatal("Failed to read temp dir:", err)
 	}
@@ -130,7 +130,7 @@ func TestCreateHl7(t *testing.T) {
 		t.Fatalf("Expected 1 file in temp dir, got %d", len(files))
 	}
 
-	hl7FilePath := dir + files[0].Name()
+	hl7FilePath := Tempdir + files[0].Name()
 	hl7ContentBytes, err := os.ReadFile(hl7FilePath)
 	if err != nil {
 		t.Fatal("Failed to read HL7 file:", err)
@@ -191,14 +191,14 @@ func TestHl7FileName(t *testing.T) {
 
 func TestCreateInteractiveHl7(t *testing.T) {
 	// Create a temporary directory for the test
-	tempDir, err := os.MkdirTemp("", "")
+	testDir, err := os.MkdirTemp("", "")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	defer os.RemoveAll(tempDir)
+	defer os.RemoveAll(testDir)
 
-	dir = tempDir + "/"
+	Tempdir = testDir + "/"
 
 	patient := &random.Patient{
 		FirstName:      "Bill",
@@ -221,7 +221,7 @@ func TestCreateInteractiveHl7(t *testing.T) {
 		input		string
 		expected	string
 	}{
-		{"Should Include Return File Path When Patient And Template Are Constructed", patientAndTemplate, dir},
+		{"Should Include Return File Path When Patient And Template Are Constructed", patientAndTemplate, Tempdir},
 	}
 
 	for _, tc := range tests {
@@ -238,16 +238,16 @@ func TestCreateInteractiveHl7(t *testing.T) {
 
 func TestReadInteractiveHl7(t *testing.T) {
 	// Create a temporary directory for the test
-	tempDir, err := os.MkdirTemp("", "")
+	testDir, err := os.MkdirTemp("", "")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	defer os.RemoveAll(tempDir)
+	defer os.RemoveAll(testDir)
 
-	dir = tempDir + "/"
+	Tempdir = testDir + "/"
 
-	f, err := os.CreateTemp(dir, "test")
+	f, err := os.CreateTemp(Tempdir, "test")
 	if err != nil {
 		log.Fatal(err)
 	}
