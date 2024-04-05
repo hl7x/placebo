@@ -61,7 +61,7 @@ func SendHl7Message(f string) error {
 			return nil
 
 		} else if command[0] == "last" {
-			lastFile := "/tmp/ctmephl7.tmp"
+			lastFile := file.Tempdir + file.IntFile
 
 			sent, err := InteractivePrompt(lastFile)
 			if err != nil {
