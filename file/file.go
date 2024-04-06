@@ -11,12 +11,12 @@ import (
 	"placebo/pkg/templates"
 )
 
-var dir = "/tmp/"
-var intFile = "ctmephl7.tmp"
+var Tempdir = "/tmp/"
+var IntFile = "ctmephl7.tmp"
 
 func CreateCSV(patients random.Collection) error {
 
-	csvFile := dir + CSVFileName()
+	csvFile := Tempdir + CSVFileName()
 
 	csvHeaders := templates.ConstructCSVFileHeaders()
 	patientTemplateActions := templates.CSVPatientInfo()
@@ -44,7 +44,7 @@ func CreateCSV(patients random.Collection) error {
 
 func CreateHl7(patient *random.Patient) error {
 
-	hl7File := dir + Hl7FileName()
+	hl7File := Tempdir + Hl7FileName()
 
 	fileText := templates.SimpleHl7Info()
 	
@@ -70,7 +70,7 @@ func CreateHl7(patient *random.Patient) error {
 // TODO: Panics used here should be fixed
 func CreateInteractiveHl7(tempAndPatient string) string {
 
-	hl7File := dir + intFile
+	hl7File := Tempdir + IntFile
 	
 	file, err := os.Create(hl7File)
 	if err != nil {
