@@ -9,7 +9,13 @@ Placebo is a command-line tool designed for creating and managing fake patient d
 
 ## Installation
 
-(Instructions on how to install this tool should be added here.)
+Run the provided installer script in the root folder to have this tool installed.
+
+*Note*: Please run the script with elevated permissions
+
+```
+$ sudo ./installer.sh
+```
 
 ## Usage
 
