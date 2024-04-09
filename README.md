@@ -52,6 +52,12 @@ Example:
 
 This command sends an HL7 message that admits and then discharges a patient.
 
+#### Helpful Auxiliary Send Commands
+
+|Flag | Description | Usage |
+| --- | --- | --- |
+|`last` | Open last sent hl7 message in an interactive prompt. | `placebo --send hl7 last` |
+
 ## Error Handling
 
 If an error occurs during file creation or HL7 message sending, the tool will output an error message.
