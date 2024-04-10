@@ -52,7 +52,7 @@ Example:
 
 This command sends an HL7 message that admits and then discharges a patient.
 
-#### Helpful Auxiliary Send Commands
+#### Helpful Auxiliary `send` Commands
 
 |Flag | Description | Usage |
 | --- | --- | --- |
