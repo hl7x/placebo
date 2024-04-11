@@ -9,7 +9,13 @@ Placebo is a command-line tool designed for creating and managing fake patient d
 
 ## Installation
 
-(Instructions on how to install this tool should be added here.)
+Run the provided installer script in the root folder to have this tool installed.
+
+*Note*: Please run the script with elevated permissions
+
+```
+$ sudo ./installer.sh
+```
 
 ## Usage
 
@@ -45,6 +51,12 @@ Example:
     placebo --send hl7 post_discharge
 
 This command sends an HL7 message that admits and then discharges a patient.
+
+#### Helpful Auxiliary `send` Commands
+
+|Flag | Description | Usage |
+| --- | --- | --- |
+|`last` | Open last sent hl7 message in an interactive prompt. | `placebo --send hl7 last` |
 
 ## Error Handling
 
