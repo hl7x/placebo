@@ -15,7 +15,7 @@ func TestPatient_PhoneNumber(t *testing.T) {
 		description string
 		expected    string
 	}{
-		{"Default Case", "1234567"},
+		{"Default Case", "5551212"},
 	}
 
 	for _, tc := range tests {
