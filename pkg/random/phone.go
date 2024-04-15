@@ -7,7 +7,7 @@ func (p *Patient) PhoneNumber() *Patient {
 
 	regionAreaCode := AreaCode(city)
 
-	phoneNumber := regionAreaCode + "1234567"
+	phoneNumber := regionAreaCode + "5551212"
 
 	p.Phone = phoneNumber
 
