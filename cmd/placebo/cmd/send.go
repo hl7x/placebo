@@ -75,6 +75,10 @@ func SendHl7Message(f string) error {
 			}
 
 
+		} else if command[0] == "helper" {
+			//helper flow
+			return nil
+
 		} else {
 			err := EventSelector(command[0])
 			if err != nil {
