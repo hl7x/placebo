@@ -75,7 +75,7 @@ func SendHl7Message(f string) error {
 			}
 
 
-		} else if command[0] == "helper" {
+		} else if command[0] == "sugarpill" {
 			//helper flow
 			return nil
 
