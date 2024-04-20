@@ -1,6 +1,10 @@
-package helper
+package sugarpill
 
-import "time"
+import (
+	"time"
+
+	"placebo/pkg/random"
+)
 
 type MSH struct {
 	SendingApplication    string    `json:"SendingApplication"`    // MSH-3
@@ -78,3 +82,45 @@ type HL7Message struct {
 	PV1 PV1 `json:"PV1"`
 }
 
+func (m *PV1) Pv1Line(p *random.Patient) *PV1 {
+
+}
+
+func (m *PID) PidLine(p *random.Patient) *PID {
+
+}
+
+func (m *EVN) EvnLine(p *random.Patient) *EVN {
+
+}
+
+func (m *MSH) MshLine(p *random.Patient) *MSH {
+
+}
+
+func (m *HL7Message) MessageLineFusesr(p *random.Patient) *Hl7Message {
+
+	msh = m.MSH
+	msh.MshLine(p)
+
+	evn = m.EVN
+	evn.EvnLine(p)
+
+	pid = m.PID
+	pid.PidLine(p)
+
+	pv1 = m.PV1
+	pv1.Pv1Line(p)
+
+	return m
+
+}
+
+func PatientData(p *random.Patient) *Hl7Message {
+	
+	m := Hl7Message{}
+	
+	message := m.MessageLineFuser(p)
+
+	return message
+}
