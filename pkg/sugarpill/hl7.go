@@ -84,33 +84,47 @@ type HL7Message struct {
 
 func NewPV1Segment(p *random.Patient) *PV1 {
 	
-	m.VisitNumber = p.EncounterId
-	m.ArrivalDate = p.Hl7Info.ArrivalDate
-	m.DischargeDate = p.Hl7Info.DischargeDate
+	pv1 := &PV1{
+		VisitNumber:  p.EncounterId,
+		ArrivalDate: p.Hl7Info.ArrivalDate,
+		DischargeDate:  p.Hl7Info.DischargeDate,
+	}
 
-	return m
+	return pv1
 
 }
 
 func NewPIDSegment(p *random.Patient) *PID {
 
-	m.PatientIdentifierList = p.MRN
-	m.LastName = p.LastName
-	m.FirstName = p.FirstName
-	m.DateOfBirth = p.Hl7Info.HL7DOB
-	m.PhoneNumberHome = p.Phone
+	pid := &PID{
+		PatientIdentifierList: p.MRN,
+		LastName:  p.LastName,
+		FirstName:  p.FirstName,
+		DateOfBirth: p.Hl7Info.HL7DOB,
+		PhoneNumberHome:  p.Phone,
+	}
 
-	return m
-
+	return pid
 
 }
 
 func NewEVNSegment(p *random.Patient) *EVN {
+	
+	evn := &EVN{
+		HL7Type: "AO1", //placeholder
+		TimeStamp: p.Hl7Info.HL7Event,
+	}
 
+	return evn
 }
 
 func NewMSHSegmente(p *random.Patient) *MSH {
+	
+	msh := &MSH{
+		DateTimeOfMessage: p.Hl7Info.HL7Event,
+	}
 
+	return msh
 }
 
 
