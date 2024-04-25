@@ -82,45 +82,47 @@ type HL7Message struct {
 	PV1 PV1 `json:"PV1"`
 }
 
-func (m *PV1) Pv1Line(p *random.Patient) *PV1 {
-
-}
-
-func (m *PID) PidLine(p *random.Patient) *PID {
-
-}
-
-func (m *EVN) EvnLine(p *random.Patient) *EVN {
-
-}
-
-func (m *MSH) MshLine(p *random.Patient) *MSH {
-
-}
-
-func (m *HL7Message) MessageLineFusesr(p *random.Patient) *Hl7Message {
-
-	msh = m.MSH
-	msh.MshLine(p)
-
-	evn = m.EVN
-	evn.EvnLine(p)
-
-	pid = m.PID
-	pid.PidLine(p)
-
-	pv1 = m.PV1
-	pv1.Pv1Line(p)
+func NewPV1Segment(p *random.Patient) *PV1 {
+	
+	m.VisitNumber = p.EncounterId
+	m.ArrivalDate = p.Hl7Info.ArrivalDate
+	m.DischargeDate = p.Hl7Info.DischargeDate
 
 	return m
 
 }
 
-func PatientData(p *random.Patient) *Hl7Message {
-	
-	m := Hl7Message{}
-	
-	message := m.MessageLineFuser(p)
+func NewPIDSegment(p *random.Patient) *PID {
+
+	m.PatientIdentifierList = p.MRN
+	m.LastName = p.LastName
+	m.FirstName = p.FirstName
+	m.DateOfBirth = p.Hl7Info.HL7DOB
+	m.PhoneNumberHome = p.Phone
+
+	return m
+
+
+}
+
+func NewEVNSegment(p *random.Patient) *EVN {
+
+}
+
+func NewMSHSegmente(p *random.Patient) *MSH {
+
+}
+
+
+func NewHL7Message(p *random.Patient) *HL7Message {
+
+	messaage := &HL7Message{
+		MSH: NewMSHSegment(p),
+		EVN: NewEVNSegment(p),
+		PID: NewPIDSegment(p),
+		PV1: NewPV1Segment(p),
+	}
 
 	return message
+
 }
