@@ -1,7 +1,6 @@
 package sugarpill
 
 import (
-	"time"
 
 	"placebo/pkg/random"
 )
@@ -35,7 +34,7 @@ type PatientAddress struct {
 type PID struct {
 	SetID                  string         `json:"SetID"`                  // PID-1
 	PatientID              string         `json:"PatientID"`              // PID-2
-	PatientIdentifierList  string         `json:"PatientIdentifierList"`  // PID-3
+	PatientIdentifierList  int         `json:"PatientIdentifierList"`  // PID-3
 	LastName               string         `json:"LastName"`               // PID-5.1
 	FirstName              string         `json:"FirstName"`              // PID-5.2
 	MiddleInitial          string         `json:"MiddleInitial"`          // PID-5.3
@@ -70,24 +69,24 @@ type PV1 struct {
 	PriorPatientLocation   string                `json:"PriorPatientLocation"`   // PV1-6
 	AttendingDoctor        AttendingDoctor       `json:"AttendingDoctor"`
 	HospitalService        string                `json:"HospitalService"`        // PV1-10
-	VisitNumber            string                `json:"VisitNumber"`            // PV1-19
-	ArrivalDate            time.Time             `json:"ArrivalDate"`
-	DischargeDate          time.Time             `json:"DischargeDate"`
+	VisitNumber            int                `json:"VisitNumber"`            // PV1-19
+	ArrivalDate            string             `json:"ArrivalDate"`
+	DischargeDate          string             `json:"DischargeDate"`
 }
 
 type HL7Message struct {
-	MSH MSH `json:"MSH"`
-	EVN EVN `json:"EVN"`
-	PID PID `json:"PID"`
-	PV1 PV1 `json:"PV1"`
+	MSH *MSH `json:"MSH"`
+	EVN *EVN `json:"EVN"`
+	PID *PID `json:"PID"`
+	PV1 *PV1 `json:"PV1"`
 }
 
 func NewPV1Segment(p *random.Patient) *PV1 {
 	
 	pv1 := &PV1{
 		VisitNumber:  p.EncounterId,
-		ArrivalDate: p.Hl7Info.ArrivalDate,
-		DischargeDate:  p.Hl7Info.DischargeDate,
+		ArrivalDate: p.Hl7Info.HL7Arrival,
+		DischargeDate:  p.Hl7Info.HL7Discharge,
 	}
 
 	return pv1
@@ -118,7 +117,7 @@ func NewEVNSegment(p *random.Patient) *EVN {
 	return evn
 }
 
-func NewMSHSegmente(p *random.Patient) *MSH {
+func NewMSHSegment(p *random.Patient) *MSH {
 	
 	msh := &MSH{
 		DateTimeOfMessage: p.Hl7Info.HL7Event,
@@ -130,7 +129,7 @@ func NewMSHSegmente(p *random.Patient) *MSH {
 
 func NewHL7Message(p *random.Patient) *HL7Message {
 
-	messaage := &HL7Message{
+	message := &HL7Message{
 		MSH: NewMSHSegment(p),
 		EVN: NewEVNSegment(p),
 		PID: NewPIDSegment(p),
