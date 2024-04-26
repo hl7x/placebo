@@ -1,5 +1,11 @@
 package templates
 
+/*
+DEPRECATED: templates make it easier to format the output.
+But this requires too much continuous maintenance overhead.
+This will stay in place for now, but should not continue to be maintained and added to.
+*/
+
 func ConstructCSVFileHeaders() []byte {
 
 	csvHeaders := []byte(`PatientMRN,PatientEncounterId,PatientFirstName,PatientLastName,PatientDOB,PatientGender,PatientAddress,PatientCity,PatientState,PatientPostCode,PatientCountry,PatientArrivalDate,PatientArrivalTime,DepartmentReferenceId,PatientPhonePrimary,PrimaryLanguage,VisitProvider,AppointmentBeginDate,AppointmentStatus,AltID`)
