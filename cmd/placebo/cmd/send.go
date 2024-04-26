@@ -6,11 +6,14 @@ import (
 	"bufio"
 	"strings"
 	"errors"
+	"encoding/json"
 	
 	"placebo/internal/network"
 	"placebo/pkg/event"
 	"placebo/file"
 	"placebo/internal/sysCmd"
+	"placebo/pkg/random"
+	"placebo/pkg/sugarpill"
 )
 
 var Address = "127.0.0.1"
@@ -76,7 +79,17 @@ func SendHl7Message(f string) error {
 
 
 		} else if command[0] == "sugarpill" {
-			//helper flow
+			//testing
+			patient := random.NewPatient()
+
+			hl7 := sugarpill.NewHL7Message(patient)
+			message, err := json.MarshalIndent(hl7, "", "  ")
+			if err != nil {
+				fmt.Println("error:", err)
+			}
+
+			fmt.Println(string(message))
+
 			return nil
 
 		} else {
