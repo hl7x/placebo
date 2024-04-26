@@ -6,7 +6,6 @@ import (
 	"bufio"
 	"strings"
 	"errors"
-	"encoding/json"
 	
 	"placebo/internal/network"
 	"placebo/pkg/event"
@@ -82,13 +81,9 @@ func SendHl7Message(f string) error {
 			//testing
 			patient := random.NewPatient()
 
-			hl7 := sugarpill.NewHL7Message(patient)
-			message, err := json.MarshalIndent(hl7, "", "  ")
-			if err != nil {
-				fmt.Println("error:", err)
-			}
+			message := sugarpill.NewHL7Message(patient).MessageToJson()
 
-			fmt.Println(string(message))
+			fmt.Println(message)
 
 			return nil
 

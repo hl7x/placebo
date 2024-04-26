@@ -1,6 +1,7 @@
 package sugarpill
 
 import (
+	"encoding/json"
 
 	"placebo/pkg/random"
 )
@@ -137,5 +138,16 @@ func NewHL7Message(p *random.Patient) *HL7Message {
 	}
 
 	return message
+
+}
+
+func (m *HL7Message) MessageToJson() string {
+	
+	message, err := json.MarshalIndent(m, "", " ")
+	if err != nil {
+		panic(err) 
+	}
+
+	return string(message)
 
 }
