@@ -80,11 +80,29 @@ func SendHl7Message(f string) error {
 		} else if command[0] == "sugarpill" {
 			//testing
 			patient := random.NewPatient()
+			/*
 
 			message := sugarpill.NewHL7Message(patient).MessageToJson()
 
-			fmt.Println(message)
+			//fmt.Println(message)
 
+			sp := file.SugarPillInteractive(message)
+
+			sent, err := InteractivePrompt(sp)
+			if err != nil {
+				return err
+			}
+
+			if sent != "" {
+				fmt.Println("File Sent: \n", sent)
+			}
+			*/
+
+			message := sugarpill.NewHL7Message(patient)
+
+			built := sugarpill.MessageBuilder(message)
+
+			fmt.Println(built)
 			return nil
 
 		} else {

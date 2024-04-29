@@ -2,6 +2,9 @@ package sugarpill
 
 import (
 	"encoding/json"
+	"fmt"
+	"reflect"
+	"strings"
 
 	"placebo/pkg/random"
 )
@@ -149,5 +152,46 @@ func (m *HL7Message) MessageToJson() string {
 	}
 
 	return string(message)
+
+}
+
+func ConvertToHL7(v interface{}, segment string) string {
+	val := reflect.ValueOf(v)
+	//typeOfValue := val.Type()
+
+	if val.Kind() == reflect.Ptr {
+		val = val.Elem()
+	}
+
+	fields := []string{segment}
+	for i := 0; i < val.NumField(); i++ {
+		field := val.Field(i)
+	//	fieldName := typeOfValue.Field(i).Name
+
+		if field.Kind() == reflect.Struct {
+			nestedSegment := ConvertToHL7(field.Interface(), "")
+			fields = append(fields, nestedSegment)
+		} else {
+			fieldValue := fmt.Sprintf("%v", field.Interface())
+			if fieldValue == "" {
+				fieldValue = "\"\""
+			}
+			fields = append(fields, fieldValue)
+		}
+	}
+
+	return strings.Join(fields, "|")
+
+}
+
+func MessageBuilder(msg *HL7Message) string {
+	segments := []string{
+		ConvertToHL7(msg.MSH, "MSH"),
+        	ConvertToHL7(msg.EVN, "EVN"),
+		ConvertToHL7(msg.PID, "PID"),
+		ConvertToHL7(msg.PV1, "PV1"),
+	}
+
+	return strings.Join(segments, "\n")
 
 }
