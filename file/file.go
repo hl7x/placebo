@@ -102,6 +102,27 @@ func ReadInteractiveHl7(path string) string {
 
 }
 
+func SugarPillInteractive(s string) string {
+
+	tempFile := "/tmp/sptemp.hl7"
+
+	file, err := os.Create(tempFile)
+	if err != nil {
+		panic(err)
+	}
+
+	defer file.Close()
+
+	_, err = file.WriteString(s)
+	if err != nil {
+		panic(err)
+	}
+
+	file.Sync()
+
+	return tempFile
+
+}
 
 func CSVFileName() string {
 
