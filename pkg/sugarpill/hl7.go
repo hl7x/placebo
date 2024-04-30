@@ -9,6 +9,7 @@ import (
 )
 
 type MSH struct {
+	Encode			string `json:Encode`			// MSH-1
 	SendingApplication    string    `json:"SendingApplication"`    // MSH-3
 	SendingFacility       string    `json:"SendingFacility"`       // MSH-4
 	ReceivingApplication  string    `json:"ReceivingApplication"`  // MSH-5
@@ -34,13 +35,17 @@ type PatientAddress struct {
 	Country       string `json:"Country"`       // PID-11.6
 }
 
+type PatientName struct {
+	LastName               string         `json:"LastName"`               // PID-5.1
+	FirstName              string         `json:"FirstName"`              // PID-5.2
+	MiddleInitial          string         `json:"MiddleInitial"`          // PID-5.3
+}
+	
 type PID struct {
 	SetID                  string         `json:"SetID"`                  // PID-1
 	PatientID              string         `json:"PatientID"`              // PID-2
 	PatientIdentifierList  int         `json:"PatientIdentifierList"`  // PID-3
-	LastName               string         `json:"LastName"`               // PID-5.1
-	FirstName              string         `json:"FirstName"`              // PID-5.2
-	MiddleInitial          string         `json:"MiddleInitial"`          // PID-5.3
+	PatientName	*PatientName		`json:"PatientName"`
 	DateOfBirth            string         `json:"DateOfBirth"`            // PID-7
 	Sex                    string         `json:"Sex"`                    // PID-8
 	PatientAddress         *PatientAddress `json:"PatientAddress"`
@@ -100,6 +105,12 @@ func NewPIDSegment(p *random.Patient) *PID {
 
 	street := "123 "+p.PatientAddress.Street
 
+	name := &PatientName{
+		LastName: p.LastName, 
+		FirstName: p.FirstName,
+		MiddleInitial: "A",
+	}
+
 	address := &PatientAddress{
 		StreetAddress: street,
 		City: p.PatientAddress.RegionInfo.City,
@@ -110,8 +121,7 @@ func NewPIDSegment(p *random.Patient) *PID {
 		SetID: "1",
 		PatientID: "123456789",
 		PatientIdentifierList: p.MRN,
-		LastName:  p.LastName,
-		FirstName:  p.FirstName,
+		PatientName: name,
 		DateOfBirth: p.Hl7Info.HL7DOB,
 		Sex: "M",
 		PatientAddress: address,
@@ -136,7 +146,17 @@ func NewEVNSegment(p *random.Patient) *EVN {
 func NewMSHSegment(p *random.Patient) *MSH {
 	
 	msh := &MSH{
+		Encode: "--",
+		SendingApplication: "PLACEBO",
+		SendingFacility: "PLACEBO",
+		ReceivingApplication: "DEMO",
+		ReceivingFacility: "DEMO",
 		DateTimeOfMessage: p.Hl7Info.HL7Event,
+		Security: "",
+		MessageType: "ADT^A01",
+		MessageControlID: "123456",
+		ProcessingID: "P",
+		VersionID: "2.3",
 	}
 
 	return msh

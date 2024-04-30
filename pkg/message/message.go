@@ -1,9 +1,9 @@
 package message
 
 import (
-	"fmt"
-	"reflect"
-	"strings"
+    "fmt"
+    "reflect"
+    "strings"
 )
 
 func HL7(v interface{}, segment string) string {
@@ -28,20 +28,22 @@ func HL7(v interface{}, segment string) string {
                     nestedField = nestedField.Elem()
                 }
                 nestedValue := fmt.Sprintf("%v", nestedField.Interface())
-                if nestedValue == "" {
-                    nestedValue = "\"\""  // Represents an empty value in HL7
+                if nestedValue != "" {  // Only append non-empty values
+                    nestedFields = append(nestedFields, nestedValue)
                 }
-                nestedFields = append(nestedFields, nestedValue)
             }
-            fields = append(fields, strings.Join(nestedFields, "^"))
+            // Only append nested fields if there's something to append to avoid stray carets.
+            if len(nestedFields) > 0 {
+                fields = append(fields, strings.Join(nestedFields, "^"))
+            } else {
+                fields = append(fields, "") // Ensure the segment structure is maintained even if empty.
+            }
         } else {
             fieldValue := fmt.Sprintf("%v", field.Interface())
-            if fieldValue == "" {
-                fieldValue = "\"\""
-            }
-            fields = append(fields, fieldValue)
+            fields = append(fields, fieldValue)  // Directly append the field value, empty or not.
         }
     }
 
     return strings.Join(fields, "|")
 }
+
