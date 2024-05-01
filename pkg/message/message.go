@@ -44,6 +44,9 @@ func HL7(v interface{}, segment string) string {
         }
     }
 
-    return strings.Join(fields, "|")
+    allPipes := strings.Join(fields, "|")
+    terminatedPipe := allPipes + "|"
+
+    return terminatedPipe
 }
 
