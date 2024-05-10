@@ -120,7 +120,7 @@ type PV1 struct {
 	AdmissionType           string           `json:"AdmissionType"`           // PV1-4
 	PreadmitNumber          string           `json:"PreadmitNumber"`          // PV1-5
 	PriorPatientLocation    string           `json:"PriorPatientLocation"`    // PV1-6
-	AttendingDoctor         *AttendingDoctor  `json:"AttendingDoctor"`         // Pv1-7
+	AttendingDoctor         *AttendingDoctor `json:"AttendingDoctor"`         // PV1-7
 	ReferringDoctor         string           `json:"ReferringDoctor"`         // Pv1-8
 	ConsultingDoctor        string           `json:"ConsultingDoctor"`        // Pv1-9
 	HospitalService         string           `json:"HospitalService"`         // PV1-10
@@ -156,14 +156,15 @@ type PV1 struct {
 	AccountStatus           string           `json:"AccountStatus"`           // PV1-40
 	PendingLocation         string           `json:"PendingLocation"`         // PV1-41
 	PriorTemporaryLocation  string           `json:"PiorTemporaryLocation"`   // PV1-42
-	AdmitDateTime           string           `json:"AdmitDateTime"`           // PV1-43
-	DischargeDateTime       string           `json:"DischargeDateTime"`       // PV1-44
-	CurretPatientBalance    string           `json:"CurrentPatientBalance"`   // PV1-45
-	TotalCharges            string           `json:"Totalcharges"`            // PV1-46
-	TotalAdjustments        string           `json:"TotalAdjustments"`        // PV1-47
-	TotalPayments           string           `json:"TotalPayments"`           // PV1-48
-	AlternateVisitID        string           `json:"AlternateVisitID"`        // PV1-49
-	VisitIndicator          string           `json:"VisitIndicator"`          // Pv1-50
+	PreviousLocation        string           `json:"PreviousLocation"`        // PV1-43
+	AdmitDateTime           string           `json:"AdmitDateTime"`           // PV1-44
+	DischargeDateTime       string           `json:"DischargeDateTime"`       // PV1-45
+	CurrentPatientBalance   string           `json:"CurrentPatientBalance"`   // Pv1-46
+	TotalCharges            string           `json:"Totalcharges"`            // PV1-47
+	TotalAdjustments        string           `json:"TotalAdjustments"`        // PV1-48
+	TotalPayments           string           `json:"TotalPayments"`           // PV1-49
+	AlternateVisitID        string           `json:"AlternateVisitID"`        // PV1-50
+	VisitIndicator          string           `json:"VisitIndicator"`          // Pv1-51
 }
 
 type HL7Message struct {
@@ -176,23 +177,23 @@ type HL7Message struct {
 func NewPV1Segment(p *random.Patient) *PV1 {
 
 	doctor := &AttendingDoctor{
-		IDNumber: "00002224",
+		IDNumber:  "00002224",
 		FirstName: "Greg",
-		LastName: "House",
+		LastName:  "House",
 	}
 
 	location := &PatientLocation{
-		Bed: "105A",
-		Room: "225",
+		Bed:      "105A",
+		Room:     "225",
 		Facility: "Test Facility",
 	}
 
 	pv1 := &PV1{
 		AssignedPatientLocation: location,
-		AttendingDoctor: doctor,
-		VisitNumber:   p.EncounterId,
-		AdmitDateTime:   p.Hl7Info.HL7Arrival,
-		DischargeDateTime: p.Hl7Info.HL7Discharge,
+		AttendingDoctor:         doctor,
+		VisitNumber:             p.EncounterId,
+		AdmitDateTime:           p.Hl7Info.HL7Arrival,
+		DischargeDateTime:       p.Hl7Info.HL7Discharge,
 	}
 
 	return pv1

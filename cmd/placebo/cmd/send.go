@@ -85,25 +85,19 @@ func SendHl7Message(f string) error {
 
 			sp := file.SugarPillInteractive(message)
 
-			intmessage, err := InteractivePrompt(sp)
+			sysCmd.TextEditorOpen(sp)
+			convert, err := PostPrompt(sp)
 			if err != nil {
 				return err
 			}
 
-			jsonMessage := sugarpill.JsonToMessage(intmessage)
+			jsonMessage := sugarpill.JsonToMessage(convert)
 
-			sent := sugarpill.MessageBuilder(jsonMessage)
+			send := sugarpill.MessageBuilder(jsonMessage)
 
-			fmt.Println(sent)
+			DefaultSend(send)
+			fmt.Println(send)
 
-
-			/*
-			message := sugarpill.NewHL7Message(patient)
-
-			built := sugarpill.MessageBuilder(message)
-
-			fmt.Println(built)
-			*/
 			return nil
 
 		} else {
@@ -204,6 +198,33 @@ func InteractivePrompt(filePath string) (string, error) {
 		if err != nil {
 			return "", err
 		}
+
+		return fileText, nil
+
+	} else {
+		os.Exit(1)
+		return "", nil
+	}
+
+	return "", nil
+
+}
+
+func PostPrompt(filePath string) (string, error) {
+	
+	fmt.Println("\nSend The Message Out? [Y/n]")
+	reader := bufio.NewReader(os.Stdin)
+
+	input, err := reader.ReadString('\n')
+	if err != nil {
+		return "", err
+	}
+
+	input = strings.TrimSpace(input)
+
+	if input == "Y" || input == "\r" {
+		
+		fileText := file.ReadInteractiveHl7(filePath)
 
 		return fileText, nil
 
