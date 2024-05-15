@@ -80,23 +80,11 @@ func SendHl7Message(f string) error {
 		} else if command[0] == "sugarpill" {
 			//testing
 			patient := random.NewPatient()
-
-			message := sugarpill.NewHL7Message(patient).MessageToJson()
-
-			sp := file.SugarPillInteractive(message)
-
-			sysCmd.TextEditorOpen(sp)
-			convert, err := PostPrompt(sp)
-			if err != nil {
-				return err
+			
+			er := SugarpillProcess(patient)
+			if er != nil {
+				return er
 			}
-
-			jsonMessage := sugarpill.JsonToMessage(convert)
-
-			send := sugarpill.MessageBuilder(jsonMessage)
-
-			DefaultSend(send)
-			fmt.Println(send)
 
 			return nil
 
@@ -234,6 +222,31 @@ func PostPrompt(filePath string) (string, error) {
 	}
 
 	return "", nil
+
+}
+
+func SugarpillProcess(patient *random.Patient) error {
+	
+	//bind created patient to HL7 message in JSON format
+	message := sugarpill.NewHL7Message(patient).MessageToJson()
+
+	sp := file.SugarPillInteractive(message)
+	sysCmd.TextEditorOpen(sp)
+			
+	convert, err := PostPrompt(sp)
+	if err != nil {
+		return err
+	}
+	
+	//convert back to HL7 format from the JSON
+	jsonMessage := sugarpill.JsonToMessage(convert)
+
+	send := sugarpill.MessageBuilder(jsonMessage)
+
+	DefaultSend(send)
+	fmt.Println(send)
+
+	return nil
 
 }
 
