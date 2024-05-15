@@ -299,10 +299,10 @@ func JsonToMessage(s string) *HL7Message {
 
 func MessageBuilder(msg *HL7Message) string {
 	segments := []string{
-		message.HL7(msg.MSH, "MSH"),
-		message.HL7(msg.EVN, "EVN"),
-		message.HL7(msg.PID, "PID"),
-		message.HL7(msg.PV1, "PV1"),
+		message.CreateHL7(msg.MSH, "MSH"),
+		message.CreateHL7(msg.EVN, "EVN"),
+		message.CreateHL7(msg.PID, "PID"),
+		message.CreateHL7(msg.PV1, "PV1"),
 	}
 
 	return strings.Join(segments, "\n")
