@@ -37,9 +37,14 @@ func CreateHL7(v interface{}, segment string) string {
         }
     }
 
-    allPipes := strings.Join(fields, "|")
-    terminatedPipe := allPipes + "|"
+    //the trailing pipe is necessary for how hl7 segments are constructed here
+    allPipes := strings.Join(fields, "|") + "|"
 
-    return terminatedPipe
+    return allPipes
 }
 
+/*
+func ReadHL7(message string) {
+
+}
+*/

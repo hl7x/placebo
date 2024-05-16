@@ -91,14 +91,16 @@ func CreateInteractiveHl7(tempAndPatient string) string {
 
 }
 // TODO: Panics used here should be fixed
-func ReadInteractiveHl7(path string) string {
+func ReadFile(path string) (string, error) {
 	
 	data, err := ioutil.ReadFile(path)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 
-	return string(data)
+	fmtString := string(data)
+
+	return fmtString, nil
 
 }
 

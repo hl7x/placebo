@@ -180,7 +180,10 @@ func InteractivePrompt(filePath string) (string, error) {
 
 	if input == "Y" || input == "\r" {
 		
-		fileText := file.ReadInteractiveHl7(filePath)
+		fileText, err := file.ReadFile(filePath)
+		if err != nil {
+			return "", err
+		}
 
 		err = DefaultSend(fileText)
 		if err != nil {
@@ -212,7 +215,10 @@ func PostPrompt(filePath string) (string, error) {
 
 	if input == "Y" || input == "\r" {
 		
-		fileText := file.ReadInteractiveHl7(filePath)
+		fileText, err := file.ReadFile(filePath)
+		if err != nil {
+			return "", err
+		}
 
 		return fileText, nil
 

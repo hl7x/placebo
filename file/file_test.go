@@ -269,7 +269,7 @@ func TestReadInteractiveHl7(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.description, func(t *testing.T) {
-			got := ReadInteractiveHl7(tc.input)
+			got, _ := ReadFile(tc.input)
 
 			if got != tc.expected {
 				t.Fatalf("ReadInteractionHl7(%v)=%v expected %v", tc.input, got, tc.expected)
