@@ -13,6 +13,8 @@ var sendHl7 = flag.String("send", "", "Send a hl7 message with automatically gen
 
 var listenHl7 = flag.String("listen", "", "Recieve and print an hl7 message sent to the designated port. (By default port 9700 is used).\n\n\ti.e. 'placebo --listen hl7'")
 
+var readHl7 = flag.String("read", "", "Read HL7 message to assist with analyzing segments.\n\tSubcommand: sugarpill - use this to breakdown the message in a much more readible way")
+
 func main() {
 	flag.Parse()
 
@@ -27,6 +29,11 @@ func main() {
 	}
 
 	err = cmd.ListenHl7Message(*listenHl7)
+	if err != nil {
+		fmt.Println("ERROR: ", err)
+	}
+
+	err = cmd.ReadHl7Message(*readHl7)
 	if err != nil {
 		fmt.Println("ERROR: ", err)
 	}

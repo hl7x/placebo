@@ -297,6 +297,66 @@ func JsonToMessage(s string) *HL7Message {
 
 }
 
+func (msg *HL7Message) ReadFromFile(s string) *HL7Message {
+	lines := LinesFromFile(s)
+	
+	for _, line := range lines {
+		segs := strings.Split(line, "|")
+		segType := SegmentFinder(segs[0])
+		bind := message.MarshallHL7(segs, segType)
+		msg.SegmentAssigner(bind)
+	}
+
+	return msg
+}
+
+func ReadHL7(content string) string {
+	
+	messageStruct := &HL7Message{}
+	message := messageStruct.ReadFromFile(content)
+
+	messageFmt, _ := json.MarshalIndent(message, "", " ")
+
+	return string(messageFmt)
+
+}
+
+func SegmentFinder(s string) interface{} {
+	
+	switch s {
+	case "MSH":
+		return &MSH{}
+	case "EVN":
+		return &EVN{}
+	case "PID":
+		return &PID{}
+	case "PV1":
+		return &PV1{}
+	default:
+		return nil
+	}
+
+}
+
+func (msg *HL7Message) SegmentAssigner(s interface{}) *HL7Message {
+	
+	switch v := s.(type) {
+	case *MSH:
+		msg.MSH = v
+	case *EVN:
+		msg.EVN = v
+	case *PID:
+		msg.PID = v
+	case *PV1:
+		msg.PV1 = v
+	default:
+		return nil
+	}
+
+	return msg
+}
+
+
 func MessageBuilder(msg *HL7Message) string {
 	segments := []string{
 		message.CreateHL7(msg.MSH, "MSH"),
@@ -307,4 +367,12 @@ func MessageBuilder(msg *HL7Message) string {
 
 	return strings.Join(segments, "\n")
 
+}
+
+
+func LinesFromFile(s string) []string {
+	
+	splitLines := strings.Split(s, "\n")
+
+	return splitLines
 }
