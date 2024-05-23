@@ -4,9 +4,6 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
-
-//	"placebo/file"
-//	"placebo/pkg/sugarpill"
 )
 
 func CreateHL7(v interface{}, segment string) string {
@@ -46,48 +43,28 @@ func CreateHL7(v interface{}, segment string) string {
     return allPipes
 }
 
-
-
-// TODO: For Future PR to Setup Reading an HL7 File Through Sugarpill to Easily Read HL7
-/*
-func ReadHL7(lines string) string {
-
-	splitLine := strings.Split(lines, "\n")
-	
-	var segType interface{}
-	for line := range splitLine {
-		segType, value = HL7Line(line)
-		newMessage.SegmentAssigner(segType, value)
-
-	}
-
-	return newMessage
-}
-*/
-
-/*
-func HL7Line(s string) string {
-	
-	segments := strings.Split(s, "|")
-
-	segmentType := sugarpill.SegmentFinder(segments[0])
-
-	mapped := MarshallHL7(segments, segmentType)
-
-	messageFmt := json.MashalIndent(mapped, "", " ")
-
-	return string(messageFmt)
-
-}
-*/
-
 func MarshallHL7(segs []string, segType interface{}) interface{} {
+
+	if segType == nil {
+		fmt.Println("Warning: segType is nil")
+		return nil
+	}
 
 	val := reflect.ValueOf(segType)
 	if val.Kind() == reflect.Ptr {
 		val = val.Elem()
 	}
+
+	fmt.Printf("%+v\n", segType)
 	
+	//Testing validations on structs
+	if !val.IsValid() {
+		panic("Invalid segType: must be a non-nil pointer to a struct")
+	}
+
+	if val.Kind() != reflect.Struct {
+		panic("segType must be a pointer to a struct")
+	}
 
 	segments := segs[1:]
 	for i := 0; i < val.NumField() && i < len(segments); i++ {
@@ -98,7 +75,6 @@ func MarshallHL7(segs []string, segType interface{}) interface{} {
 				structFieldValue.SetString(segments[i])
 			}
 		}
-//		structFieldValue.Set(segments[i])
 	}
 
 	return segType
