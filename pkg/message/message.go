@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
+	"strconv"
 )
 
 func CreateHL7(v interface{}, segment string) string {
@@ -73,6 +74,11 @@ func MarshallHL7(segs []string, segType interface{}) interface{} {
 			switch structFieldValue.Kind() {
 			case reflect.String:
 				structFieldValue.SetString(segments[i])
+			case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+				intValue, err := strconv.ParseInt(segments[i], 10, 64)
+				if err == nil {
+					structFieldValue.SetInt(intValue)
+				}
 			}
 		}
 	}
