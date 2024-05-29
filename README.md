@@ -6,6 +6,7 @@ Placebo is a command-line tool designed for creating and managing fake patient d
 
 - **CSV File Generation**: Create CSV files with fake patient data.
 - **HL7 Message Sending**: Send HL7 messages with automatically generated fake patient data.
+- **HL7 Message Reading**: Feed `placebo` a hl7 file and get readible structure of the hl7 message.
 
 ## Installation
 
@@ -57,6 +58,42 @@ This command sends an HL7 message that admits and then discharges a patient.
 |Flag | Description | Usage |
 | --- | --- | --- |
 |`last` | Open last sent hl7 message in an interactive prompt. | `placebo --send hl7 last` |
+
+## Read HL7 Message
+
+For a better help at reading HL7 messages, you can tap into the `sugarpill` feature and have the file presented in a more readible structure.
+
+    placebo --read sugarpill /path/to/hl7_message.txt
+
+Example:
+
+`hl7_message.txt` content:
+```
+MSH|^~\&|SENDAPP|PLACEBO|RECVAPP|LAB|202405290800||ADT^A01|12345|P|2.3|
+```
+
+`placebo --read sugarpill hl7_message.txt` output:
+```
+{
+ "MSH": {
+  "Encode": "^~\\\u0026",
+  "SendingApplication": "SENDAPP",
+  "SendingFacility": "PLACEBO",
+  "ReceivingApplication": "RECVAPP",
+  "ReceivingFacility": "LAB",
+  "DateTimeOfMessage": "202405290800",
+  "Security": "",
+  "MessageType": "ADT^A01",
+  "MessageControlID": "12345",
+  "ProcessingID": "P",
+  "VersionID": "2.3"
+ },
+ "EVN": null,
+ "PID": null,
+ "PV1": null
+}
+```
+
 
 ## Error Handling
 
