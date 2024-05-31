@@ -303,7 +303,8 @@ func (msg *HL7Message) ReadFromFile(s string) *HL7Message {
 	for _, line := range lines {
 		segs := strings.Split(line, "|")
 		segType := SegmentFinder(segs[0])
-		bind := message.MarshallHL7(segs, segType)
+		onlyMessageSegs := segs[1:]
+		bind := message.MarshallHL7(onlyMessageSegs, segType)
 		msg.SegmentAssigner(bind)
 	}
 

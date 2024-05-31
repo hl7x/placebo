@@ -44,20 +44,18 @@ func CreateHL7(v interface{}, segment string) string {
     return allPipes
 }
 
-func MarshallHL7(segs []string, segType interface{}) interface{} {
+func MarshallHL7(segments []string, segType interface{}) interface{} {
 
 	if segType == nil {
-		fmt.Println("Warning: segType is nil")
+		//fmt.Println("Warning: segType is nil")
 		return nil
 	}
 
 	val := reflect.ValueOf(segType)
-	if val.Kind() == reflect.Ptr {
+	if val.Kind() == reflect.Pointer {
 		val = val.Elem()
 	}
 
-	fmt.Printf("%+v\n", segType)
-	
 	//Testing validations on structs
 	if !val.IsValid() {
 		panic("Invalid segType: must be a non-nil pointer to a struct")
@@ -67,7 +65,7 @@ func MarshallHL7(segs []string, segType interface{}) interface{} {
 		panic("segType must be a pointer to a struct")
 	}
 
-	segments := segs[1:]
+	
 	for i := 0; i < val.NumField() && i < len(segments); i++ {
 		structFieldValue := val.Field(i)
 		if structFieldValue.CanSet() {
@@ -79,6 +77,16 @@ func MarshallHL7(segs []string, segType interface{}) interface{} {
 				if err == nil {
 					structFieldValue.SetInt(intValue)
 				}
+			case reflect.Pointer:
+				if strings.Contains(segments[i], "^") {
+					newStruct := reflect.New(structFieldValue.Type().Elem()).Interface()
+					
+					subString := strings.Split(segments[i], "^")
+					subStruct := MarshallHL7(subString, newStruct)
+
+					structFieldValue.Set(reflect.ValueOf(subStruct))
+				}
+				
 			}
 		}
 	}
