@@ -59,7 +59,7 @@ This command sends an HL7 message that admits and then discharges a patient.
 | --- | --- | --- |
 |`last` | Open last sent hl7 message in an interactive prompt. | `placebo --send hl7 last` |
 
-## Read HL7 Message
+### Read HL7 Message
 
 For a better help at reading HL7 messages, you can tap into the `sugarpill` feature and have the file presented in a more readible structure.
 
