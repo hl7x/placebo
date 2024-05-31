@@ -85,8 +85,13 @@ func MarshallHL7(segments []string, segType interface{}) interface{} {
 					subStruct := MarshallHL7(subString, newStruct)
 
 					structFieldValue.Set(reflect.ValueOf(subStruct))
+				} else {
+					newStruct := reflect.New(structFieldValue.Type().Elem()).Interface()
+					singleSeg := []string{segments[i]}
+
+					subStruct := MarshallHL7(singleSeg, newStruct)
+					structFieldValue.Set(reflect.ValueOf(subStruct))
 				}
-				
 			}
 		}
 	}
