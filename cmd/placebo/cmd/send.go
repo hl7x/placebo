@@ -101,9 +101,7 @@ func SendHl7Message(f string) error {
 
 }
 
-/* Local dev environment hl7_server to accept messages over 127.0.0.1:9700
-this can be used as default
-*/
+//Note: 9700 is the default sending port
 func DefaultSend(templatePatient string) error {
 
 
