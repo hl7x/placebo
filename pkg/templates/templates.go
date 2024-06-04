@@ -1,5 +1,11 @@
 package templates
 
+/*
+DEPRECATED: templates make it easier to format the output.
+But this requires too much continuous maintenance overhead.
+This will stay in place for now, but should not continue to be maintained and added to.
+*/
+
 func ConstructCSVFileHeaders() []byte {
 
 	csvHeaders := []byte(`PatientMRN,PatientEncounterId,PatientFirstName,PatientLastName,PatientDOB,PatientGender,PatientAddress,PatientCity,PatientState,PatientPostCode,PatientCountry,PatientArrivalDate,PatientArrivalTime,DepartmentReferenceId,PatientPhonePrimary,PrimaryLanguage,VisitProvider,AppointmentBeginDate,AppointmentStatus,AltID`)
@@ -89,3 +95,75 @@ PID|1|56789|{{.MRN}}||{{.LastName}}^{{.FirstName}}||{{.Hl7Info.HL7DOB}}|M|||{{.P
 	return referral
 
 }
+
+/*
+func HelperHl7() []byte {
+
+	helper := []byte(`
+	{
+  "MSH": {
+    "SendingApplication": "YourApp", // MSH-3
+    "SendingFacility": "YourFacility", // MSH-4
+    "ReceivingApplication": "TheirApp", // MSH-5
+    "ReceivingFacility": "TheirFacility", // MSH-6
+    "DateTimeOfMessage": "{{.Hl7Info.HL7Event}}0800", // MSH-7
+    "Security": "", // MSH-8
+    "MessageType": "ADT^A01", // MSH-9
+    "MessageControlID": "123456", // MSH-10
+    "ProcessingID": "P", // MSH-11
+    "VersionID": "2.3" // MSH-12
+  },
+  "EVN": {
+	"HL7Type": "A01",
+	"TimeStamp": "{{.Hl7Info.HL7Event}}0800"
+  },
+  "PID": {
+    "SetID": "1", // PID-1
+    "PatientID": "123456", // PID-2
+    "PatientIdentifierList": "{{.MRN}}^^^YourSystem^MR", // PID-3
+    "LastName": "{{.LastName}}", // PID-5.1
+    "FirstName": "{{.FirstName}}", // PID-5.2
+    "MiddleInitial": "A", // PID-5.3
+    "DateOfBirth": "{{.Hl7Info.HL7DOB}}", // PID-7
+    "Sex": "M", // PID-8
+    "PatientAddress": {
+      "StreetAddress": "{{.PatientAddress.StructureNumber}} {{.PatientAddress.Street}}", // PID-11.1
+      "City": "{{.PatientAddress.RegionInfo.City}}", // PID-11.3
+      "State": "{{.PatientAddress.RegionInfo.State}}", // PID-11.4
+      "ZipCode": "12345", // PID-11.5
+      "Country": "USA" // PID-11.6
+    },
+    "PhoneNumberHome": "{{.Phone}}", // PID-13.1
+    "PhoneNumberBusiness": "555-5678", // PID-13.2
+    "PrimaryLanguage": "English", // PID-15
+    "MaritalStatus": "Single", // PID-16
+    "SSN": "123-45-6789" // PID-19
+  },
+  "PV1": {
+    "SetID": "1", // PV1-1
+    "PatientClass": "O", // PV1-2
+    "AssignedPatientLocation": {
+      "Facility": "PUNIT", // PV1-3.4
+      "PointOfCare": "ER" // PV1-3.1
+    },
+    "AdmissionType": "ER", // PV1-4
+    "PreadmitNumber": "789012", // PV1-5
+    "PriorPatientLocation": "ICU", // PV1-6
+    "AttendingDoctor": {
+      "IDNumber": "54321", // PV1-7.1
+      "LastName": "Smith", // PV1-7.2
+      "FirstName": "Jane", // PV1-7.3
+      "AssigningAuthority": "Medical Staff" // PV1-7.4
+    },
+    "HospitalService": "General", // PV1-10
+    "VisitNumber": "{{.EncounterId}}", // PV1-19
+    "ArrivalDate": "", //
+    "DischargeDate": "" //
+  }
+}
+`)
+
+	return helper
+
+}
+*/

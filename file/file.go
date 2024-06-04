@@ -91,17 +91,40 @@ func CreateInteractiveHl7(tempAndPatient string) string {
 
 }
 // TODO: Panics used here should be fixed
-func ReadInteractiveHl7(path string) string {
+func ReadFile(path string) (string, error) {
 	
 	data, err := ioutil.ReadFile(path)
+	if err != nil {
+		return "", err
+	}
+
+	fmtString := string(data)
+
+	return fmtString, nil
+
+}
+
+func SugarPillInteractive(s string) string {
+
+	tempFile := "/tmp/sptemp.hl7"
+
+	file, err := os.Create(tempFile)
 	if err != nil {
 		panic(err)
 	}
 
-	return string(data)
+	defer file.Close()
+
+	_, err = file.WriteString(s)
+	if err != nil {
+		panic(err)
+	}
+
+	file.Sync()
+
+	return tempFile
 
 }
-
 
 func CSVFileName() string {
 

@@ -11,6 +11,8 @@ import (
 	"placebo/pkg/event"
 	"placebo/file"
 	"placebo/internal/sysCmd"
+	"placebo/pkg/random"
+	"placebo/pkg/sugarpill"
 )
 
 var Address = "127.0.0.1"
@@ -75,6 +77,17 @@ func SendHl7Message(f string) error {
 			}
 
 
+		} else if command[0] == "sugarpill" {
+			//testing
+			patient := random.NewPatient()
+			
+			er := SugarpillProcess(patient)
+			if er != nil {
+				return er
+			}
+
+			return nil
+
 		} else {
 			err := EventSelector(command[0])
 			if err != nil {
@@ -88,9 +101,7 @@ func SendHl7Message(f string) error {
 
 }
 
-/* Local dev environment hl7_server to accept messages over 127.0.0.1:9700
-this can be used as default
-*/
+//Note: 9700 is the default sending port
 func DefaultSend(templatePatient string) error {
 
 
@@ -167,7 +178,10 @@ func InteractivePrompt(filePath string) (string, error) {
 
 	if input == "Y" || input == "\r" {
 		
-		fileText := file.ReadInteractiveHl7(filePath)
+		fileText, err := file.ReadFile(filePath)
+		if err != nil {
+			return "", err
+		}
 
 		err = DefaultSend(fileText)
 		if err != nil {
@@ -182,6 +196,61 @@ func InteractivePrompt(filePath string) (string, error) {
 	}
 
 	return "", nil
+
+}
+
+func PostPrompt(filePath string) (string, error) {
+	
+	fmt.Println("\nSend The Message Out? [Y/n]")
+	reader := bufio.NewReader(os.Stdin)
+
+	input, err := reader.ReadString('\n')
+	if err != nil {
+		return "", err
+	}
+
+	input = strings.TrimSpace(input)
+
+	if input == "Y" || input == "\r" {
+		
+		fileText, err := file.ReadFile(filePath)
+		if err != nil {
+			return "", err
+		}
+
+		return fileText, nil
+
+	} else {
+		os.Exit(1)
+		return "", nil
+	}
+
+	return "", nil
+
+}
+
+func SugarpillProcess(patient *random.Patient) error {
+	
+	//bind created patient to HL7 message in JSON format
+	message := sugarpill.NewHL7Message(patient).MessageToJson()
+
+	sp := file.SugarPillInteractive(message)
+	sysCmd.TextEditorOpen(sp)
+			
+	convert, err := PostPrompt(sp)
+	if err != nil {
+		return err
+	}
+	
+	//convert back to HL7 format from the JSON
+	jsonMessage := sugarpill.JsonToMessage(convert)
+
+	send := sugarpill.MessageBuilder(jsonMessage)
+
+	DefaultSend(send)
+	fmt.Println(send)
+
+	return nil
 
 }
 
