@@ -16,10 +16,15 @@ type MSH struct {
 	ReceivingFacility    string `json:"ReceivingFacility"`    // MSH-6
 	DateTimeOfMessage    string `json:"DateTimeOfMessage"`    // MSH-7
 	Security             string `json:"Security"`             // MSH-8
-	MessageType          string `json:"MessageType"`          // MSH-9
+	MessageType          *MessageType `json:"MessageType"`          // MSH-9
 	MessageControlID     string `json:"MessageControlID"`     // MSH-10
 	ProcessingID         string `json:"ProcessingID"`         // MSH-11
 	VersionID            string `json:"VersionID"`            // MSH-12
+}
+
+type MessageType struct {
+	MessageCode	string	`json:"MessageCode"`		// MSH-9.1
+	TriggerEvent	string	`json:"TriggerEvent"`		// MSH-9.2
 }
 
 type EVN struct {
@@ -243,6 +248,12 @@ func NewEVNSegment(p *random.Patient) *EVN {
 
 func NewMSHSegment(p *random.Patient) *MSH {
 
+
+	messageType := &MessageType {
+		MessageCode: "ADT",
+		TriggerEvent: "AO1",
+	}
+
 	msh := &MSH{
 		Encode:               "--",
 		SendingApplication:   "PLACEBO",
@@ -251,7 +262,7 @@ func NewMSHSegment(p *random.Patient) *MSH {
 		ReceivingFacility:    "DEMO",
 		DateTimeOfMessage:    p.Hl7Info.HL7Event,
 		Security:             "",
-		MessageType:          "ADT^A01",
+		MessageType:          messageType,
 		MessageControlID:     "123456",
 		ProcessingID:         "P",
 		VersionID:            "2.3",

@@ -6,6 +6,7 @@ import (
 	"placebo/pkg/random"
 )
 
+
 var sugarpillPatient *random.Patient
 
 func SugarpillPatient() *random.Patient {
@@ -24,12 +25,14 @@ func TestMain(m *testing.M) {
 
 func TestNewPV1Segment(t *testing.T) {
 	
+	sugarpillPatient.EncounterId = 123456789
+
 	var tests = []struct{
 		description	string
 		input		*random.Patient
-		expected	interface{}
+		expected	int
 	}{
-		{"PV1 Visit Number Should Be the Same From Patient", sugarpillPatient, sugarpillPatient.EncounterId},
+		{"PV1 Visit Number Should Be the Same From Patient", sugarpillPatient, 123456789},
 	}
 
 	for _, tc := range tests {
