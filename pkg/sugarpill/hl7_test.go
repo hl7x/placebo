@@ -46,3 +46,33 @@ func TestNewPV1Segment(t *testing.T) {
 	}
 }
 
+/*
+	other segment functions
+
+*/
+
+/*
+func TestNewHL7Message(t *testing.T) {
+
+	//patient := sugarpillPatient
+
+	var tests = []struct{
+		description	string
+		input		*random.Patient
+		expected	interface{}
+	}{
+		{"HL7 Message Reflect Patient Data", nil, nil },
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
+			got := NewHL7Message(tc.input)
+
+			if got != tc.expected {
+				t.Fatalf("got %v, expected %v", got, tc.expected)
+			}
+		})
+	}
+
+}
+*/
