@@ -70,7 +70,7 @@ type PatientName struct {
 type PID struct {
 	SetID                   string          `json:"SetID"`                   // PID-1
 	PatientID               string          `json:"PatientID"`               // PID-2
-	PatientIdentifierList   int             `json:"PatientIdentifierList"`   // PID-3
+	PatientIdentifierList   string             `json:"PatientIdentifierList"`   // PID-3
 	AlternatePatientID      string          `json:"AlternatePatientID"`      // PID-4
 	PatientName             *PatientName    `json:"PatientName"`             // PID-5
 	MotherMaidenName        string          `json:"MotherMaidenName"`        // PID-6

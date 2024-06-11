@@ -16,7 +16,7 @@ type Collection struct {
 type Patient struct {
 	FirstName      string
 	LastName       string
-	MRN            int
+	MRN            string
 	EncounterId    int
 	Phone          string
 	DOB            string
@@ -89,7 +89,7 @@ func (p *Patient) Mrn() *Patient {
 	rand.Seed(time.Now().UnixNano())
 	randomMrn := rand.Intn(1000000000)
 
-	p.MRN = randomMrn
+	p.MRN = fmt.Sprint(randomMrn)
 
 	return p
 }

@@ -26,7 +26,7 @@ func TestCreateCSV(t *testing.T) {
 	examplePatient1 := &random.Patient{
 		FirstName:      "Bill",
 		LastName:       "Test",
-		MRN:            123,
+		MRN:            "123",
 		EncounterId:    123,
 		Phone:          "0000000",
 		DOB:            "00/00/0000",
@@ -38,7 +38,7 @@ func TestCreateCSV(t *testing.T) {
 	examplePatient2 := &random.Patient{
 		FirstName:      "Jill",
 		LastName:       "Test",
-		MRN:            123,
+		MRN:            "123",
 		EncounterId:    123,
 		Phone:          "0000000",
 		DOB:            "00/00/0000",
@@ -105,7 +105,7 @@ func TestCreateHl7(t *testing.T) {
 	examplePatient := &random.Patient{
 		FirstName:      "Bill",
 		LastName:       "Test",
-		MRN:            123,
+		MRN:            "123",
 		EncounterId:    123,
 		Phone:          "0000000",
 		DOB:            "00/00/0000",
@@ -201,7 +201,7 @@ func TestCreateInteractiveHl7(t *testing.T) {
 	patient := &random.Patient{
 		FirstName:      "Bill",
 		LastName:       "Test",
-		MRN:            123,
+		MRN:            "123",
 		EncounterId:    123,
 		Phone:          "0000000",
 		DOB:            "00/00/0000",

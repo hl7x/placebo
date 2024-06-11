@@ -54,6 +54,36 @@ func TestNewPV1Segment(t *testing.T) {
 	}
 }
 
+func TestNewPIDSegment(t *testing.T) {
+
+	patient1 := sugarpillPatients.Patients[0]
+	patient2 := sugarpillPatients.Patients[1]
+	patient3 := sugarpillPatients.Patients[2]
+
+	patient1.MRN = "MRN000001"
+	patient2.MRN = "EEEEEEE"
+	patient3.MRN = ""
+
+	var tests = []struct {
+		description	string
+		input 		*random.Patient
+		expected	interface{}
+	}{
+		{"PID MRN String Should Reflect the Same From the Patient", patient1, "MRN000001"},
+		{"PID MRN STring Should Reflect the Only Letter String From Patient", patient2, "EEEEEEE"},
+		{"PID MRN String Should Reflect empty if Patient MRN is empty", patient3 , ""},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
+			got := NewPIDSegment(tc.input)
+
+			if got.PatientIdentifierList != tc.expected {
+				t.Fatalf("got %v, expected %v", got.PatientIdentifierList, tc.expected)
+			}
+		})
+	}
+}
 /*
 	other segment functions
 
