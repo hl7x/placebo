@@ -1,15 +1,15 @@
 package random
 
 import (
-	"testing"
 	"strings"
+	"testing"
 )
 
 func TestDate(t *testing.T) {
 
-	var tests = []struct{
-		description	string
-		expected	string
+	var tests = []struct {
+		description string
+		expected    string
 	}{
 		{"Should produce a random date.", "-"},
 	}
@@ -26,15 +26,15 @@ func TestDate(t *testing.T) {
 }
 
 func TestMonth(t *testing.T) {
-	
+
 	var tests = []struct {
-		description	string
-		expected 	int
+		description string
+		expected    int
 	}{
 		{"Number 12 or Less", 12},
 	}
 
-	for _, tc := range tests {	
+	for _, tc := range tests {
 		t.Run(tc.description, func(t *testing.T) {
 			got := Month()
 			if (got > tc.expected) || (got < 0) {
@@ -46,10 +46,10 @@ func TestMonth(t *testing.T) {
 }
 
 func TestDay(t *testing.T) {
-	
+
 	var tests = []struct {
-		description	string
-		expected	int
+		description string
+		expected    int
 	}{
 		{"Should Produce a Number Less Than 28", 28},
 	}
@@ -66,10 +66,10 @@ func TestDay(t *testing.T) {
 }
 
 func TestYear(t *testing.T) {
-	
+
 	var tests = []struct {
-		description	string
-		expected	int
+		description string
+		expected    int
 	}{
 		{"Should Produce a Number Greater Than 1920", 1920},
 	}
@@ -88,11 +88,11 @@ func TestYear(t *testing.T) {
 func TestHl7DateFormatter(t *testing.T) {
 
 	var tests = []struct {
-		description	string
-		input		string
-		expected	string
+		description string
+		input       string
+		expected    string
 	}{
-		{"Date With '-' Converted to HL7 Format", "12-25-2000","20001225"},
+		{"Date With '-' Converted to HL7 Format", "12-25-2000", "20001225"},
 		{"Date with '/' Converted to HL7 Format", "7/4/1988", "19880704"},
 	}
 
@@ -101,7 +101,7 @@ func TestHl7DateFormatter(t *testing.T) {
 			got := Hl7DateFormatter(tc.input)
 
 			if got != tc.expected {
-				t.Fatalf("Hl7DateFormatter(%v)=%v expected %v", tc.input,  got, tc.expected)
+				t.Fatalf("Hl7DateFormatter(%v)=%v expected %v", tc.input, got, tc.expected)
 			}
 		})
 	}

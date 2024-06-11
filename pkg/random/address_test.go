@@ -70,14 +70,14 @@ func TestStreet(t *testing.T) {
 		"BLUE",
 		"PURPLE"}
 
-	var tests = []struct{
-		description	string
-		expected	[]string
+	var tests = []struct {
+		description string
+		expected    []string
 	}{
 		{"Function Should Return Street From List", streetAddress},
 	}
 	for _, tc := range tests {
-		t.Run(tc.description, func(t *testing.T){
+		t.Run(tc.description, func(t *testing.T) {
 			got := Street()
 			for _, street := range tc.expected {
 				if strings.Contains(got.Street, street) {
@@ -92,15 +92,15 @@ func TestStreet(t *testing.T) {
 
 func TestAddress_Number(t *testing.T) {
 	testAddress := Address{}
-	var tests = []struct{
-		description	string
-		maxExpected	int
+	var tests = []struct {
+		description string
+		maxExpected int
 	}{
 		{"Default should return a number between 0 and 100000", 100000},
 	}
 
 	for _, tc := range tests {
-		t.Run(tc.description, func(t *testing.T){
+		t.Run(tc.description, func(t *testing.T) {
 			got := testAddress.Number()
 			if got.StructureNumber > tc.maxExpected {
 				t.Fatalf("Number()=%v, expected number less than %v", got.StructureNumber, tc.maxExpected)
@@ -112,23 +112,23 @@ func TestAddress_Number(t *testing.T) {
 func TestCity(t *testing.T) {
 	Cities := []string{"MOBILE", "MONTGOMERY", "BIRMINGHAM"}
 
-	var tests = []struct{
-		description	string
-		input		string
-		expected	[]string
+	var tests = []struct {
+		description string
+		input       string
+		expected    []string
 	}{
 		{"State Abbreviation should return city", "AL", Cities},
 	}
 
-	for _, tc := range tests{
-		t.Run(tc.description, func(t *testing.T){
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
 			got := City(tc.input)
-			for _, city := range Cities{
+			for _, city := range Cities {
 				if got == city {
 					return
 				}
 			}
-			t.Fatalf("City(%v)=%v, wanted one of %v, got %v", tc.input, got, tc.expected, got )
+			t.Fatalf("City(%v)=%v, wanted one of %v, got %v", tc.input, got, tc.expected, got)
 		})
 	}
 }
@@ -188,14 +188,14 @@ func TestState(t *testing.T) {
 		"WY"}
 
 	var tests = []struct {
-		description		string
-		expected		[]string
+		description string
+		expected    []string
 	}{
 		{"Should Return Random State Abbreviation", testState},
 	}
 
-	for _, tc := range tests{
-		t.Run(tc.description, func(t *testing.T){
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
 			got := State()
 			for _, state := range tc.expected {
 				if got == state {

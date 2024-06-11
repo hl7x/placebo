@@ -9,22 +9,22 @@ import (
 )
 
 type MSH struct {
-	Encode               string `json:Encode`                 // MSH-1
-	SendingApplication   string `json:"SendingApplication"`   // MSH-3
-	SendingFacility      string `json:"SendingFacility"`      // MSH-4
-	ReceivingApplication string `json:"ReceivingApplication"` // MSH-5
-	ReceivingFacility    string `json:"ReceivingFacility"`    // MSH-6
-	DateTimeOfMessage    string `json:"DateTimeOfMessage"`    // MSH-7
-	Security             string `json:"Security"`             // MSH-8
+	Encode               string       `json:Encode`                 // MSH-1
+	SendingApplication   string       `json:"SendingApplication"`   // MSH-3
+	SendingFacility      string       `json:"SendingFacility"`      // MSH-4
+	ReceivingApplication string       `json:"ReceivingApplication"` // MSH-5
+	ReceivingFacility    string       `json:"ReceivingFacility"`    // MSH-6
+	DateTimeOfMessage    string       `json:"DateTimeOfMessage"`    // MSH-7
+	Security             string       `json:"Security"`             // MSH-8
 	MessageType          *MessageType `json:"MessageType"`          // MSH-9
-	MessageControlID     string `json:"MessageControlID"`     // MSH-10
-	ProcessingID         string `json:"ProcessingID"`         // MSH-11
-	VersionID            string `json:"VersionID"`            // MSH-12
+	MessageControlID     string       `json:"MessageControlID"`     // MSH-10
+	ProcessingID         string       `json:"ProcessingID"`         // MSH-11
+	VersionID            string       `json:"VersionID"`            // MSH-12
 }
 
 type MessageType struct {
-	MessageCode	string	`json:"MessageCode"`		// MSH-9.1
-	TriggerEvent	string	`json:"TriggerEvent"`		// MSH-9.2
+	MessageCode  string `json:"MessageCode"`  // MSH-9.1
+	TriggerEvent string `json:"TriggerEvent"` // MSH-9.2
 }
 
 type EVN struct {
@@ -248,9 +248,8 @@ func NewEVNSegment(p *random.Patient) *EVN {
 
 func NewMSHSegment(p *random.Patient) *MSH {
 
-
-	messageType := &MessageType {
-		MessageCode: "ADT",
+	messageType := &MessageType{
+		MessageCode:  "ADT",
 		TriggerEvent: "AO1",
 	}
 
@@ -310,7 +309,7 @@ func JsonToMessage(s string) *HL7Message {
 
 func (msg *HL7Message) ReadFromFile(s string) *HL7Message {
 	lines := LinesFromFile(s)
-	
+
 	for _, line := range lines {
 		segs := strings.Split(line, "|")
 		segType := SegmentFinder(segs[0])
@@ -323,7 +322,7 @@ func (msg *HL7Message) ReadFromFile(s string) *HL7Message {
 }
 
 func ReadHL7(content string) string {
-	
+
 	messageStruct := &HL7Message{}
 	message := messageStruct.ReadFromFile(content)
 
@@ -334,7 +333,7 @@ func ReadHL7(content string) string {
 }
 
 func SegmentFinder(s string) interface{} {
-	
+
 	switch s {
 	case "MSH":
 		return &MSH{}
@@ -351,7 +350,7 @@ func SegmentFinder(s string) interface{} {
 }
 
 func (msg *HL7Message) SegmentAssigner(s interface{}) *HL7Message {
-	
+
 	switch v := s.(type) {
 	case *MSH:
 		msg.MSH = v
@@ -368,7 +367,6 @@ func (msg *HL7Message) SegmentAssigner(s interface{}) *HL7Message {
 	return msg
 }
 
-
 func MessageBuilder(msg *HL7Message) string {
 	segments := []string{
 		message.CreateHL7(msg.MSH, "MSH"),
@@ -381,9 +379,8 @@ func MessageBuilder(msg *HL7Message) string {
 
 }
 
-
 func LinesFromFile(s string) []string {
-	
+
 	splitLines := strings.Split(s, "\n")
 
 	return splitLines

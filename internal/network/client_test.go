@@ -1,21 +1,20 @@
 package network
 
 import (
-	"testing"
 	"net"
+	"testing"
 	"time"
-
 )
 
 //TODO: TestSendClient
 
 func TestRequestHandler(t *testing.T) {
-	
+
 	duration := 2 * time.Second
 	timer := time.After(duration)
 
 	var tests = []struct {
-		description	string
+		description string
 	}{
 		{"Should Accept Connection"},
 	}
@@ -34,7 +33,7 @@ func TestRequestHandler(t *testing.T) {
 			}()
 
 			select {
-			case <- timer:
+			case <-timer:
 				return
 			default:
 				return

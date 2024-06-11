@@ -6,37 +6,45 @@ import (
 	"placebo/pkg/random"
 )
 
+var sugarpillPatients random.Collection
 
-var sugarpillPatient *random.Patient
+// Return a collection of random generated patients for testing.
+func SugarpillTestPatients() random.Collection {
 
-func SugarpillPatient() *random.Patient {
+	patients := random.NewPatients(12)
 
-	patient := random.NewPatient()
-
-	return patient
+	return patients
 
 }
 
 func TestMain(m *testing.M) {
-	sugarpillPatient = SugarpillPatient()
+	sugarpillPatients = SugarpillTestPatients()
 	m.Run()
 
 }
 
 func TestNewPV1Segment(t *testing.T) {
-	
-	sugarpillPatient.EncounterId = 123456789
 
-	var tests = []struct{
-		description	string
-		input		*random.Patient
-		expected	interface{}
+	sugarpillPatients.Patients[0].EncounterId = 123456789
+	sugarpillPatients.Patients[1].EncounterId = 0
+	sugarpillPatients.Patients[2].EncounterId = -2
+
+	patient1 := sugarpillPatients.Patients[0]
+	patient2 := sugarpillPatients.Patients[1]
+	patient3 := sugarpillPatients.Patients[2]
+
+	var tests = []struct {
+		description string
+		input       *random.Patient
+		expected    interface{}
 	}{
-		{"PV1 Visit Number Should Be the Same From Patient", sugarpillPatient, 123456789 },
+		{"PV1 Visit Number Should Be the Same From Patient", patient1, 123456789},
+		{"PV1 Vist Number 0 Should Reflect Encounter ID 0", patient2, 0},
+		{"PV1 Visit Number Unconventional should match Encounter Id", patient3, -2},
 	}
 
 	for _, tc := range tests {
-		t.Run(tc.description, func(t *testing.T ) {
+		t.Run(tc.description, func(t *testing.T) {
 			got := NewPV1Segment(tc.input)
 
 			if got.VisitNumber != tc.expected {

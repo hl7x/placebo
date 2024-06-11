@@ -1,7 +1,6 @@
 package event
 
 import (
-
 	"bytes"
 	"text/template"
 
@@ -12,7 +11,7 @@ import (
 /* Build HL7 message based on certain medical event for various scenarios */
 
 func Builder(scenario []string) []string {
-	
+
 	var messages []string
 
 	patient := random.NewPatient()
@@ -31,7 +30,7 @@ func Builder(scenario []string) []string {
 }
 
 func TemplateFinder(s string) []byte {
-	
+
 	switch s {
 	case "admit":
 		return templates.SimpleHl7Info()
@@ -50,7 +49,7 @@ func TemplateFinder(s string) []byte {
 }
 
 func TemplateMapper(p *random.Patient, temp []byte) string {
-	
+
 	t, err := template.New("hl7").Parse(string(temp))
 	if err != nil {
 		panic(err)
@@ -62,6 +61,5 @@ func TemplateMapper(p *random.Patient, temp []byte) string {
 	result := tpl.String()
 
 	return result
-
 
 }

@@ -1,11 +1,10 @@
 package sysCmd
 
 import (
-	"os/exec"
 	"bytes"
 	"log"
 	"os"
-
+	"os/exec"
 )
 
 func TextEditorOpen(path string) {
