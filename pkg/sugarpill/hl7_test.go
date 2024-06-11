@@ -30,9 +30,9 @@ func TestNewPV1Segment(t *testing.T) {
 	var tests = []struct{
 		description	string
 		input		*random.Patient
-		expected	int
+		expected	interface{}
 	}{
-		{"PV1 Visit Number Should Be the Same From Patient", sugarpillPatient, 123456789},
+		{"PV1 Visit Number Should Be the Same From Patient", sugarpillPatient, 123456789 },
 	}
 
 	for _, tc := range tests {
