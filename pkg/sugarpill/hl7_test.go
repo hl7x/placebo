@@ -84,6 +84,38 @@ func TestNewPIDSegment(t *testing.T) {
 		})
 	}
 }
+
+func TestNewEVNSegment(t *testing.T) {
+
+	patient1 := sugarpillPatients.Patients[0]
+	patient2 := sugarpillPatients.Patients[1]
+	patient3 := sugarpillPatients.Patients[2]
+
+	patient1.Hl7Info.HL7Event = "01012001"
+	patient2.Hl7Info.HL7Event = "07/04/1776"
+	patient3.Hl7Info.HL7Event = ""
+
+	var tests = []struct{
+		description	string
+		input		*random.Patient
+		expected 	interface{}
+	}{
+		{"EVN Timestamp Should Reflect Patient Event Time", patient1, "01012001"},
+		{"EVN Alternate Timestamp Format Should Still Appear", patient2, "07/04/1776"},
+		{"EVN Empty Should Reflect as Empty on EVN", patient3, ""},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
+			got := NewEVNSegment(tc.input)
+
+			if got.RecordedDateTime != tc.expected {
+				t.Fatalf("got %v, expected %v", got.RecordedDateTime, tc.expected)
+			}
+		})
+	}
+}
+
 /*
 	other segment functions
 
