@@ -1,16 +1,16 @@
 package cmd
 
-import (	
+import (
+	"bufio"
+	"errors"
 	"fmt"
 	"os"
-	"bufio"
 	"strings"
-	"errors"
-	
-	"placebo/internal/network"
-	"placebo/pkg/event"
+
 	"placebo/file"
+	"placebo/internal/network"
 	"placebo/internal/sysCmd"
+	"placebo/pkg/event"
 	"placebo/pkg/random"
 	"placebo/pkg/sugarpill"
 )
@@ -19,16 +19,16 @@ var Address = "127.0.0.1"
 var Port = "9700"
 
 func SendHl7Message(f string) error {
-	
+
 	switch f {
 	case "":
 		return nil
 	case "hl7":
-		
+
 		command := os.Args[3:]
 
 		if len(command) == 0 {
-			
+
 			eventHolder := []string{"admit"}
 			hl7 := event.Builder(eventHolder)
 
@@ -76,11 +76,10 @@ func SendHl7Message(f string) error {
 				return nil
 			}
 
-
 		} else if command[0] == "sugarpill" {
 			//testing
 			patient := random.NewPatient()
-			
+
 			er := SugarpillProcess(patient)
 			if er != nil {
 				return er
@@ -101,9 +100,8 @@ func SendHl7Message(f string) error {
 
 }
 
-//Note: 9700 is the default sending port
+// Note: 9700 is the default sending port
 func DefaultSend(templatePatient string) error {
-
 
 	err := network.SendClient(Address, Port, templatePatient)
 	if err != nil {
@@ -128,17 +126,17 @@ func MultiSender(mes []string) error {
 }
 
 func EventSelector(s string) error {
-	
-	dischargeEvent  := []string{"admit", "discharge"}
-	admitEvent	:= []string{"admit"}
-	preadmitEvent	:= []string{"preadmit"}
-	referralEvent	:= []string{"referral"}
+
+	dischargeEvent := []string{"admit", "discharge"}
+	admitEvent := []string{"admit"}
+	preadmitEvent := []string{"preadmit"}
+	referralEvent := []string{"referral"}
 
 	switch s {
 	case "post_discharge":
 		messages := event.Builder(dischargeEvent)
 		sent := MultiSender(messages)
-		
+
 		return sent
 	case "post_admit":
 		message := event.Builder(admitEvent)
@@ -177,7 +175,7 @@ func InteractivePrompt(filePath string) (string, error) {
 	input = strings.TrimSpace(input)
 
 	if input == "Y" || input == "\r" {
-		
+
 		fileText, err := file.ReadFile(filePath)
 		if err != nil {
 			return "", err
@@ -200,7 +198,7 @@ func InteractivePrompt(filePath string) (string, error) {
 }
 
 func PostPrompt(filePath string) (string, error) {
-	
+
 	fmt.Println("\nSend The Message Out? [Y/n]")
 	reader := bufio.NewReader(os.Stdin)
 
@@ -212,7 +210,7 @@ func PostPrompt(filePath string) (string, error) {
 	input = strings.TrimSpace(input)
 
 	if input == "Y" || input == "\r" {
-		
+
 		fileText, err := file.ReadFile(filePath)
 		if err != nil {
 			return "", err
@@ -230,18 +228,18 @@ func PostPrompt(filePath string) (string, error) {
 }
 
 func SugarpillProcess(patient *random.Patient) error {
-	
+
 	//bind created patient to HL7 message in JSON format
 	message := sugarpill.NewHL7Message(patient).MessageToJson()
 
 	sp := file.SugarPillInteractive(message)
 	sysCmd.TextEditorOpen(sp)
-			
+
 	convert, err := PostPrompt(sp)
 	if err != nil {
 		return err
 	}
-	
+
 	//convert back to HL7 format from the JSON
 	jsonMessage := sugarpill.JsonToMessage(convert)
 
@@ -253,4 +251,3 @@ func SugarpillProcess(patient *random.Patient) error {
 	return nil
 
 }
-

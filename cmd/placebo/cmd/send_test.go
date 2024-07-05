@@ -1,12 +1,11 @@
 package cmd
 
 import (
-	"testing"
-	"net"
-	"time"
-	"os"
 	"errors"
-
+	"net"
+	"os"
+	"testing"
+	"time"
 )
 
 func init() {
@@ -41,15 +40,15 @@ func TestSendHl7Message(t *testing.T) {
 
 	time.Sleep(1000 * time.Millisecond)
 
-	var tests = []struct{
-		description	string
-		expected	error
-		input		string
-		args		[]string
+	var tests = []struct {
+		description string
+		expected    error
+		input       string
+		args        []string
 	}{
 		{"Should Return Nil When No Command Is Given", nil, "", []string{""}},
-//		{"Should Return Nil When 'hl7' Command Is Given", nil, "hl7", []string{"placebo", "--send", "hl7"}},
-		{"Should Return Nil When Given Proper Sub Command", nil, "hl7", []string{"placebo","--send", "hl7", "post_admit"}},
+		//		{"Should Return Nil When 'hl7' Command Is Given", nil, "hl7", []string{"placebo", "--send", "hl7"}},
+		{"Should Return Nil When Given Proper Sub Command", nil, "hl7", []string{"placebo", "--send", "hl7", "post_admit"}},
 		{"Should Return Error When Given Bad Sub Command", errors.New("Command Not Found."), "hl7", []string{"placebo", "--send", "hl7", "taco"}},
 	}
 
@@ -70,15 +69,15 @@ func TestSendHl7Message(t *testing.T) {
 }
 
 func TestMultiSender(t *testing.T) {
-	
+
 	time.Sleep(1000 * time.Millisecond)
 
 	message := []string{"admit"}
 
-	var tests = []struct{
-		description	string
-		input		[]string
-		expected	error
+	var tests = []struct {
+		description string
+		input       []string
+		expected    error
 	}{
 		{"Send Multiple Messages", message, nil},
 	}
@@ -96,13 +95,13 @@ func TestMultiSender(t *testing.T) {
 }
 
 func TestEventSelector(t *testing.T) {
-	
+
 	command := "post_discharge"
 
-	var tests = []struct{
-		description	string
-		input		string
-		expected	error
+	var tests = []struct {
+		description string
+		input       string
+		expected    error
 	}{
 		{"Should Return Nil When command selector is correct", command, nil},
 	}

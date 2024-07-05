@@ -2,10 +2,10 @@ package file
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
 	"text/template"
 	"time"
-	"io/ioutil"
 
 	"placebo/pkg/random"
 	"placebo/pkg/templates"
@@ -47,7 +47,7 @@ func CreateHl7(patient *random.Patient) error {
 	hl7File := Tempdir + Hl7FileName()
 
 	fileText := templates.SimpleHl7Info()
-	
+
 	t, err := template.New("txt").Parse(string(fileText))
 	if err != nil {
 		return err
@@ -71,7 +71,7 @@ func CreateHl7(patient *random.Patient) error {
 func CreateInteractiveHl7(tempAndPatient string) string {
 
 	hl7File := Tempdir + IntFile
-	
+
 	file, err := os.Create(hl7File)
 	if err != nil {
 		panic(err)
@@ -86,13 +86,13 @@ func CreateInteractiveHl7(tempAndPatient string) string {
 
 	file.Sync()
 
-
 	return hl7File
 
 }
+
 // TODO: Panics used here should be fixed
 func ReadFile(path string) (string, error) {
-	
+
 	data, err := ioutil.ReadFile(path)
 	if err != nil {
 		return "", err

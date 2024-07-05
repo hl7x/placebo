@@ -3,45 +3,45 @@ package message
 import (
 	"fmt"
 	"reflect"
-	"strings"
 	"strconv"
+	"strings"
 )
 
 func CreateHL7(v interface{}, segment string) string {
-    val := reflect.ValueOf(v)
-    if val.Kind() == reflect.Ptr {
-        val = val.Elem()
-    }
+	val := reflect.ValueOf(v)
+	if val.Kind() == reflect.Ptr {
+		val = val.Elem()
+	}
 
-    fields := []string{segment}
-    for i := 0; i < val.NumField(); i++ {
-        field := val.Field(i)
-        if field.Kind() == reflect.Ptr {
-            field = field.Elem()
-        }
+	fields := []string{segment}
+	for i := 0; i < val.NumField(); i++ {
+		field := val.Field(i)
+		if field.Kind() == reflect.Ptr {
+			field = field.Elem()
+		}
 
-        // Handle nested structs by concatenating their fields with '^' and ensuring no trailing caret.
-        if field.Kind() == reflect.Struct {
-            nestedFields := make([]string, 0, field.NumField())
-            for j := 0; j < field.NumField(); j++ {
-                nestedField := field.Field(j)
-                if nestedField.Kind() == reflect.Ptr {
-                    nestedField = nestedField.Elem()
-                }
-                nestedValue := fmt.Sprintf("%v", nestedField.Interface())
-                nestedFields = append(nestedFields, nestedValue) // Always append, even if empty
-            }
-            fields = append(fields, strings.Join(nestedFields, "^"))
-        } else {
-            fieldValue := fmt.Sprintf("%v", field.Interface())
-            fields = append(fields, fieldValue) // Directly append the field value, empty or not.
-        }
-    }
+		// Handle nested structs by concatenating their fields with '^' and ensuring no trailing caret.
+		if field.Kind() == reflect.Struct {
+			nestedFields := make([]string, 0, field.NumField())
+			for j := 0; j < field.NumField(); j++ {
+				nestedField := field.Field(j)
+				if nestedField.Kind() == reflect.Ptr {
+					nestedField = nestedField.Elem()
+				}
+				nestedValue := fmt.Sprintf("%v", nestedField.Interface())
+				nestedFields = append(nestedFields, nestedValue) // Always append, even if empty
+			}
+			fields = append(fields, strings.Join(nestedFields, "^"))
+		} else {
+			fieldValue := fmt.Sprintf("%v", field.Interface())
+			fields = append(fields, fieldValue) // Directly append the field value, empty or not.
+		}
+	}
 
-    //the trailing pipe is necessary for how hl7 segments are constructed here
-    allPipes := strings.Join(fields, "|") + "|"
+	//the trailing pipe is necessary for how hl7 segments are constructed here
+	allPipes := strings.Join(fields, "|") + "|"
 
-    return allPipes
+	return allPipes
 }
 
 func MarshallHL7(segments []string, segType interface{}) interface{} {
@@ -65,7 +65,6 @@ func MarshallHL7(segments []string, segType interface{}) interface{} {
 		panic("segType must be a pointer to a struct")
 	}
 
-	
 	for i := 0; i < val.NumField() && i < len(segments); i++ {
 		structFieldValue := val.Field(i)
 		if structFieldValue.CanSet() {
@@ -80,7 +79,7 @@ func MarshallHL7(segments []string, segType interface{}) interface{} {
 			case reflect.Pointer:
 				if strings.Contains(segments[i], "^") {
 					newStruct := reflect.New(structFieldValue.Type().Elem()).Interface()
-					
+
 					subString := strings.Split(segments[i], "^")
 					subStruct := MarshallHL7(subString, newStruct)
 
@@ -98,6 +97,4 @@ func MarshallHL7(segments []string, segType interface{}) interface{} {
 
 	return segType
 
-
 }
-

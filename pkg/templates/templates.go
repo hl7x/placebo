@@ -23,9 +23,7 @@ func CSVPatientInfo() []byte {
 
 }
 
-
 /* QUICK HL7 TEMPLATES*/
-
 
 // ADT^A01 is an event type for Admiting the Patient. This is the deafult message template.
 func SimpleHl7Info() []byte {
@@ -67,7 +65,7 @@ PV1|1|PR|PUNIT^RM 123^P^PUNIT|ER|||15551234567^HOUSE^GREG|1255568135^BETA^ALPHA|
 
 }
 
-//SIU^12 is an appointment scheduling structure for Pre-Admitting the Patient on a scheduled appointment
+// SIU^12 is an appointment scheduling structure for Pre-Admitting the Patient on a scheduled appointment
 func ScheduledPatientInfo() []byte {
 
 	scheduleSiu := []byte(`
@@ -81,7 +79,7 @@ RGS|1|A|
 
 }
 
-//Referral Message
+// Referral Message
 func ReferralHl7() []byte {
 
 	referral := []byte(`

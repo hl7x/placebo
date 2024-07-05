@@ -6,37 +6,45 @@ import (
 	"placebo/pkg/random"
 )
 
+var sugarpillPatients random.Collection
 
-var sugarpillPatient *random.Patient
+// Return a collection of random generated patients for testing.
+func SugarpillTestPatients() random.Collection {
 
-func SugarpillPatient() *random.Patient {
+	patients := random.NewPatients(12)
 
-	patient := random.NewPatient()
-
-	return patient
+	return patients
 
 }
 
 func TestMain(m *testing.M) {
-	sugarpillPatient = SugarpillPatient()
+	sugarpillPatients = SugarpillTestPatients()
 	m.Run()
 
 }
 
 func TestNewPV1Segment(t *testing.T) {
-	
-	sugarpillPatient.EncounterId = 123456789
 
-	var tests = []struct{
-		description	string
-		input		*random.Patient
-		expected	int
+	sugarpillPatients.Patients[0].EncounterId = 123456789
+	sugarpillPatients.Patients[1].EncounterId = 0
+	sugarpillPatients.Patients[2].EncounterId = -2
+
+	patient1 := sugarpillPatients.Patients[0]
+	patient2 := sugarpillPatients.Patients[1]
+	patient3 := sugarpillPatients.Patients[2]
+
+	var tests = []struct {
+		description string
+		input       *random.Patient
+		expected    interface{}
 	}{
-		{"PV1 Visit Number Should Be the Same From Patient", sugarpillPatient, 123456789},
+		{"PV1 Visit Number Should Be the Same From Patient", patient1, 123456789},
+		{"PV1 Vist Number 0 Should Reflect Encounter ID 0", patient2, 0},
+		{"PV1 Visit Number Unconventional should match Encounter Id", patient3, -2},
 	}
 
 	for _, tc := range tests {
-		t.Run(tc.description, func(t *testing.T ) {
+		t.Run(tc.description, func(t *testing.T) {
 			got := NewPV1Segment(tc.input)
 
 			if got.VisitNumber != tc.expected {
@@ -46,3 +54,122 @@ func TestNewPV1Segment(t *testing.T) {
 	}
 }
 
+func TestNewPIDSegment(t *testing.T) {
+
+	patient1 := sugarpillPatients.Patients[0]
+	patient2 := sugarpillPatients.Patients[1]
+	patient3 := sugarpillPatients.Patients[2]
+
+	patient1.MRN = "MRN000001"
+	patient2.MRN = "EEEEEEE"
+	patient3.MRN = ""
+
+	var tests = []struct {
+		description	string
+		input 		*random.Patient
+		expected	interface{}
+	}{
+		{"PID MRN String Should Reflect the Same From the Patient", patient1, "MRN000001"},
+		{"PID MRN STring Should Reflect the Only Letter String From Patient", patient2, "EEEEEEE"},
+		{"PID MRN String Should Reflect empty if Patient MRN is empty", patient3 , ""},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
+			got := NewPIDSegment(tc.input)
+
+			if got.PatientIdentifierList != tc.expected {
+				t.Fatalf("got %v, expected %v", got.PatientIdentifierList, tc.expected)
+			}
+		})
+	}
+}
+
+func TestNewEVNSegment(t *testing.T) {
+
+	patient1 := sugarpillPatients.Patients[0]
+	patient2 := sugarpillPatients.Patients[1]
+	patient3 := sugarpillPatients.Patients[2]
+
+	patient1.Hl7Info.HL7Event = "01012001"
+	patient2.Hl7Info.HL7Event = "07/04/1776"
+	patient3.Hl7Info.HL7Event = ""
+
+	var tests = []struct{
+		description	string
+		input		*random.Patient
+		expected 	interface{}
+	}{
+		{"EVN Timestamp Should Reflect Patient Event Time", patient1, "01012001"},
+		{"EVN Alternate Timestamp Format Should Still Appear", patient2, "07/04/1776"},
+		{"EVN Empty Should Reflect as Empty on EVN", patient3, ""},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
+			got := NewEVNSegment(tc.input)
+
+			if got.RecordedDateTime != tc.expected {
+				t.Fatalf("got %v, expected %v", got.RecordedDateTime, tc.expected)
+			}
+		})
+	}
+}
+
+func TestNewMSHSegment(t *testing.T) {
+
+	patient1 := sugarpillPatients.Patients[0]
+	//patient2 := sugarpillPatients.Patients[1]
+	//patient3 := sugarpillPatients.Patients[2]
+
+	patient1.Hl7Info.HL7Event = "07041774"
+
+	var tests = []struct{
+		description	string
+		input		*random.Patient
+		expected	interface{}
+	}{
+		{"MSH Should Reflect The Patient Timestamp of the Message Event", patient1, "07041774"},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
+			got := NewMSHSegment(tc.input)
+
+			if got.DateTimeOfMessage != tc.expected {
+				t.Fatalf("got %v, expected %v", got.DateTimeOfMessage, tc.expected)
+			}
+		})
+	}
+}
+
+/*
+	other segment functions
+
+*/
+
+/*
+func TestNewHL7Message(t *testing.T) {
+
+	//patient := sugarpillPatient
+
+	var tests = []struct{
+		description	string
+		input		*random.Patient
+		expected	interface{}
+	}{
+		{"HL7 Message Reflect Patient Data", nil, nil },
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
+			got := NewHL7Message(tc.input)
+
+			if got != tc.expected {
+				t.Fatalf("got %v, expected %v", got, tc.expected)
+			}
+		})
+	}
+
+}
+*/

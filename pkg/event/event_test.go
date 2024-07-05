@@ -1,12 +1,11 @@
 package event
 
 import (
-	"testing"
 	"strings"
+	"testing"
 
 	"placebo/pkg/random"
 	"placebo/pkg/templates"
-
 )
 
 func TestBuilder(t *testing.T) {
@@ -15,9 +14,9 @@ func TestBuilder(t *testing.T) {
 	discharge := []string{"admit", "discharge"}
 
 	var tests = []struct {
-		description	string
-		input		[]string
-		expected	string
+		description string
+		input       []string
+		expected    string
 	}{
 		{"Should Build HL7 Event Message Based on Scenario Input", admit, "MSH"},
 		{"Should Build Multipe HL7s Based On Scenario", discharge, "MSH"},
@@ -44,9 +43,9 @@ func TestTemplateFinder(t *testing.T) {
 	dischargeEventType := "ADT^A03"
 
 	var tests = []struct {
-		description	string
-		input		string
-		expected	string
+		description string
+		input       string
+		expected    string
 	}{
 		{"Should Return Admit Event Based Template", "admit", admitEventType},
 		{"Should Return Discharge Event Based Template", "discharge", dischargeEventType},
@@ -74,10 +73,10 @@ func TestTemplateMapper(t *testing.T) {
 	testTemplate := templates.SimpleHl7Info()
 
 	var tests = []struct {
-		description	string
-		patient		*random.Patient
-		template	[]byte
-		expected	string
+		description string
+		patient     *random.Patient
+		template    []byte
+		expected    string
 	}{
 		{"Should Return Patient Info Mapped to HL7 template", testPatient, testTemplate, "John"},
 		{"Shoule Return the Right Template", testPatient, testTemplate, "ADT^A01"},

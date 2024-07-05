@@ -3,13 +3,13 @@ package network
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"net"
 	"os"
-	"io"
 )
 
 func SendClient(ip string, port string, data string) error {
-	
+
 	serverAddr := ip + ":" + port
 
 	conn, err := net.Dial("tcp", serverAddr)
@@ -29,7 +29,7 @@ func SendClient(ip string, port string, data string) error {
 }
 
 func RequestHandler(conn net.Conn) {
-	
+
 	defer conn.Close()
 
 	reader := bufio.NewReader(conn)
@@ -45,7 +45,7 @@ func RequestHandler(conn net.Conn) {
 }
 
 func ListenClient(port string) error {
-	
+
 	ln, err := net.Listen("tcp", port)
 	if err != nil {
 		return err

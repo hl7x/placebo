@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"placebo/pkg/event"
 	"placebo/pkg/random"
 	"placebo/pkg/templates"
-	"placebo/pkg/event"
 	"strings"
 	"testing"
 	"time"
@@ -26,7 +26,7 @@ func TestCreateCSV(t *testing.T) {
 	examplePatient1 := &random.Patient{
 		FirstName:      "Bill",
 		LastName:       "Test",
-		MRN:            123,
+		MRN:            "123",
 		EncounterId:    123,
 		Phone:          "0000000",
 		DOB:            "00/00/0000",
@@ -38,7 +38,7 @@ func TestCreateCSV(t *testing.T) {
 	examplePatient2 := &random.Patient{
 		FirstName:      "Jill",
 		LastName:       "Test",
-		MRN:            123,
+		MRN:            "123",
 		EncounterId:    123,
 		Phone:          "0000000",
 		DOB:            "00/00/0000",
@@ -105,16 +105,15 @@ func TestCreateHl7(t *testing.T) {
 	examplePatient := &random.Patient{
 		FirstName:      "Bill",
 		LastName:       "Test",
-		MRN:            123,
+		MRN:            "123",
 		EncounterId:    123,
 		Phone:          "0000000",
 		DOB:            "00/00/0000",
 		PatientAddress: &random.Address{},
 		ArrivalDate:    "00/00/0000",
 		DischargeDate:  "00/00/0000",
-		Hl7Info:	&random.Hl7Dates{},
+		Hl7Info:        &random.Hl7Dates{},
 	}
-
 
 	err = CreateHl7(examplePatient)
 	if err != nil {
@@ -139,7 +138,6 @@ func TestCreateHl7(t *testing.T) {
 	hl7Content := string(hl7ContentBytes)
 
 	expectedExamplePatientData := fmt.Sprintf("%v", examplePatient.MRN)
-
 
 	if !strings.Contains(hl7Content, expectedExamplePatientData) {
 		t.Errorf("HL7 content does not contain the expected patient data: %s", expectedExamplePatientData)
@@ -203,7 +201,7 @@ func TestCreateInteractiveHl7(t *testing.T) {
 	patient := &random.Patient{
 		FirstName:      "Bill",
 		LastName:       "Test",
-		MRN:            123,
+		MRN:            "123",
 		EncounterId:    123,
 		Phone:          "0000000",
 		DOB:            "00/00/0000",
@@ -216,10 +214,10 @@ func TestCreateInteractiveHl7(t *testing.T) {
 
 	patientAndTemplate := event.TemplateMapper(patient, template)
 
-	var tests = []struct{
-		description	string
-		input		string
-		expected	string
+	var tests = []struct {
+		description string
+		input       string
+		expected    string
 	}{
 		{"Should Include Return File Path When Patient And Template Are Constructed", patientAndTemplate, Tempdir},
 	}
@@ -259,10 +257,10 @@ func TestReadInteractiveHl7(t *testing.T) {
 		log.Fatal(err)
 	}
 
-	var tests =[]struct {
-		description	string
-		input		string
-		expected	string
+	var tests = []struct {
+		description string
+		input       string
+		expected    string
 	}{
 		{"Should Return the Read File String", f.Name(), "Testing"},
 	}

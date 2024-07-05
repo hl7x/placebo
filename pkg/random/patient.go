@@ -1,12 +1,12 @@
 package random
 
 import (
+	"fmt"
 	"math/rand"
 	"placebo/internal/tools"
-	"time"
-	"fmt"
-	"strings"
 	"strconv"
+	"strings"
+	"time"
 )
 
 type Collection struct {
@@ -14,26 +14,26 @@ type Collection struct {
 }
 
 type Patient struct {
-	FirstName      	string
-	LastName       	string
-	MRN            	int
-	EncounterId    	int
-	Phone          	string
-	DOB            	string
-	Hl7DOB		string
-	PatientAddress 	*Address
-	ArrivalDate    	string
-	DischargeDate  	string
-	Appointment	string
-	Hl7Info		*Hl7Dates
+	FirstName      string
+	LastName       string
+	MRN            string
+	EncounterId    int
+	Phone          string
+	DOB            string
+	Hl7DOB         string
+	PatientAddress *Address
+	ArrivalDate    string
+	DischargeDate  string
+	Appointment    string
+	Hl7Info        *Hl7Dates
 }
 
 type Hl7Dates struct {
-	HL7Arrival	string
-	HL7Discharge	string
-	HL7Event	string
-	HL7DOB		string
-	HL7Appointment	string
+	HL7Arrival     string
+	HL7Discharge   string
+	HL7Event       string
+	HL7DOB         string
+	HL7Appointment string
 }
 
 func NewPatients(max int) Collection {
@@ -89,7 +89,7 @@ func (p *Patient) Mrn() *Patient {
 	rand.Seed(time.Now().UnixNano())
 	randomMrn := rand.Intn(1000000000)
 
-	p.MRN = randomMrn
+	p.MRN = fmt.Sprint(randomMrn)
 
 	return p
 }
@@ -98,7 +98,7 @@ func (p *Patient) EncounterID() *Patient {
 
 	rand.Seed(time.Now().UnixNano())
 	randomEncounterID := rand.Intn(1000000000)
-	
+
 	p.EncounterId = randomEncounterID
 
 	return p
@@ -148,7 +148,7 @@ func (p *Patient) Arrival() *Patient {
 	currentTime := time.Now()
 
 	Arrival := currentTime.AddDate(0, 0, -5)
-	
+
 	p.ArrivalDate = fmt.Sprintf("%v/%v/%v", int(Arrival.Month()), Arrival.Day(), Arrival.Year())
 
 	return p
@@ -176,7 +176,7 @@ func (p *Patient) AppointmentDate() *Patient {
 		fmt.Println(err)
 	}
 
-	if month +1 > 12 {
+	if month+1 > 12 {
 		month = 1
 	} else {
 		month++
@@ -188,7 +188,7 @@ func (p *Patient) AppointmentDate() *Patient {
 }
 
 func EventDate() string {
-	
+
 	currentTime := time.Now()
 
 	time := fmt.Sprintf("%v/%v/%v", int(currentTime.Month()), currentTime.Day(), currentTime.Year())
@@ -198,7 +198,7 @@ func EventDate() string {
 }
 
 func (p *Patient) HL7Info() *Patient {
-	
+
 	p.Hl7Info = HL7DateConstructor(p.ArrivalDate, p.DischargeDate, p.DOB, p.Appointment)
 
 	return p
@@ -217,6 +217,5 @@ func HL7DateConstructor(arrival string, discharge string, dob string, appointmen
 	dates.HL7Appointment = Hl7DateFormatter(appointment)
 
 	return dates
- 
-}
 
+}
