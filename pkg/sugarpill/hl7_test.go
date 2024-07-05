@@ -116,6 +116,33 @@ func TestNewEVNSegment(t *testing.T) {
 	}
 }
 
+func TestNewMSHSegment(t *testing.T) {
+
+	patient1 := sugarpillPatients.Patients[0]
+	//patient2 := sugarpillPatients.Patients[1]
+	//patient3 := sugarpillPatients.Patients[2]
+
+	patient1.Hl7Info.HL7Event = "07041774"
+
+	var tests = []struct{
+		description	string
+		input		*random.Patient
+		expected	interface{}
+	}{
+		{"MSH Should Reflect The Patient Timestamp of the Message Event", patient1, "07041774"},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
+			got := NewMSHSegment(tc.input)
+
+			if got.DateTimeOfMessage != tc.expected {
+				t.Fatalf("got %v, expected %v", got.DateTimeOfMessage, tc.expected)
+			}
+		})
+	}
+}
+
 /*
 	other segment functions
 
