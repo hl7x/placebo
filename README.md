@@ -22,7 +22,7 @@ $ sudo ./installer.sh
 
 ## Usage
 
-### Create a CSV File
+### Create a File
 
 To create a CSV file with fake patient data, use the following command:
 
@@ -31,6 +31,12 @@ To create a CSV file with fake patient data, use the following command:
 - This command creates a random CSV file with a fake patient at `/tmp/`.
 - Adding a number to the `csv` command will produce multiple fake patients.
 - Example: `placebo --file csv 4` creates a CSV file with 4 fake patients.
+
+To create a HL7 message file with fake patient data:
+
+    placebo --file hl7
+
+- This command creates a random HL7 file with a fake patient at `/tmp/`.
 
 ### Send HL7 Messages
 
@@ -60,6 +66,7 @@ This command sends an HL7 message that admits and then discharges a patient.
 |Flag | Description | Usage |
 | --- | --- | --- |
 |`last` | Open last sent hl7 message in an interactive prompt. | `placebo --send hl7 last` |
+|`sugarpill` | Construct a hl7 message with assistance using an easy to read interactive prompt. | `placebo --send hl7 sugarpill` |
 
 ### Read HL7 Message
 
