@@ -22,7 +22,7 @@ $ sudo ./installer.sh
 
 ## Usage
 
-### Create a CSV File
+### Create a File
 
 To create a CSV file with fake patient data, use the following command:
 
@@ -32,6 +32,12 @@ To create a CSV file with fake patient data, use the following command:
 - Adding a number to the `csv` command will produce multiple fake patients.
 - Example: `placebo --file csv 4` creates a CSV file with 4 fake patients.
 
+To create a HL7 message file with fake patient data:
+
+    placebo --file hl7
+
+- This command creates a random HL7 file with a fake patient at `/tmp/`.
+
 ### Send HL7 Messages
 
 To send an HL7 message with automatically generated fake patient data, use the `placebo --send hl7` command. This feature supports various healthcare scenarios through different sub-commands.
@@ -39,6 +45,7 @@ To send an HL7 message with automatically generated fake patient data, use the `
     placebo --send hl7 [sub command]
 
 - **Basic Usage**: Sends an HL7 message to the default address `127.0.0.1:9700`.
+    - `placebo --send hl7`
 - **Sub-commands**:
   - `post_admit`: Generates an ADT^A01 event that admits a patient.
     - Usage: `placebo --send hl7 post_admit`
@@ -60,6 +67,7 @@ This command sends an HL7 message that admits and then discharges a patient.
 |Flag | Description | Usage |
 | --- | --- | --- |
 |`last` | Open last sent hl7 message in an interactive prompt. | `placebo --send hl7 last` |
+|`sugarpill` | Construct a hl7 message with assistance using an easy to read interactive prompt. | `placebo --send hl7 sugarpill` |
 
 ### Read HL7 Message
 
@@ -75,6 +83,7 @@ MSH|^~\&|SENDAPP|PLACEBO|RECVAPP|LAB|202405290800||ADT^A01|12345|P|2.3|
 ```
 
 `placebo --read sugarpill hl7_message.txt` output:
+
 ```
 {
  "MSH": {
@@ -85,7 +94,10 @@ MSH|^~\&|SENDAPP|PLACEBO|RECVAPP|LAB|202405290800||ADT^A01|12345|P|2.3|
   "ReceivingFacility": "LAB",
   "DateTimeOfMessage": "202405290800",
   "Security": "",
-  "MessageType": "ADT^A01",
+  "MessageType": {
+   "MessageCode": "ADT",
+   "TriggerEvent": "A01"
+  },
   "MessageControlID": "12345",
   "ProcessingID": "P",
   "VersionID": "2.3"
