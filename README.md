@@ -45,6 +45,7 @@ To send an HL7 message with automatically generated fake patient data, use the `
     placebo --send hl7 [sub command]
 
 - **Basic Usage**: Sends an HL7 message to the default address `127.0.0.1:9700`.
+    - `placebo --send hl7`
 - **Sub-commands**:
   - `post_admit`: Generates an ADT^A01 event that admits a patient.
     - Usage: `placebo --send hl7 post_admit`
@@ -82,6 +83,7 @@ MSH|^~\&|SENDAPP|PLACEBO|RECVAPP|LAB|202405290800||ADT^A01|12345|P|2.3|
 ```
 
 `placebo --read sugarpill hl7_message.txt` output:
+
 ```
 {
  "MSH": {
@@ -92,7 +94,10 @@ MSH|^~\&|SENDAPP|PLACEBO|RECVAPP|LAB|202405290800||ADT^A01|12345|P|2.3|
   "ReceivingFacility": "LAB",
   "DateTimeOfMessage": "202405290800",
   "Security": "",
-  "MessageType": "ADT^A01",
+  "MessageType": {
+   "MessageCode": "ADT",
+   "TriggerEvent": "A01"
+  },
   "MessageControlID": "12345",
   "ProcessingID": "P",
   "VersionID": "2.3"
