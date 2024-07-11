@@ -90,9 +90,6 @@ MSH|^~\&|SENDAPP|PLACEBO|RECVAPP|LAB|202405290800||ADT^A01|12345|P|2.3|
   "ProcessingID": "P",
   "VersionID": "2.3"
  },
- "EVN": null,
- "PID": null,
- "PV1": null
 }
 ```
 
