@@ -328,9 +328,9 @@ func ReadHL7(content string) string {
 
 	messageFmt, _ := json.MarshalIndent(message, "", " ")
 
-	noNull := SanitizeLines(string(messageFmt))
+	jsonMessage := SanitizeLines(string(messageFmt))
 
-	return noNull
+	return jsonMessage
 
 }
 
