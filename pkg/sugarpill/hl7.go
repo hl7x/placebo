@@ -328,7 +328,9 @@ func ReadHL7(content string) string {
 
 	messageFmt, _ := json.MarshalIndent(message, "", " ")
 
-	return string(messageFmt)
+	jsonMessage := SanitizeLines(string(messageFmt))
+
+	return jsonMessage
 
 }
 
@@ -384,4 +386,22 @@ func LinesFromFile(s string) []string {
 	splitLines := strings.Split(s, "\n")
 
 	return splitLines
+}
+
+// Remove 'null' segments for easier JSON display
+func SanitizeLines(lines string) string {
+	split := strings.Split(lines, "\n")
+
+	var newLines []string
+
+	for _, line := range split {
+		if !strings.Contains(line, ": null") {
+			newLines = append(newLines, line)
+		}
+	}
+	
+	join := strings.Join(newLines, "\n")
+	
+	return join
+
 }
