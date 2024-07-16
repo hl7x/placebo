@@ -65,13 +65,13 @@ func TestNewPIDSegment(t *testing.T) {
 	patient3.MRN = ""
 
 	var tests = []struct {
-		description	string
-		input 		*random.Patient
-		expected	interface{}
+		description string
+		input       *random.Patient
+		expected    interface{}
 	}{
 		{"PID MRN String Should Reflect the Same From the Patient", patient1, "MRN000001"},
 		{"PID MRN STring Should Reflect the Only Letter String From Patient", patient2, "EEEEEEE"},
-		{"PID MRN String Should Reflect empty if Patient MRN is empty", patient3 , ""},
+		{"PID MRN String Should Reflect empty if Patient MRN is empty", patient3, ""},
 	}
 
 	for _, tc := range tests {
@@ -95,10 +95,10 @@ func TestNewEVNSegment(t *testing.T) {
 	patient2.Hl7Info.HL7Event = "07/04/1776"
 	patient3.Hl7Info.HL7Event = ""
 
-	var tests = []struct{
-		description	string
-		input		*random.Patient
-		expected 	interface{}
+	var tests = []struct {
+		description string
+		input       *random.Patient
+		expected    interface{}
 	}{
 		{"EVN Timestamp Should Reflect Patient Event Time", patient1, "01012001"},
 		{"EVN Alternate Timestamp Format Should Still Appear", patient2, "07/04/1776"},
@@ -124,10 +124,10 @@ func TestNewMSHSegment(t *testing.T) {
 
 	patient1.Hl7Info.HL7Event = "07041774"
 
-	var tests = []struct{
-		description	string
-		input		*random.Patient
-		expected	interface{}
+	var tests = []struct {
+		description string
+		input       *random.Patient
+		expected    interface{}
 	}{
 		{"MSH Should Reflect The Patient Timestamp of the Message Event", patient1, "07041774"},
 	}
