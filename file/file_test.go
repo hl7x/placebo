@@ -51,7 +51,7 @@ func TestCreateCSV(t *testing.T) {
 		Patients: []*random.Patient{examplePatient1, examplePatient2},
 	}
 
-	err = CreateCSV(mockPatients)
+	_, err = CreateCSV(mockPatients)
 	if err != nil {
 		t.Errorf("Expected no error, got %v", err)
 	}
