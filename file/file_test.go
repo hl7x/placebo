@@ -115,7 +115,7 @@ func TestCreateHl7(t *testing.T) {
 		Hl7Info:        &random.Hl7Dates{},
 	}
 
-	err = CreateHl7(examplePatient)
+	_, err = CreateHl7(examplePatient)
 	if err != nil {
 		t.Errorf("Expected no error, got %v", err)
 	}
