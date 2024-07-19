@@ -42,7 +42,7 @@ func CreateCSV(patients random.Collection) (string, error) {
 
 }
 
-func CreateHl7(patient *random.Patient) error {
+func CreateHl7(patient *random.Patient) (string, error) {
 
 	hl7File := Tempdir + Hl7FileName()
 
@@ -50,20 +50,20 @@ func CreateHl7(patient *random.Patient) error {
 
 	t, err := template.New("txt").Parse(string(fileText))
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	file, err := os.Create(hl7File)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	err = t.Execute(file, patient)
 	if err != nil {
-		return err
+		return "", err
 	}
 
-	return nil
+	return hl7File, nil
 
 }
 
