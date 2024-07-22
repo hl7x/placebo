@@ -51,7 +51,7 @@ func TestCreateCSV(t *testing.T) {
 		Patients: []*random.Patient{examplePatient1, examplePatient2},
 	}
 
-	_, err = CreateCSV(mockPatients)
+	file, err := CreateCSV(mockPatients)
 	if err != nil {
 		t.Errorf("Expected no error, got %v", err)
 	}
@@ -66,6 +66,11 @@ func TestCreateCSV(t *testing.T) {
 	}
 
 	csvFilePath := Tempdir + files[0].Name()
+
+	if file != csvFilePath {
+		t.Fatalf("Expected %v, got %v", csvFilePath, file)
+	}
+
 	csvContentBytes, err := os.ReadFile(csvFilePath)
 	if err != nil {
 		t.Fatal("Failed to read CSV file:", err)
@@ -115,7 +120,7 @@ func TestCreateHl7(t *testing.T) {
 		Hl7Info:        &random.Hl7Dates{},
 	}
 
-	_, err = CreateHl7(examplePatient)
+	file, err := CreateHl7(examplePatient)
 	if err != nil {
 		t.Errorf("Expected no error, got %v", err)
 	}
@@ -130,6 +135,11 @@ func TestCreateHl7(t *testing.T) {
 	}
 
 	hl7FilePath := Tempdir + files[0].Name()
+
+	if file != hl7FilePath {
+		t.Fatalf("Expected File: %v, got %v", hl7FilePath, file)
+	}
+
 	hl7ContentBytes, err := os.ReadFile(hl7FilePath)
 	if err != nil {
 		t.Fatal("Failed to read HL7 file:", err)
