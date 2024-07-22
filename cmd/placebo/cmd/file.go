@@ -4,6 +4,7 @@ import (
 	"errors"
 	"os"
 	"strconv"
+	"fmt"
 
 	"placebo/file"
 	"placebo/pkg/random"
@@ -20,10 +21,12 @@ func File(f string) error {
 
 		if len(command) == 0 {
 			patients := random.NewPatients(1)
-			err := file.CreateCSV(patients)
+			file, err := file.CreateCSV(patients)
 			if err != nil {
 				return err
 			}
+
+			fmt.Printf("File Created: %v\n", file)
 			return nil
 		}
 
@@ -36,10 +39,12 @@ func File(f string) error {
 
 		if amount > 0 {
 			patients := random.NewPatients(amount)
-			err := file.CreateCSV(patients)
+			file, err := file.CreateCSV(patients)
 			if err != nil {
 				return err
 			}
+
+			fmt.Printf("File Created: %v\n", file)
 			return nil
 		} else {
 
@@ -47,10 +52,13 @@ func File(f string) error {
 		}
 	case "hl7":
 		patient := random.NewPatient()
-		err := file.CreateHl7(patient)
+		file, err := file.CreateHl7(patient)
 		if err != nil {
 			return err
 		}
+
+		fmt.Printf("File Created: %v\n", file)
+
 		return nil
 	default:
 		return errors.New("Command Not Found.")
