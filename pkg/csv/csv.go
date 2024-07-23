@@ -1,0 +1,54 @@
+package csv
+
+import (
+	"reflect"
+	
+	"placebo/pkg/random"
+)
+
+// Build a CSV file from patient data
+func Builder(p *random.Collection, d string) (string, error) {
+
+	err :=  delimiterValidation(d)
+	if err != nil {
+		return "", err
+	}
+
+	data, err := DataProcess(p)
+	if err != nil {
+		return "", err
+	}
+
+	attached := strings.Join(data, d)
+
+	return attached, nil
+
+}
+
+// Abstract the patient data into a slice of collected strings through iterrating
+func DataProcess(p *random.Collection) ([]string, error) {
+
+	leadingPatient := p[0]
+
+	header, err := FieldExtraction(leadingPatient)
+
+}
+
+func FieldExtraction(v interface{}) []string {
+}
+
+// Check the provided delimiter. Private.
+func delimiterValidation(d string) error {
+	
+	switch d {
+	case "|":
+		nil
+	case ",":
+		nil
+	default:
+		errors.New("Delimiter Format Not Supported.")
+	}
+
+	return nil
+
+}
