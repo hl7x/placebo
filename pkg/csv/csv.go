@@ -35,6 +35,32 @@ func DataProcess(p *random.Collection) ([]string, error) {
 }
 
 func FieldExtraction(v interface{}) []string {
+	var fields []string
+	t := reflect.TypeOf(v)
+
+	if t.Kind() == reflect.Ptr {
+		t = t.Elem()
+	}
+
+	for i := 0; i < t.NumField(); i++ {
+		field := t.Field(i)
+		fieldType := field.Type
+
+		if fieldType.Kind() == reflect.Ptr {
+			fieldType = fieldType.Elem()
+		}
+
+		if fieldType.Kind() == reflect.Struct {
+			nestedFields := FieldExtraction(reflect.New(fieldType).Elem().Interface())
+			for _, nestedField := range nestedFields {
+				fields = append(fields, nestedField)
+			}
+		} else {
+			fields = append(fields, field.Name)
+		}
+	}
+
+	return fields
 }
 
 // Check the provided delimiter. Private.
