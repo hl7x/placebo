@@ -30,10 +30,25 @@ func DataProcess(p *random.Collection) ([]string, error) {
 
 	leadingPatient := p[0]
 
-	header, err := FieldExtraction(leadingPatient)
+	header := FieldExtraction(leadingPatient)
 
+	var collate []string
+	for _, v := range p {
+		body := ValueExtraction(v)
+		collate = append(collate, body)
+	}
+
+	header = append(header, collate)
+
+	return header, nil
 }
 
+// TODO: Function to return values from a provided struct
+func ValueExtraction(v interface{}) []string {
+	//here
+}
+
+// Return the Fields Associated with the Provided Struct
 func FieldExtraction(v interface{}) []string {
 	var fields []string
 	t := reflect.TypeOf(v)
@@ -59,6 +74,8 @@ func FieldExtraction(v interface{}) []string {
 			fields = append(fields, field.Name)
 		}
 	}
+
+	fields = append(fields, "\n")
 
 	return fields
 }
