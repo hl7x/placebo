@@ -82,7 +82,8 @@ func FieldExtraction(v interface{}) []string {
 
 // Check the provided delimiter. Private.
 func delimiterValidation(d string) error {
-	
+
+	// switch to make any future editions easier to add.
 	switch d {
 	case "|":
 		nil
