@@ -2,6 +2,7 @@ package csv
 
 import (
 	"testing"
+	"errors"
 )
 
 func TestdelimiterValidation(t *testing.T) {

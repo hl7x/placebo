@@ -2,6 +2,8 @@ package csv
 
 import (
 	"reflect"
+	"strings"
+	"errors"
 	
 	"placebo/pkg/random"
 )
@@ -28,17 +30,18 @@ func Builder(p *random.Collection, d string) (string, error) {
 // Abstract the patient data into a slice of collected strings through iterrating
 func DataProcess(p *random.Collection) ([]string, error) {
 
-	leadingPatient := p[0]
+	leadingPatient := p.Patients[0]
+	allPatients := p.Patients
 
 	header := FieldExtraction(leadingPatient)
 
 	var collate []string
-	for _, v := range p {
+	for _, v := range allPatients {
 		body := ValueExtraction(v)
-		collate = append(collate, body)
+		collate = append(collate, body...)
 	}
 
-	header = append(header, collate)
+	header = append(header, collate...)
 
 	return header, nil
 }
@@ -86,11 +89,12 @@ func delimiterValidation(d string) error {
 	// switch to make any future editions easier to add.
 	switch d {
 	case "|":
-		nil
+		return nil
 	case ",":
-		nil
+		return nil
 	default:
-		errors.New("Delimiter Format Not Supported.")
+		err := errors.New("Delimiter Format Not Supported.")
+		return err
 	}
 
 	return nil
