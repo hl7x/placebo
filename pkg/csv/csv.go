@@ -31,10 +31,10 @@ func Builder(p *random.Collection, d string) (string, error) {
 func DataProcess(p *random.Collection) ([]string, error) {
 
 	leadingPatient := p.Patients[0]
-	allPatients := p.Patients
+//	allPatients := p.Patients
 
 	header := FieldExtraction(leadingPatient)
-
+/*
 	var collate []string
 	for _, v := range allPatients {
 		body := ValueExtraction(v)
@@ -42,14 +42,16 @@ func DataProcess(p *random.Collection) ([]string, error) {
 	}
 
 	header = append(header, collate...)
-
+*/
 	return header, nil
 }
 
+/*
 // TODO: Function to return values from a provided struct
 func ValueExtraction(v interface{}) []string {
-	//here
+	return
 }
+*/
 
 // Return the Fields Associated with the Provided Struct
 func FieldExtraction(v interface{}) []string {
