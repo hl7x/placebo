@@ -9,6 +9,7 @@ import (
 
 	"placebo/pkg/random"
 	"placebo/pkg/templates"
+	"placebo/pkg/csv"
 )
 
 var Tempdir = "/tmp/"
@@ -20,6 +21,14 @@ func CreateCSV(patients random.Collection) (string, error) {
 
 	csvHeaders := templates.ConstructCSVFileHeaders()
 	patientTemplateActions := templates.CSVPatientInfo()
+
+	//Test new format
+	test, err := csv.Builder(&patients, ",")
+	if err != nil {
+		fmt.Println(err)
+	}
+	
+	fmt.Printf("Test CSV: %v\n", test)
 
 	fileText := append(csvHeaders, patientTemplateActions...)
 

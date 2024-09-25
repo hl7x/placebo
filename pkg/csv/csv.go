@@ -80,8 +80,6 @@ func FieldExtraction(v interface{}) []string {
 		}
 	}
 
-	fields = append(fields, "\n")
-
 	return fields
 }
 
