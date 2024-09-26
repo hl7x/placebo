@@ -50,8 +50,6 @@ func DataProcess(p *random.Collection, d string) (string, error) {
 	return result, nil
 }
 
-
-// TODO: Function to return values from a provided struct
 func ValueExtraction(v interface{}) []string {
 	val := reflect.ValueOf(v)
 	if val.Kind() == reflect.Ptr {
@@ -77,31 +75,12 @@ func ValueExtraction(v interface{}) []string {
 			field = field.Elem()
 		}
 
-		// Handle nested structs
-		if field.Kind() == reflect.Struct {
-			nestedFields := make([]string, 0, field.NumField())
-			for j := 0; j < field.NumField(); j++ {
-				nestedField := field.Field(j)
-
-				// Again, check for valid field and nil pointers
-				if !nestedField.IsValid() {
-					nestedFields = append(nestedFields, "")
-					continue
-				}
-				if nestedField.Kind() == reflect.Ptr {
-					if nestedField.IsNil() {
-						nestedFields = append(nestedFields, "")
-						continue
-					}
-					nestedField = nestedField.Elem()
-				}
-
-				// Convert field to string
-				nestedValue := fmt.Sprintf("%v", nestedField.Interface())
-				nestedFields = append(nestedFields, nestedValue)
-			}
-			fields = append(fields, strings.Join(nestedFields, ","))
-		} else {
+		switch field.Kind() {
+		case reflect.Struct:
+			// Recursively extract fields from nested struct
+			nestedFields := ValueExtraction(field.Interface())
+			fields = append(fields, nestedFields...)
+		default:
 			// Handle non-struct fields
 			fieldValue := fmt.Sprintf("%v", field.Interface())
 			fields = append(fields, fieldValue)

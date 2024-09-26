@@ -30,7 +30,7 @@ func TestCreateCSV(t *testing.T) {
 		EncounterId:    123,
 		Phone:          "0000000",
 		DOB:            "00/00/0000",
-		PatientAddress: &random.Address{},
+		PatientAddress: &random.Address{RegionInfo: &random.Region{}},
 		ArrivalDate:    "00/00/0000",
 		DischargeDate:  "00/00/0000",
 	}
@@ -42,7 +42,7 @@ func TestCreateCSV(t *testing.T) {
 		EncounterId:    123,
 		Phone:          "0000000",
 		DOB:            "00/00/0000",
-		PatientAddress: &random.Address{},
+		PatientAddress: &random.Address{RegionInfo: &random.Region{}},
 		ArrivalDate:    "00/00/0000",
 		DischargeDate:  "00/00/0000",
 	}
@@ -78,20 +78,20 @@ func TestCreateCSV(t *testing.T) {
 
 	csvContent := string(csvContentBytes)
 
-	expectedHeaders := "PatientMRN,PatientEncounterId,PatientFirstName,PatientLastName,PatientDOB,PatientGender,PatientAddress,PatientCity,PatientState,PatientPostCode,PatientCountry,PatientArrivalDate,PatientArrivalTime,DepartmentReferenceId,PatientPhonePrimary,PrimaryLanguage,VisitProvider,AppointmentBeginDate,AppointmentStatus,AltID"
-	expectedExamplePatient1Data := fmt.Sprintf("%v,%v,%v", examplePatient1.MRN, examplePatient1.EncounterId, examplePatient1.FirstName)
-	expectedExamplePatient2Data := fmt.Sprintf("%v,%v,%v", examplePatient2.MRN, examplePatient2.EncounterId, examplePatient2.FirstName)
+	expectedHeaders := "FirstName,LastName,MRN,EncounterId,Phone,DOB,Hl7DOB,Street,StructureNumber,State,City,PostalCode,ArrivalDate,DischargeDate,Appointment,HL7Arrival,HL7Discharge,HL7Event,HL7DOB,HL7Appointment"
+	expectedExamplePatient1Data := fmt.Sprintf("%v,%v,%v", examplePatient1.FirstName, examplePatient1.LastName, examplePatient1.MRN)
+	expectedExamplePatient2Data := fmt.Sprintf("%v,%v,%v", examplePatient2.FirstName, examplePatient2.LastName, examplePatient2.MRN)
 
 	if !strings.Contains(csvContent, expectedHeaders) {
-		t.Errorf("CSV content does not contain the expected headers: %s", expectedHeaders)
+		t.Errorf("%v content does not contain the expected headers: %s", csvContent, expectedHeaders)
 	}
 
 	if !strings.Contains(csvContent, expectedExamplePatient1Data) {
-		t.Errorf("CSV content does not contain the expected patient data: %s", expectedExamplePatient1Data)
+		t.Errorf("%v content does not contain the expected patient data: %s", csvContent, expectedExamplePatient1Data)
 	}
 
 	if !strings.Contains(csvContent, expectedExamplePatient2Data) {
-		t.Errorf("CSV content does not contain the expected patient data: %s", expectedExamplePatient2Data)
+		t.Errorf("%v content does not contain the expected patient data: %s", csvContent, expectedExamplePatient2Data)
 	}
 
 }
@@ -114,7 +114,7 @@ func TestCreateHl7(t *testing.T) {
 		EncounterId:    123,
 		Phone:          "0000000",
 		DOB:            "00/00/0000",
-		PatientAddress: &random.Address{},
+		PatientAddress: &random.Address{RegionInfo: &random.Region{}},
 		ArrivalDate:    "00/00/0000",
 		DischargeDate:  "00/00/0000",
 		Hl7Info:        &random.Hl7Dates{},
@@ -215,7 +215,7 @@ func TestCreateInteractiveHl7(t *testing.T) {
 		EncounterId:    123,
 		Phone:          "0000000",
 		DOB:            "00/00/0000",
-		PatientAddress: &random.Address{},
+		PatientAddress: &random.Address{RegionInfo: &random.Region{}},
 		ArrivalDate:    "00/00/0000",
 		DischargeDate:  "00/00/0000",
 	}
