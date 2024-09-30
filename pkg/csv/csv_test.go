@@ -89,14 +89,15 @@ func TestBuilder(t *testing.T) {
 	var tests =  []struct{
 		description	string
 		input		*random.Collection
+		delimiter	string
 		expected	string
 	}{
-		{"Built out struct to csv", testCollection, "John,Test,000001"},
+		{"Built out struct to csv", testCollection, ",", "John,Test,000001"},
 	}
 
 	for _, tc := range tests {
 		t.Run(tc.description, func(t *testing.T) {
-			got, _ := Builder(tc.input, ",")
+			got, _ := Builder(tc.input, tc.delimiter)
 
 			if !strings.Contains(got, tc.expected) {
 				t.Fatalf("Got %v, expected to contain %v", got, tc.expected)
@@ -105,5 +106,82 @@ func TestBuilder(t *testing.T) {
 	}
 }
 
+func TestDataProcess(t *testing.T) {
 
+	testCollection := csvPatients
 
+	var tests = []struct{
+		description	string
+		input		*random.Collection
+		delimiter	string
+		expected	string
+	}{
+		{"Process out header and body from struct", testCollection, ",", "John,Test,000001"},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
+
+			got, _ := DataProcess(tc.input, tc.delimiter)
+
+			if !strings.Contains(got, tc.expected) {
+				t.Fatalf("Got %v, expected to contain %v", got, tc.expected)
+			}
+		})
+	}
+}
+
+func TestValueExtration(t *testing.T) {
+
+	testPatient := csvPatients.Patients[0]
+
+	slice := []string{"John", "Test", "000001"}
+
+	var tests = []struct{
+		description	string
+		input		*random.Patient
+		expected	[]string
+	}{
+		{"Struct input returns string of the associated values", testPatient, slice},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
+			got := ValueExtraction(tc.input)
+
+			// iterate over the returned slice to match the expected
+			for i, s := range tc.expected {
+				if !strings.Contains(s, got[i]) {
+					t.Fatalf("got %v, expected to match %v", got[i], s)
+				}
+			}
+		})
+	}
+}
+
+func TestFieldExtraction(t *testing.T) {
+
+	testPatient := csvPatients.Patients[0]
+
+	slice := []string{"FirstName", "LastName", "MRN"}
+
+	var tests = []struct{
+		description	string
+		input		*random.Patient
+		expected	[]string
+	}{
+		{"Struct input returns slice of the associated fields", testPatient, slice},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
+			got := FieldExtraction(tc.input)
+
+			for i, s := range tc.expected {
+				if !strings.Contains(s, got[i]) {
+					t.Fatalf("got %v, expected to match %v", got[i], s)
+				}
+			}
+		})
+	}
+}
