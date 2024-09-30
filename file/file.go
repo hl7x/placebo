@@ -7,9 +7,9 @@ import (
 	"text/template"
 	"time"
 
+	"placebo/pkg/csv"
 	"placebo/pkg/random"
 	"placebo/pkg/templates"
-	"placebo/pkg/csv"
 )
 
 var Tempdir = "/tmp/"
@@ -24,7 +24,7 @@ func CreateCSV(patients random.Collection) (string, error) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	
+
 	t, err := template.New("csv").Parse(string(csv))
 	if err != nil {
 		return "", err

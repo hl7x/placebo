@@ -1,9 +1,9 @@
 package csv
 
 import (
-	"testing"
 	"errors"
 	"strings"
+	"testing"
 
 	"placebo/pkg/random"
 )
@@ -11,21 +11,21 @@ import (
 var csvPatients *random.Collection
 
 func TestMain(m *testing.M) {
-	
+
 	testPatients := []*random.Patient{
-		{	
-			FirstName: "John",
-			LastName: "Test",
-			MRN: "000001",
-			EncounterId: 123456,
-			Phone: "123456789",
-			DOB: "08/08/1955",
-			Hl7DOB: "08081955",
+		{
+			FirstName:      "John",
+			LastName:       "Test",
+			MRN:            "000001",
+			EncounterId:    123456,
+			Phone:          "123456789",
+			DOB:            "08/08/1955",
+			Hl7DOB:         "08081955",
 			PatientAddress: &random.Address{RegionInfo: &random.Region{}},
-			ArrivalDate: "08/08/2024",
-			DischargeDate: "08/09/2024",
-			Appointment: "08/08/2024",
-			Hl7Info: &random.Hl7Dates{},
+			ArrivalDate:    "08/08/2024",
+			DischargeDate:  "08/09/2024",
+			Appointment:    "08/08/2024",
+			Hl7Info:        &random.Hl7Dates{},
 		},
 	}
 
@@ -36,10 +36,10 @@ func TestMain(m *testing.M) {
 
 func TestdelimiterValidation(t *testing.T) {
 
-	var tests = []struct{
-		description	string
-		input		string
-		expected	error
+	var tests = []struct {
+		description string
+		input       string
+		expected    error
 	}{
 		{"No Error When Proper Delimiter is Provided", ",", nil},
 		{"Other Proper Delimiter Provided And No Error", "|", nil},
@@ -61,11 +61,11 @@ func TestCsvFormatter(t *testing.T) {
 
 	testSlice := []string{"This", "is", "a", "slice"}
 
-	var tests = []struct{
-		description	string
-		input		[]string
-		delimiter	string
-		expected 	string
+	var tests = []struct {
+		description string
+		input       []string
+		delimiter   string
+		expected    string
 	}{
 		{"Join slice with provided delimiter", testSlice, ",", "This,is,a,slice"},
 		{"Join slice with another provided delimiter", testSlice, "|", "This|is|a|slice"},
@@ -86,11 +86,11 @@ func TestBuilder(t *testing.T) {
 
 	testCollection := csvPatients
 
-	var tests =  []struct{
-		description	string
-		input		*random.Collection
-		delimiter	string
-		expected	string
+	var tests = []struct {
+		description string
+		input       *random.Collection
+		delimiter   string
+		expected    string
 	}{
 		{"Built out struct to csv", testCollection, ",", "John,Test,000001"},
 	}
@@ -110,11 +110,11 @@ func TestDataProcess(t *testing.T) {
 
 	testCollection := csvPatients
 
-	var tests = []struct{
-		description	string
-		input		*random.Collection
-		delimiter	string
-		expected	string
+	var tests = []struct {
+		description string
+		input       *random.Collection
+		delimiter   string
+		expected    string
 	}{
 		{"Process out header and body from struct", testCollection, ",", "John,Test,000001"},
 	}
@@ -137,10 +137,10 @@ func TestValueExtration(t *testing.T) {
 
 	slice := []string{"John", "Test", "000001"}
 
-	var tests = []struct{
-		description	string
-		input		*random.Patient
-		expected	[]string
+	var tests = []struct {
+		description string
+		input       *random.Patient
+		expected    []string
 	}{
 		{"Struct input returns string of the associated values", testPatient, slice},
 	}
@@ -165,10 +165,10 @@ func TestFieldExtraction(t *testing.T) {
 
 	slice := []string{"FirstName", "LastName", "MRN"}
 
-	var tests = []struct{
-		description	string
-		input		*random.Patient
-		expected	[]string
+	var tests = []struct {
+		description string
+		input       *random.Patient
+		expected    []string
 	}{
 		{"Struct input returns slice of the associated fields", testPatient, slice},
 	}

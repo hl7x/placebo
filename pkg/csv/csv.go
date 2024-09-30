@@ -1,18 +1,18 @@
 package csv
 
 import (
-	"reflect"
-	"strings"
 	"errors"
 	"fmt"
-	
+	"reflect"
+	"strings"
+
 	"placebo/pkg/random"
 )
 
 // Build a CSV file from patient data
 func Builder(p *random.Collection, d string) (string, error) {
 
-	err :=  delimiterValidation(d)
+	err := delimiterValidation(d)
 	if err != nil {
 		return "", err
 	}
@@ -21,7 +21,6 @@ func Builder(p *random.Collection, d string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-
 
 	return data, nil
 
@@ -43,7 +42,6 @@ func DataProcess(p *random.Collection, d string) (string, error) {
 		bodyFmt := CsvFormatter(body, d)
 		collate = append(collate, bodyFmt)
 	}
-
 
 	result := headerFmt + "\n" + strings.Join(collate, "\n")
 
@@ -117,7 +115,6 @@ func FieldExtraction(v interface{}) []string {
 		}
 	}
 
-
 	return fields
 }
 
@@ -140,7 +137,7 @@ func delimiterValidation(d string) error {
 }
 
 func CsvFormatter(slice []string, d string) string {
-	
+
 	result := strings.Join(slice, d)
 
 	return result
