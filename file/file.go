@@ -7,6 +7,7 @@ import (
 	"text/template"
 	"time"
 
+	"placebo/pkg/csv"
 	"placebo/pkg/random"
 	"placebo/pkg/templates"
 )
@@ -18,12 +19,13 @@ func CreateCSV(patients random.Collection) (string, error) {
 
 	csvFile := Tempdir + CSVFileName()
 
-	csvHeaders := templates.ConstructCSVFileHeaders()
-	patientTemplateActions := templates.CSVPatientInfo()
+	//Test new format
+	csv, err := csv.Builder(&patients, ",")
+	if err != nil {
+		fmt.Println(err)
+	}
 
-	fileText := append(csvHeaders, patientTemplateActions...)
-
-	t, err := template.New("csv").Parse(string(fileText))
+	t, err := template.New("csv").Parse(string(csv))
 	if err != nil {
 		return "", err
 	}

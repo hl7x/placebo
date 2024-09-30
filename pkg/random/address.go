@@ -9,7 +9,7 @@ import (
 type Address struct {
 	Street          string
 	StructureNumber int
-	RegionInfo      Region
+	RegionInfo      *Region
 }
 
 // PostalCode will be added later
@@ -32,7 +32,7 @@ func (p *Patient) NewAddress() *Patient {
 
 func (a *Address) RegionSpecific() *Address {
 
-	r := Region{}
+	r := &Region{}
 	state := State()
 	city := City(state)
 

@@ -2,9 +2,9 @@ package cmd
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"strconv"
-	"fmt"
 
 	"placebo/file"
 	"placebo/pkg/random"
