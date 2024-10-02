@@ -6,9 +6,9 @@ In addition to all of that, it has some robust features that help aid with readi
 
 ## Features
 
-- **CSV File Generation**: Create CSV files with fake patient data.
+- **CSV File Generation**: Create CSV files with automatically generated fake patient data.
 - **HL7 Message Sending**: Send HL7 messages with automatically generated fake patient data.
-- **HL7 Message Reading**: Feed `placebo` a hl7 file and get readible structure of the hl7 message.
+- **HL7 Message Reading**: Feed `placebo` an hl7 file and get readible structure of the hl7 message.
 
 ## Installation
 
