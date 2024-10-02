@@ -22,6 +22,24 @@ $ sudo ./installer.sh
 
 ## Usage
 
+### Generated Header Fields
+|Header | Description |
+| --- | --- |
+*FirstName* | Patient first name |
+*LastName* | Patient last name | 
+*MRN* | Patient Identifier |
+*EncounterId* | Encounter Event Identifier |
+*Phone* | Patient phone number |
+*DOB* | Patient date of birth |
+*Street* | Patient street address |
+*StructureNumber* | Patient address number |
+*State* | Patient address state |
+*City* | Patient address city |
+*PostalCode* | Patient zip code |
+*ArrivalDate* | Patient encounter arrival date |
+*DischargeDate* | Patient encounter discharge date |
+*Appointment* | Patient future appointment date |
+
 ### Create a File
 
 To create a CSV file with fake patient data, use the following command:
