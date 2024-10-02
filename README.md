@@ -23,6 +23,7 @@ $ sudo ./installer.sh
 ## Usage
 
 ### Generated Header Fields
+
 |Header | Description |
 | --- | --- |
 *FirstName* | Patient first name |
@@ -39,6 +40,11 @@ $ sudo ./installer.sh
 *ArrivalDate* | Patient encounter arrival date |
 *DischargeDate* | Patient encounter discharge date |
 *Appointment* | Patient future appointment date |
+
+
+example headers displaying in the file:
+
+`FirstName,LastName,MRN,EncounterId,Phone,DOB,Street,StructureNumber,State,City,PostalCode,ArrivalDate,DischargeDate,Appointment`
 
 ### Create a File
 
