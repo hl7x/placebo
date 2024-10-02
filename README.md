@@ -42,10 +42,6 @@ $ sudo ./installer.sh
 *Appointment* | Patient future appointment date |
 
 
-example headers displaying in the file:
-
-`FirstName,LastName,MRN,EncounterId,Phone,DOB,Street,StructureNumber,State,City,PostalCode,ArrivalDate,DischargeDate,Appointment`
-
 ### Create a File
 
 To create a CSV file with fake patient data, use the following command:
