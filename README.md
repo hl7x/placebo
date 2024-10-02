@@ -104,21 +104,3 @@ MSH|^~\&|SENDAPP|PLACEBO|RECVAPP|LAB|202405290800||ADT^A01|12345|P|2.3|
  },
 }
 ```
-
-
-## Error Handling
-
-If an error occurs during file creation or HL7 message sending, the tool will output an error message.
-
-## Contributing
-
-(Provide instructions for how to contribute to the project, if applicable.)
-
-## License
-
-(Specify the license under which this tool is released.)
-
-## Contact
-
-(Provide contact information or a link to the project repository.)
-
