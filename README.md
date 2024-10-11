@@ -60,7 +60,7 @@ To create a HL7 message file with fake patient data:
 
 ### Send HL7 Messages
 
-<p align="center"> **MSH** | **EVN** | **PID** | **PV1** </p>
+<p align="center"> <b>MSH | EVN | PID | PV1</b> </p>
 
 To send an HL7 message with automatically generated fake patient data, use the `placebo --send hl7` command. This feature supports various healthcare scenarios through different sub-commands.
 
