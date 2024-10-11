@@ -6,9 +6,9 @@ In addition to all of that, it has some robust features that help aid with readi
 
 ## Features
 
-- **CSV File Generation**: Create CSV files with fake patient data.
+- **CSV File Generation**: Create CSV files with automatically generated fake patient data.
 - **HL7 Message Sending**: Send HL7 messages with automatically generated fake patient data.
-- **HL7 Message Reading**: Feed `placebo` a hl7 file and get readible structure of the hl7 message.
+- **HL7 Message Reading**: Feed `placebo` an hl7 file and get readible structure of the hl7 message.
 
 ## Installation
 
@@ -21,6 +21,26 @@ $ sudo ./installer.sh
 ```
 
 ## Usage
+
+### Generated Header Fields
+
+|Header | Description |
+| --- | --- |
+*FirstName* | Patient first name |
+*LastName* | Patient last name | 
+*MRN* | Patient Identifier |
+*EncounterId* | Encounter Event Identifier |
+*Phone* | Patient phone number |
+*DOB* | Patient date of birth |
+*Street* | Patient street address |
+*StructureNumber* | Patient address number |
+*State* | Patient address state |
+*City* | Patient address city |
+*PostalCode* | Patient zip code |
+*ArrivalDate* | Patient encounter arrival date |
+*DischargeDate* | Patient encounter discharge date |
+*Appointment* | Patient future appointment date |
+
 
 ### Create a File
 
@@ -39,6 +59,8 @@ To create a HL7 message file with fake patient data:
 - This command creates a random HL7 file with a fake patient at `/tmp/`.
 
 ### Send HL7 Messages
+
+<p align="center"> <b>MSH | EVN | PID | PV1</b> </p>
 
 To send an HL7 message with automatically generated fake patient data, use the `placebo --send hl7` command. This feature supports various healthcare scenarios through different sub-commands.
 
@@ -104,21 +126,3 @@ MSH|^~\&|SENDAPP|PLACEBO|RECVAPP|LAB|202405290800||ADT^A01|12345|P|2.3|
  },
 }
 ```
-
-
-## Error Handling
-
-If an error occurs during file creation or HL7 message sending, the tool will output an error message.
-
-## Contributing
-
-(Provide instructions for how to contribute to the project, if applicable.)
-
-## License
-
-(Specify the license under which this tool is released.)
-
-## Contact
-
-(Provide contact information or a link to the project repository.)
-
