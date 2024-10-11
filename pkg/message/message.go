@@ -47,7 +47,7 @@ func CreateHL7(v interface{}, segment string) string {
 func MarshallHL7(segments []string, segType interface{}) interface{} {
 
 	if segType == nil {
-		fmt.Println("Failed: Contains Segment Not Supported: ", segType)
+		fmt.Println("Failed: Contains Segment Not Supported.")
 		return nil
 	}
 
