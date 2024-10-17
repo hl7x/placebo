@@ -10,6 +10,11 @@ import (
 
 /* Build HL7 message based on certain medical event for various scenarios */
 
+var MessageTypeCode = map[string]string{
+	"AdmitDischargeTransfer": "ADT",
+	"SchedulingInformationUnsolicited": "SIU",
+}
+
 var EventTypeCode = map[string]string{
 	"admit": "A01",
 	"transfer": "A02",
