@@ -10,6 +10,15 @@ import (
 
 /* Build HL7 message based on certain medical event for various scenarios */
 
+var EventTypeCode = map[string]string{
+	"admit": "A01",
+	"transfer": "A02",
+	"discharge": "A03",
+	"register": "A04",
+	"preadmit": "A05",
+	"referral": "I12",
+}
+
 func Builder(scenario []string) []string {
 
 	var messages []string
