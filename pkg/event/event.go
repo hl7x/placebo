@@ -51,15 +51,15 @@ func NewEvent(p *random.Patient, eventCommand string, messageCommand string) *Ev
 
 	eventPatient := event.EventPatient(p)
 
-	message := eventPatient.MessageCode(messageCommand)
+	message := eventPatient.EventMessageCode(messageCommand)
 
-	messageEventType := message.EventCode(eventCommand)
+	messageEventType := message.TypeEventCode(eventCommand)
 
 	return messageEventType
 }
 
 // MessageCode Setter
-func (e *Event) MessageCode(code string) *Event {
+func (e *Event) EventMessageCode(code string) *Event {
 
 	messageCode := MessageTypeCode[code]
 
@@ -69,7 +69,7 @@ func (e *Event) MessageCode(code string) *Event {
 }
 
 // EventCode Setter
-func (e *Event) EventCode(code string) *Event {
+func (e *Event) TypeEventCode(code string) *Event {
 
 	eventCode := EventTypeCode[code]
 
