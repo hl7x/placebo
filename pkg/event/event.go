@@ -10,6 +10,9 @@ import (
 
 /* Build HL7 message based on certain medical event for various scenarios */
 
+
+// Template approach is depricated and not supported anymore.
+
 type Event struct {
 	MessageCode 	string
 	EventCode	string
@@ -30,18 +33,35 @@ var EventTypeCode = map[string]string{
 	"referral": "I12",
 }
 
-/*
-func Build(eventScenario []string) []string {
+/* TODO: Starting place for event message handling
+func Build(eventScenarios map[string][]string) []string {
 	
 	var messages []string
 	
 	patient := random.NewPatient()
 
-	for _, message := range eventScenario {
-		// process event command to build event
+	for k,v := range eventScenarios {
+		if len(v) > 1 {
+			for _, vv := range codes {
+				event = NewEvent(patient, k, vv)
+				message = EventMessage(event)
+				messages = append(messages, message)
+			}
+		} else if {
+			event := NewEvent(patient, k, v)
+			message := EventMessage(event)
+			messages = append(messages, message)
+		}
 	}
 
 	return messages
+}
+*/
+
+/* TODO: Transform  Event to Message String
+func EventMessage(e *Event) string {
+
+
 }
 */
 
