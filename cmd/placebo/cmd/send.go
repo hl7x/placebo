@@ -125,6 +125,7 @@ func MultiSender(mes []string) error {
 	return nil
 }
 
+// Obsolete: Only works with template use.
 func EventSelector(s string) error {
 
 	dischargeEvent := []string{"admit", "discharge"}
@@ -159,6 +160,13 @@ func EventSelector(s string) error {
 
 	return nil
 }
+
+/*
+
+func EventAndMessage(s []string) error {
+	//map of Event Type with Event Codes
+}
+*/
 
 func InteractivePrompt(filePath string) (string, error) {
 

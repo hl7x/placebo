@@ -19,18 +19,17 @@ type Event struct {
 	Patient		*random.Patient
 }
 
-var MessageTypeCode = map[string]string{
-	"AdmitDischargeTransfer": "ADT",
-	"SchedulingInformationUnsolicited": "SIU",
-}
-
-var EventTypeCode = map[string]string{
-	"admit": "A01",
-	"transfer": "A02",
-	"discharge": "A03",
-	"register": "A04",
-	"preadmit": "A05",
-	"referral": "I12",
+var EventTypeAndMessageCode = map[string]map[string]string{
+	"ADT": {
+		"admit": "A01",
+		"transfer": "A02",
+		"post_discharge": "A03",
+		"register": "A04",
+		"pre_admit": "A05",
+	},
+	"SUI": {
+		"referral": "I12",
+	},
 }
 
 /* TODO: Starting place for event message handling
@@ -65,7 +64,7 @@ func EventMessage(e *Event) string {
 }
 */
 
-func NewEvent(p *random.Patient, eventCommand string, messageCommand string) *Event {
+func NewEvent(p *random.Patient, messageCommand string, eventCommand string) *Event {
 
 	event := Event{}
 
@@ -81,9 +80,7 @@ func NewEvent(p *random.Patient, eventCommand string, messageCommand string) *Ev
 // MessageCode Setter
 func (e *Event) EventMessageCode(code string) *Event {
 
-	messageCode := MessageTypeCode[code]
-
-	e.MessageCode = messageCode
+	e.MessageCode = code
 
 	return e
 }
@@ -91,7 +88,7 @@ func (e *Event) EventMessageCode(code string) *Event {
 // EventCode Setter
 func (e *Event) TypeEventCode(code string) *Event {
 
-	eventCode := EventTypeCode[code]
+	eventCode := EventTypeAndMessageCode[e.MessageCode][code]
 
 	e.EventCode = eventCode
 
