@@ -23,37 +23,29 @@ var EventTypeAndMessageCode = map[string]map[string]string{
 	"ADT": {
 		"admit": "A01",
 		"transfer": "A02",
-		"post_discharge": "A03",
+		"discharge": "A03",
 		"register": "A04",
-		"pre_admit": "A05",
+		"pre-admit": "A05",
 	},
-	"SUI": {
+	"SIU": {
 		"referral": "I12",
 	},
 }
 
 /* TODO: Starting place for event message handling
-func Build(eventScenarios map[string][]string) []string {
-	
-	var messages []string
-	
-	patient := random.NewPatient()
+func Build(eventCode string, eventScenarios []string) []string {
 
-	for k,v := range eventScenarios {
-		if len(v) > 1 {
-			for _, vv := range codes {
-				event = NewEvent(patient, k, vv)
-				message = EventMessage(event)
-				messages = append(messages, message)
-			}
-		} else if {
-			event := NewEvent(patient, k, v)
-			message := EventMessage(event)
-			messages = append(messages, message)
-		}
+	var messages []string
+
+	if len(eventScanarios) > 1 {
+		for _, message := range eventScenarios {
+			event := NewEvent(patient, eventCode, message)
+
+			messages
+	} else {
+		//there
 	}
 
-	return messages
 }
 */
 

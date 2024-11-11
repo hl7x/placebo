@@ -163,8 +163,21 @@ func EventSelector(s string) error {
 
 /*
 
-func EventAndMessage(s []string) error {
-	//map of Event Type with Event Codes
+func EventAndMessage(e string, s string) error {
+
+	if e != nil {
+
+		event := event.EventTypeAndMessageCode[e][s]
+
+		if event != nil {
+
+			event.Build(e, s)
+		} else if {
+			return errors.New()
+		}
+	} else {
+			return errors.New()
+	}
 }
 */
 
