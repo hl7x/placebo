@@ -144,6 +144,24 @@ func TestNewMSHSegment(t *testing.T) {
 }
 
 /*
+func TestNewHL7EventMessage(t *testing.T) {
+
+	patient := sugarpillPatients.Patients[0]
+
+	Type := "ADT"
+
+	var tests = []struct{
+		description	string
+		patient		*random.Patient
+		command		string
+		expected	string
+	}{
+		{"Patient Admit Command", patient, }
+
+/*
+
+/*
+
 	other segment functions
 
 */
