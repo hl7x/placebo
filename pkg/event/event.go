@@ -33,7 +33,7 @@ var EventTypeAndMessageCode = map[string]map[string]string{
 }
 
 /* TODO: Starting place for event message handling
-func Build(eventCode string, eventScenarios []string) []string {
+func Build(eventCode string, eventScenarios string) []string {
 
 	var messages []string
 

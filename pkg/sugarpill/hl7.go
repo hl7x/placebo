@@ -270,6 +270,22 @@ func NewMSHSegment(p *random.Patient) *MSH {
 	return msh
 }
 
+func NewHL7EventMessage(p *random.Patient, t string, e string) string {
+	
+	message := NewHL7Message(p)
+	message.MSH.MessageType.MessageCode = t
+	message.MSH.MessageType.TriggerEvent = e
+
+	message.EVN.EventTypeCode = t
+
+	product := MessageBuilder(message)
+
+	return product
+
+}
+
+
+
 func NewHL7Message(p *random.Patient) *HL7Message {
 
 	message := &HL7Message{
