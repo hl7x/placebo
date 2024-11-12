@@ -88,7 +88,10 @@ func SendHl7Message(f string) error {
 			return nil
 
 		} else {
-			err := EventSelector(command[0])
+			messageType := command[0]
+			triggerType := "ADT"
+
+			err := EventAndMessage(triggerType, messageType)
 			if err != nil {
 				return err
 			}
@@ -161,25 +164,33 @@ func EventSelector(s string) error {
 	return nil
 }
 
-/*
-
 func EventAndMessage(e string, s string) error {
 
-	if e != nil {
+	patient := random.NewPatient()
 
-		event := event.EventTypeAndMessageCode[e][s]
+	if e != "" {
 
-		if event != nil {
+		evt := event.EventTypeAndMessageCode[e][s]
 
-			event.Build(e, s)
-		} else if {
-			return errors.New()
+		if evt != "" {
+
+			evn := event.Build(patient, e, s)
+
+			err := DefaultSend(evn)
+			if err != nil {
+				return err
+			}
+
+			fmt.Printf("HL7 Sent: \n%v\n", evn)
+		} else {
+			return errors.New("Command Not Found.")
 		}
 	} else {
-			return errors.New()
+			return errors.New("Command Not Found.")
 	}
+
+	return nil
 }
-*/
 
 func InteractivePrompt(filePath string) (string, error) {
 

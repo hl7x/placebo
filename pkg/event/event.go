@@ -6,6 +6,7 @@ import (
 
 	"placebo/pkg/random"
 	"placebo/pkg/templates"
+	"placebo/pkg/sugarpill"
 )
 
 /* Build HL7 message based on certain medical event for various scenarios */
@@ -32,22 +33,15 @@ var EventTypeAndMessageCode = map[string]map[string]string{
 	},
 }
 
-/* TODO: Starting place for event message handling
-func Build(eventCode string, eventScenarios string) []string {
+// TODO: Starting place for event message handling
+func Build(patient *random.Patient, e string, t string) string {
 
-	var messages []string
+	mess := EventTypeAndMessageCode[e][t]
+	message := sugarpill.NewHL7EventMessage(patient, e, mess)
 
-	if len(eventScanarios) > 1 {
-		for _, message := range eventScenarios {
-			event := NewEvent(patient, eventCode, message)
-
-			messages
-	} else {
-		//there
-	}
-
+	return message
 }
-*/
+
 
 /* TODO: Transform  Event to Message String
 func EventMessage(e *Event) string {
