@@ -33,7 +33,7 @@ var EventTypeAndMessageCode = map[string]map[string]string{
 	},
 }
 
-// TODO: Starting place for event message handling
+// Starting place for event message handling
 func Build(patient *random.Patient, e string, t string) string {
 
 	mess := EventTypeAndMessageCode[e][t]
@@ -50,6 +50,7 @@ func EventMessage(e *Event) string {
 }
 */
 
+// TODO: Intialize Event object from Patient and Event Commands
 func NewEvent(p *random.Patient, messageCommand string, eventCommand string) *Event {
 
 	event := Event{}
@@ -63,7 +64,7 @@ func NewEvent(p *random.Patient, messageCommand string, eventCommand string) *Ev
 	return messageEventType
 }
 
-// MessageCode Setter
+// TODO: MessageCode Setter
 func (e *Event) EventMessageCode(code string) *Event {
 
 	e.MessageCode = code
@@ -71,7 +72,7 @@ func (e *Event) EventMessageCode(code string) *Event {
 	return e
 }
 
-// EventCode Setter
+// TODO: EventCode Setter
 func (e *Event) TypeEventCode(code string) *Event {
 
 	eventCode := EventTypeAndMessageCode[e.MessageCode][code]
@@ -82,7 +83,7 @@ func (e *Event) TypeEventCode(code string) *Event {
 
 }
 
-// Patient Setter
+// TODO: Patient Setter
 func (e *Event) EventPatient(p *random.Patient) *Event {
 
 	e.Patient = p
