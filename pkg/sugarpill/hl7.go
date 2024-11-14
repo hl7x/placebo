@@ -9,7 +9,7 @@ import (
 )
 
 type MSH struct {
-	Encode               string       `json:Encode`                 // MSH-1
+	Encode               string       `json:Encode`                 // MSH-2
 	SendingApplication   string       `json:"SendingApplication"`   // MSH-3
 	SendingFacility      string       `json:"SendingFacility"`      // MSH-4
 	ReceivingApplication string       `json:"ReceivingApplication"` // MSH-5
@@ -172,6 +172,79 @@ type PV1 struct {
 	VisitIndicator          string           `json:"VisitIndicator"`          // Pv1-51
 }
 
+type OBR struct {
+	SetID			string		`json:"SetID"`			// OBR-1
+	PlacerOrderNumber	*Placer		`json:"PlacerOrderNumber"`	// OBR-2
+	FillerOrderNumber	*Filler		`json:"FillerOrderNumber"`	// OBR-3
+	UniversalServiceID	*ServiceCode	`json:"UniversalService"`	// OBR-4
+	Priority		string		`json:"Priority"`		// OBR-5
+	RequestDate		*OBRDateTime	`json:"Request"`		// OBR-6
+	ObservationDate		*OBRDateTime	`json:"Observation"`		// OBR-7
+	ObservationEndDate	*OBRDateTime	`json:"ObservationEndDate"`	// OBR-8
+	CollectionVolume	*OBRVolume	`json:"CollectionVolume"`	// OBR-9
+	CollectorID		*OBRReceptCode	`json:"Collector"`		// OBR-10
+	SpecimenAction		string		`json:"SpecimenAction"`		// OBR-11
+	DangerCode		*ServiceCode	`json:"ServiceCode"`		// OBR-12
+	ClinicalInfo		string		`json:"ClinicalInfo"`		// OBR-13
+	SpecimenRecivedDate	*OBRDateTime	`json:"SpecimenRecivedDate"`	// OBR-14
+	SpecimenSource		*OBRSource	`json:"SpecimenSource"`		// OBR-15
+	OrderingProvider	*OBRReceptCode	`json:"OrderingProvider"`	// OBR-16
+	CallbackPhone		string		`json:"CallbackPhone"`		// OBR-17
+	PlacerField1		string		`json:"PlacerField1"`		// OBR-18
+	PlacerField2		string		`json:"PlacerField2"`		// OBR-19
+	FillerField1		string		`json:"FillerField1"`		// OBR-20
+	FillerField2		string		`json:"FillerField2"`		// OBR-21
+	ResultReportDate	*OBRDateTime	`json:"ResultReportTime"`	// OBR-22
+
+}
+
+type OBRSource struct {
+	SpecimenSourceCode	string		`json:"SpecimenSourceCode"`	// OBR-15.1
+	Additives		string		`json:"Additives"`		// OBR-15.2
+	FreeText		string		`json:"FreeText"`		// OBR-15.3
+	BodySite		string		`json:"BodySite"`		// OBR-15.4
+	SiteModifier		string		`json:"SiteModifier"`		// OBR-15.5
+}
+
+type OBRReceptCode struct {
+	IDNumber		string		`json:"IDNumber"`		// OBR-10.1
+	FamilyName		string		`json:"FamilyName"`		// OBR-10.2
+	GivenName		string		`json:"GivenName"`		// OBR-10.3
+	MiddleName		string		`json:"MiddleName"`		// OBR-10.4
+	Suffix			string		`json:"Suffix"`			// OBR-10.5
+	Prefix			string		`json:"Prefix"`			// OBR-10.6
+	Degree			string		`json:"Degree"`			// OBR-10.7
+	Source			string		`json:"Source"`			// OBR-10.8
+}
+
+type OBRVolume struct {
+	Quantity		string		`json:"Quantity"`		// OBR-9.1
+	Units			string		`json:"Units"`			// OBR-9.2
+}
+
+type OBRDateTime struct {
+	EventTime		string		`json:"EventTime"`		// OBR-x.1
+	DegreeOfPrecision	string		`json:"DegreeOfPrecision"`	// OBR-x.2
+}
+
+type ServiceCode struct {
+	Identifier		string		`json:"Identifier"`		// OBR-x.1
+	Text			string		`json:"Text"`			// OBR-x.2
+	CodingSystem		string		`json:"CodingSystem"`		// OBR-x.3
+	AlternateIdentifier	string		`json:"AlternateIdentifier"`	// OBR-x.4
+	AlternateText		string		`json:"AlternateText"`		// OBR-x.5
+	AlternateCodingSystem	string		`json:"AlternateCodingSystem"`	// OBR-x.6
+}
+
+type Filler struct {
+	UniqueFillerID		string		`json:"UniqueFillerID"`		// OBR-3.1
+	FillerApplication	string		`json:"FillerApplication"`	// OBR-3.2
+}
+
+type Placer struct {
+	UniquePlacerID		string		`json:"UniquePlacerID"`		// OBR-2.1
+	PlacerApplication	string		`json:"PlacerApplication"`	// OBR-2.2
+}
 type HL7Message struct {
 	MSH *MSH `json:"MSH"`
 	EVN *EVN `json:"EVN"`
@@ -254,7 +327,7 @@ func NewMSHSegment(p *random.Patient) *MSH {
 	}
 
 	msh := &MSH{
-		Encode:               "--",
+		Encode:               "^~\\&",
 		SendingApplication:   "PLACEBO",
 		SendingFacility:      "PLACEBO",
 		ReceivingApplication: "DEMO",
