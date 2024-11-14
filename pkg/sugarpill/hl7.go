@@ -195,7 +195,56 @@ type OBR struct {
 	FillerField1		string		`json:"FillerField1"`		// OBR-20
 	FillerField2		string		`json:"FillerField2"`		// OBR-21
 	ResultReportDate	*OBRDateTime	`json:"ResultReportTime"`	// OBR-22
+	ChargeToPractice	*Charge		`json:"ChargeToPractice"`	// OBR-23
+	DiagnosticService	string		`json:"DiagnosticService"`	// OBR-24
+	ResultStatus		string		`json:"ResultStatus"`		// OBR-25
+	ParentResult		*ParentResultCode		`json:"ParentResult"`		// OBR-26
+	Quantity		*QuantityTiming	`json:"QuantityTiming"`		// OBR-27
+	ResultCopyTo		*OBRReceptCode	`json:"ResultCopyTo"`		// OBR-28
+	ParentNumber		*OBRParentNumber	`json:"ParentNumber"`	// OBR-29
+	TransportationMode	string		`json:"TransportationMode"`	// OBR-30
+	ReasonForStudy		*ServiceCode	`json:"ReasonForStudy"`		// OBR-31
+	PrincipalInterpreter	*Technician	`json:"PrincipalInterpreter"`	// OBR-32
+	AssistantInterpreter	*Technician	`json:"AssistantInterpreter"`	// OBR-33
+	Technician		*Technician	`json:"Technician"`		// OBR-34
+	Transcription		*Technician	`json:"Transcription"`		// OBR-35
+	ScheduledDate		*OBRDateTime	`json:"ScheduledDate"`		// OBR-36
+}
 
+type Technician struct {
+	Technician		string		`json:"Technician"`		// OBR-x.1
+	StartDate		string		`json:"StartDate"`		// OBR-x.2
+	EndDate			string		`json:"EndDate"`		// OBR-x.3
+	Location		string		`json:"Location"`		// OBR-x.4
+}
+
+type OBRParentNumber struct {
+	PlacerOrderNumber	string		`json:"PlacerOrderNumber"`	// OBR-29.1
+	FillerOrderNumber	string		`json:"FillerOrderNumber"`	// OBR-29.2
+}
+
+type QuantityTiming struct {
+	QuantityAmount		string		`json:"QuantityAmount"`		// OBR-27.1
+	Interval		string		`json:"Interval"`		// OBR-27.2
+	Duration		string		`json:"Duration"`		// OBR-27.3
+	StartDate		string		`json:"StartDate"`		// OBR-27.4
+	EndDate			string		`json:"EndDate"`		// OBR-27.5
+	Priority		string		`json:"Priority"`		// OBR-27.6
+	Condition		string		`json:"Condition"`		// OBR-27.7
+	Text			string		`json:"Text"`			// OBR-27.8
+	Conjunction		string		`json:"Conjunction"`		// OBR-27.9
+	OrderSequence		string		`json:"OrderSequence"`		// OBR-27.10
+}
+
+type ParentResultCode struct {
+	ObservationID		string		`json:"ObservationID"`		// OBR-26.1
+	ParentResultSubID	string		`json:"ParentResultSubID"`	// OBR-26.2
+	ObservationResult	string		`json:"ObservationResult"`	// OBR-26.3
+}
+
+type Charge struct {
+	DollarAmount		string		`json:"DollarAmount"`		// OBR-23.1
+	ChargeCode		string		`json:"ChargeCode"`		// OBR-23.2
 }
 
 type OBRSource struct {
@@ -245,11 +294,58 @@ type Placer struct {
 	UniquePlacerID		string		`json:"UniquePlacerID"`		// OBR-2.1
 	PlacerApplication	string		`json:"PlacerApplication"`	// OBR-2.2
 }
+
 type HL7Message struct {
 	MSH *MSH `json:"MSH"`
 	EVN *EVN `json:"EVN"`
 	PID *PID `json:"PID"`
 	PV1 *PV1 `json:"PV1"`
+	OBR *OBR `json:"OBR"`
+}
+
+func NewOBRSegment(p *random.Patient) *OBR {
+
+	obr := &OBR{
+		SetID:               "000002",
+		PlacerOrderNumber:   &Placer{},
+		FillerOrderNumber:   &Filler{},
+		UniversalServiceID:  &ServiceCode{},
+		Priority:            "",
+		RequestDate:         &OBRDateTime{},
+		ObservationDate:     &OBRDateTime{},
+		ObservationEndDate:  &OBRDateTime{},
+		CollectionVolume:    &OBRVolume{},
+		CollectorID:         &OBRReceptCode{},
+		SpecimenAction:      "",
+		DangerCode:          &ServiceCode{},
+		ClinicalInfo:        "",
+		SpecimenRecivedDate: &OBRDateTime{},
+		SpecimenSource:      &OBRSource{},
+		OrderingProvider:    &OBRReceptCode{},
+		CallbackPhone:       "",
+		PlacerField1:        "",
+		PlacerField2:        "",
+		FillerField1:        "",
+		FillerField2:        "",
+		ResultReportDate:    &OBRDateTime{},
+		ChargeToPractice:    &Charge{},
+		DiagnosticService:   "",
+		ResultStatus:        "",
+		ParentResult:        &ParentResultCode{},
+		Quantity:            &QuantityTiming{},
+		ResultCopyTo:        &OBRReceptCode{},
+		ParentNumber:        &OBRParentNumber{},
+		TransportationMode:  "",
+		ReasonForStudy:      &ServiceCode{},
+		PrincipalInterpreter: &Technician{},
+		AssistantInterpreter: &Technician{},
+		Technician:           &Technician{},
+		Transcription:        &Technician{},
+		ScheduledDate:        &OBRDateTime{},
+}
+
+	return obr
+
 }
 
 func NewPV1Segment(p *random.Patient) *PV1 {
@@ -366,6 +462,7 @@ func NewHL7Message(p *random.Patient) *HL7Message {
 		EVN: NewEVNSegment(p),
 		PID: NewPIDSegment(p),
 		PV1: NewPV1Segment(p),
+		OBR: NewOBRSegment(p),
 	}
 
 	return message
@@ -434,6 +531,8 @@ func SegmentFinder(s string) interface{} {
 		return &PID{}
 	case "PV1":
 		return &PV1{}
+	case "OBR":
+		return &OBR{}
 	default:
 		return nil
 	}
@@ -451,6 +550,8 @@ func (msg *HL7Message) SegmentAssigner(s interface{}) *HL7Message {
 		msg.PID = v
 	case *PV1:
 		msg.PV1 = v
+	case *OBR:
+		msg.OBR = v
 	default:
 		return nil
 	}
@@ -464,6 +565,7 @@ func MessageBuilder(msg *HL7Message) string {
 		message.CreateHL7(msg.EVN, "EVN"),
 		message.CreateHL7(msg.PID, "PID"),
 		message.CreateHL7(msg.PV1, "PV1"),
+		message.CreateHL7(msg.OBR, "OBR"),
 	}
 
 	return strings.Join(segments, "\n")
