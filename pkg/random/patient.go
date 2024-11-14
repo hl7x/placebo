@@ -28,6 +28,7 @@ type Patient struct {
 	Hl7Info        *Hl7Dates
 }
 
+// This is a lazy way of handling HL7 structures of dates. This should be handled differently.
 type Hl7Dates struct {
 	HL7Arrival     string
 	HL7Discharge   string

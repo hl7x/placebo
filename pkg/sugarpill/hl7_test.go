@@ -2,6 +2,7 @@ package sugarpill
 
 import (
 	"testing"
+	"strings"
 
 	"placebo/pkg/random"
 )
@@ -143,7 +144,36 @@ func TestNewMSHSegment(t *testing.T) {
 	}
 }
 
+func TestNewHL7EventMessage(t *testing.T) {
+
+	patient := sugarpillPatients.Patients[0]
+
+	eventType := "ADT"
+
+	var tests = []struct{
+		description	string
+		patient		*random.Patient
+		command		string
+		expected	string
+	}{
+		{"Patient Admit Command", patient, "A01", "A01"},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func( t *testing.T) {
+			got := NewHL7EventMessage(patient, eventType, tc.command)
+
+			if !strings.Contains(got, tc.expected) {
+				t.Fatalf("got %v, expected to contain %v", got, tc.expected)
+			}
+		})
+	}
+}
+
+
+
 /*
+
 	other segment functions
 
 */

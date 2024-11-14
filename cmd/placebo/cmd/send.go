@@ -29,10 +29,13 @@ func SendHl7Message(f string) error {
 
 		if len(command) == 0 {
 
-			eventHolder := []string{"admit"}
-			hl7 := event.Builder(eventHolder)
+			triggerType := "admit"
+			messageType := "ADT"
+			patient := random.NewPatient()
 
-			openPath := file.CreateInteractiveHl7(hl7[0])
+			hl7 := event.Build(patient, messageType, triggerType)
+
+			openPath := file.CreateInteractiveHl7(hl7)
 			sent, err := InteractivePrompt(openPath)
 			if err != nil {
 				return err
@@ -88,7 +91,10 @@ func SendHl7Message(f string) error {
 			return nil
 
 		} else {
-			err := EventSelector(command[0])
+			triggerType := command[0]
+			messageType := "ADT"
+
+			err := EventAndMessage(messageType, triggerType)
 			if err != nil {
 				return err
 			}
@@ -125,6 +131,7 @@ func MultiSender(mes []string) error {
 	return nil
 }
 
+// Obsolete: Only works with template use.
 func EventSelector(s string) error {
 
 	dischargeEvent := []string{"admit", "discharge"}
@@ -155,6 +162,34 @@ func EventSelector(s string) error {
 		return sent
 	default:
 		return errors.New("Command Not Found.")
+	}
+
+	return nil
+}
+
+func EventAndMessage(e string, s string) error {
+
+	patient := random.NewPatient()
+
+	if e != "" {
+
+		evt := event.MessageAndTriggerEvent[e][s]
+
+		if evt != "" {
+
+			evn := event.Build(patient, e, s)
+
+			err := DefaultSend(evn)
+			if err != nil {
+				return err
+			}
+
+			fmt.Printf("HL7 Sent: \n%v\n", evn)
+		} else {
+			return errors.New("Command Not Found.")
+		}
+	} else {
+			return errors.New("Command Not Found.")
 	}
 
 	return nil
