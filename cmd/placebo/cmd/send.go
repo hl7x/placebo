@@ -29,10 +29,13 @@ func SendHl7Message(f string) error {
 
 		if len(command) == 0 {
 
-			eventHolder := []string{"admit"}
-			hl7 := event.Builder(eventHolder)
+			triggerType := "admit"
+			messageType := "ADT"
+			patient := random.NewPatient()
 
-			openPath := file.CreateInteractiveHl7(hl7[0])
+			hl7 := event.Build(patient, messageType, triggerType)
+
+			openPath := file.CreateInteractiveHl7(hl7)
 			sent, err := InteractivePrompt(openPath)
 			if err != nil {
 				return err
