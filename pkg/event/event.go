@@ -15,12 +15,12 @@ import (
 // Template approach is depricated and not supported anymore.
 
 type Event struct {
-	MessageCode 	string
-	EventCode	string
+	MessageEvent 	string
+	TriggerEvent	string
 	Patient		*random.Patient
 }
 
-var EventTypeAndMessageCode = map[string]map[string]string{
+var MessageAndTriggerEvent = map[string]map[string]string{
 	"ADT": {
 		"admit": "A01",
 		"transfer": "A02",
@@ -36,7 +36,7 @@ var EventTypeAndMessageCode = map[string]map[string]string{
 // Starting place for event message handling
 func Build(patient *random.Patient, e string, t string) string {
 
-	mess := EventTypeAndMessageCode[e][t]
+	mess := MessageAndTriggerEvent[e][t]
 	message := sugarpill.NewHL7EventMessage(patient, e, mess)
 
 	return message
@@ -57,27 +57,27 @@ func NewEvent(p *random.Patient, messageCommand string, eventCommand string) *Ev
 
 	eventPatient := event.EventPatient(p)
 
-	message := eventPatient.EventMessageCode(messageCommand)
+	message := eventPatient.MessageEventCode(messageCommand)
 
-	messageEventType := message.TypeEventCode(eventCommand)
+	messageEventType := message.TriggerEventCode(eventCommand)
 
 	return messageEventType
 }
 
-// TODO: MessageCode Setter
-func (e *Event) EventMessageCode(code string) *Event {
+// TODO: MessageEvent Setter (ie ADT or SIU)
+func (e *Event) MessageEventCode(code string) *Event {
 
-	e.MessageCode = code
+	e.MessageEvent = code
 
 	return e
 }
 
-// TODO: EventCode Setter
-func (e *Event) TypeEventCode(code string) *Event {
+// TODO: TriggerEvent Setter (ie A01 or A05)
+func (e *Event) TriggerEventCode(code string) *Event {
 
-	eventCode := EventTypeAndMessageCode[e.MessageCode][code]
+	eventCode := MessageAndTriggerEvent[e.MessageEvent][code]
 
-	e.EventCode = eventCode
+	e.TriggerEvent = eventCode
 
 	return e
 

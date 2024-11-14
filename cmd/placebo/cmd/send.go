@@ -88,10 +88,10 @@ func SendHl7Message(f string) error {
 			return nil
 
 		} else {
-			messageType := command[0]
-			triggerType := "ADT"
+			triggerType := command[0]
+			messageType := "ADT"
 
-			err := EventAndMessage(triggerType, messageType)
+			err := EventAndMessage(messageType, triggerType)
 			if err != nil {
 				return err
 			}
@@ -170,7 +170,7 @@ func EventAndMessage(e string, s string) error {
 
 	if e != "" {
 
-		evt := event.EventTypeAndMessageCode[e][s]
+		evt := event.MessageAndTriggerEvent[e][s]
 
 		if evt != "" {
 
