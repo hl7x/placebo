@@ -500,42 +500,84 @@ type HL7Message struct {
 	PID *PID `json:"PID"`
 	PV1 *PV1 `json:"PV1"`
 	PV2 *PV2 `json:"PV2"`
+	OBX *OBX `json:"OBX"`
+	NK1 *NK1 `json:"NK1"`
 	OBR *OBR `json:"OBR"`
+}
+
+func NewOBXSegment(p *random.Patient) *OBX {
+
+
+	obx := &OBX{
+		Units:                         &ServiceCode{},
+		ProducerID:                    &ServiceCode{},
+		ResponsibleObserver:           &XCN{},
+		ObservationMethod:             &ServiceCode{},
+		EquipmentInstanceIdentifier:   &EntityIdentifier{},
+		ObservationSite:               &ServiceCode{},
+		ObservationInstanceIdentifier: &EntityIdentifier{},
+		MoodCode:                      &ServiceCode{},
+		PerformingOrganizationName:    &XON{},
+		PerformingOrganizationAddress: &XAD{},
+		PerformingOrganizationMedicalDirector: &XCN{},
+	}
+
+
+	return obx
+}
+
+func NewNK1Segment(P *random.Patient) *NK1 {
+
+	nk1 := &NK1{
+		Name:                              &XPN{},
+		Relationship:                      &ServiceCode{},
+		Address:                           &XAD{},
+		PhoneNumber:                       &XTN{},
+		BusinessPhoneNumber:               &XTN{},
+		ContactRole:                       &ServiceCode{},
+		NextOfKinAssociatedPartiesJobCode: &JCC{},
+		NextOfKinAssociatedPartiesEmployeeNumber: &CX{},
+		OrganizationName:                  &XON{},
+		MaritalStatus:                     &ServiceCode{},
+		PrimaryLanguage:                   &ServiceCode{},
+		PublicityCode:                     &ServiceCode{},
+		Religion:                          &ServiceCode{},
+		MothersMaidenName:                 &XPN{},
+		Nationality:                       &ServiceCode{},
+		EthnicGroup:                       &ServiceCode{},
+		ContactReason:                     &ServiceCode{},
+		ContactPersonsName:                &XPN{},
+		ContactPersonsTelephoneNumber:     &XTN{},
+		ContactPersonsAddress:             &XAD{},
+		NextOfKinAssociatedPartysIdentifiers: &CX{},
+		Race:                              &ServiceCode{},
+	}
+
+	return nk1
+
 }
 
 func NewOBRSegment(p *random.Patient) *OBR {
 
 	obr := &OBR{
-		SetID:               "000002",
 		PlacerOrderNumber:   &Placer{},
 		FillerOrderNumber:   &Filler{},
 		UniversalServiceID:  &ServiceCode{},
-		Priority:            "",
 		RequestDate:         &OBRDateTime{},
 		ObservationDate:     &OBRDateTime{},
 		ObservationEndDate:  &OBRDateTime{},
 		CollectionVolume:    &OBRVolume{},
 		CollectorID:         &OBRReceptCode{},
-		SpecimenAction:      "",
 		DangerCode:          &ServiceCode{},
-		ClinicalInfo:        "",
 		SpecimenRecivedDate: &OBRDateTime{},
 		SpecimenSource:      &OBRSource{},
 		OrderingProvider:    &OBRReceptCode{},
-		CallbackPhone:       "",
-		PlacerField1:        "",
-		PlacerField2:        "",
-		FillerField1:        "",
-		FillerField2:        "",
 		ResultReportDate:    &OBRDateTime{},
 		ChargeToPractice:    &Charge{},
-		DiagnosticService:   "",
-		ResultStatus:        "",
 		ParentResult:        &ParentResultCode{},
 		Quantity:            &QuantityTiming{},
 		ResultCopyTo:        &OBRReceptCode{},
 		ParentNumber:        &OBRParentNumber{},
-		TransportationMode:  "",
 		ReasonForStudy:      &ServiceCode{},
 		PrincipalInterpreter: &Technician{},
 		AssistantInterpreter: &Technician{},
@@ -678,6 +720,8 @@ func NewHL7Message(p *random.Patient) *HL7Message {
 		PID: NewPIDSegment(p),
 		PV1: NewPV1Segment(p),
 		PV2: NewPV2Segment(p),
+		OBX: NewOBXSegment(p),
+		NK1: NewNK1Segment(p),
 		OBR: NewOBRSegment(p),
 	}
 
@@ -749,6 +793,10 @@ func SegmentFinder(s string) interface{} {
 		return &PV1{}
 	case "PV2":
 		return &PV2{}
+	case "OBX":
+		return &OBX{}
+	case "NK1":
+		return &NK1{}
 	case "OBR":
 		return &OBR{}
 	default:
@@ -770,6 +818,10 @@ func (msg *HL7Message) SegmentAssigner(s interface{}) *HL7Message {
 		msg.PV1 = v
 	case *PV2:
 		msg.PV2 = v
+	case *OBX:
+		msg.OBX = v
+	case *NK1:
+		msg.NK1 = v
 	case *OBR:
 		msg.OBR = v
 	default:
@@ -786,6 +838,8 @@ func MessageBuilder(msg *HL7Message) string {
 		message.CreateHL7(msg.PID, "PID"),
 		message.CreateHL7(msg.PV1, "PV1"),
 		message.CreateHL7(msg.PV2, "PV2"),
+		message.CreateHL7(msg.OBX, "OBX"),
+		message.CreateHL7(msg.NK1, "NK1"),
 		message.CreateHL7(msg.OBR, "OBR"),
 	}
 
