@@ -172,6 +172,83 @@ type PV1 struct {
 	VisitIndicator          string           `json:"VisitIndicator"`          // Pv1-51
 }
 
+type PV2 struct {
+	PriorPendingLocation         *PatientLocation 	`json:"PriorPendingLocation"`         // PV2-1
+	AccommodationCode            *ServiceCode 	`json:"AccommodationCode"`            // PV2-2
+	AdmitReason                  *ServiceCode 	`json:"AdmitReason"`                  // PV2-3
+	TransferReason               *ServiceCode 	`json:"TransferReason"`               // PV2-4
+	PatientValuables             string 	`json:"PatientValuables"`             // PV2-5
+	PatientValuablesLocation     string 	`json:"PatientValuablesLocation"`     // PV2-6
+	VisitUserCode                string 	`json:"VisitUserCode"`                // PV2-7
+	ExpectedAdmitDateTime        string 	`json:"ExpectedAdmitDateTime"`        // PV2-8
+	ExpectedDischargeDateTime    string 	`json:"ExpectedDischargeDateTime"`    // PV2-9
+	EstimatedLengthOfInpatientStay string 	`json:"EstimatedLengthOfInpatientStay"` // PV2-10
+	ActualLengthOfInpatientStay  string 	`json:"ActualLengthOfInpatientStay"`  // PV2-11
+	VisitDescription             string 	`json:"VisitDescription"`             // PV2-12
+	ReferralSourceCode           *ReferralCode 	`json:"ReferralSourceCode"`           // PV2-13
+	PreviousServiceDate          string 	`json:"PreviousServiceDate"`          // PV2-14
+	EmploymentIllnessRelated     string 	`json:"EmploymentIllnessRelated"`     // PV2-15
+	PurgeStatusCode              string 	`json:"PurgeStatusCode"`              // PV2-16
+	PurgeStatusDate              string 	`json:"PurgeStatusDate"`              // PV2-17
+	SpecialProgramCode           string 	`json:"SpecialProgramCode"`           // PV2-18
+	RetentionIndicator           string 	`json:"RetentionIndicator"`           // PV2-19
+	ExpectedNumberOfInsurancePlans string 	`json:"ExpectedNumberOfInsurancePlans"` // PV2-20
+	VisitPublicityCode           string 	`json:"VisitPublicityCode"`           // PV2-21
+	VisitProtectionIndicator     string 	`json:"VisitProtectionIndicator"`     // PV2-22
+	ClinicOrganizationName       *OrganizationCode 	`json:"ClinicOrganizationName"`       // PV2-23
+	PatientStatusCode            string 	`json:"PatientStatusCode"`            // PV2-24
+	VisitPriorityCode            string 	`json:"VisitPriorityCode"`            // PV2-25
+	PreviousTreatmentDate        string 	`json:"PreviousTreatmentDate"`        // PV2-26
+	ExpectedDischargeDisposition string 	`json:"ExpectedDischargeDisposition"` // PV2-27
+	SignatureOnFileDate          string 	`json:"SignatureOnFileDate"`          // PV2-28
+	FirstSimilarIllnessDate      string 	`json:"FirstSimilarIllnessDate"`      // PV2-29
+	PatientChargeAdjustmentCode  *ServiceCode 	`json:"PatientChargeAdjustmentCode"`  // PV2-30
+	RecurringServiceCode         string 	`json:"RecurringServiceCode"`         // PV2-31
+	BillingMediaCode             string 	`json:"BillingMediaCode"`             // PV2-32
+	ExpectationOfBillTypeCode    string 	`json:"ExpectationOfBillTypeCode"`    // PV2-33
+	MilitaryPartnershipCode      string 	`json:"VisitProtectionIndicator"`     // PV2-34
+}
+
+type ReferralCode struct {
+	ID                     string `json:"ID"`                     // PV2-13.1
+	FamilyName             string `json:"FamilyName"`             // PV2-13.2
+	GivenName              string `json:"GivenName"`              // PV2-13.3
+	MiddleInitialOrName    string `json:"MiddleInitialOrName"`    // PV2-13.4
+	Suffix                 string `json:"Suffix"`                 // PV2-13.5
+	Prefix                 string `json:"Prefix"`                 // PV2-13.6
+	Degree                 string `json:"Degree"`                 // PV2-13.7
+	SourceTable            string `json:"SourceTable"`            // PV2-13.8
+	AssigningAuthority     string `json:"AssigningAuthority"`     // PV2-13.9
+	NameTypeCode           string `json:"NameTypeCode"`           // PV2-13.10
+	IdentifierCheckDigit   string `json:"IdentifierCheckDigit"`   // PV2-13.11
+	CheckDigitScheme       string `json:"CheckDigitScheme"`       // PV2-13.12
+	IdentifierTypeCode     string `json:"IdentifierTypeCode"`     // PV2-13.13
+	AssigningFacility      string `json:"AssigningFacility"`      // PV2-13.14
+	NameRepresentationCode string `json:"NameRepresentationCode"` // PV2-13.15
+	NameContext            string `json:"NameContext"`            // PV2-13.16
+	NameValidityRange      string `json:"NameValidityRange"`      // PV2-13.17
+	NameAssemblyOrder      string `json:"NameAssemblyOrder"`      // PV2-13.18
+	EffectiveDate          string `json:"EffectiveDate"`          // PV2-13.19
+	ExpirationDate         string `json:"ExpirationDate"`         // PV2-13.20
+	ProfessionalSuffix     string `json:"ProfessionalSuffix"`     // PV2-13.21
+	AssigningJurisdiction  string `json:"AssigningJurisdiction"`  // PV2-13.22
+	AssigningAgencyOrDept  string `json:"AssigningAgencyOrDept"`  // PV2-13.23
+}
+
+type OrganizationCode struct {
+	OrganizationName	string		`json:"OrganizationName"`		// PV2-23.1
+	TypeCode		string		`json:"TypeCode"`			// PV2-23.2
+	IDNumber		string		`json:"IDNumber"`			// PV2-23.3
+	CheckDigit		string		`json:"CheckDigit"`			// PV2-23.4
+	CheckDigitScheme	string		`json:"CheckDigitScheme"`		// PV2-23.5
+	AssigningAuthority	string		`json:"AssigningAuthority"`		// PV2-23.6
+	IdentifierTypeCode	string		`json:"IdentifierTypeCode"`		// PV2-23.7
+	AssigningFacility	string		`json:"AssigningFacility"`		// PV2-23.8
+	RepresentationCode	string		`json:"RepresentationCode"`		// PV2-23.9
+	OrganizationIdentifier	string		`json:"OrganizationIdentifier"`		// PV2-23.10
+}
+
+
 type OBR struct {
 	SetID			string		`json:"SetID"`			// OBR-1
 	PlacerOrderNumber	*Placer		`json:"PlacerOrderNumber"`	// OBR-2
