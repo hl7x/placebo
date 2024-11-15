@@ -232,6 +232,23 @@ type PV2 struct {
 	MilitaryPartnershipCode        string           `json:"VisitProtectionIndicator"`       // PV2-34
 }
 
+type ROL struct {
+	RoleInstanceID             *EntityIdentifier `json:"RoleInstanceID"`             // ROL-1
+	ActionCode                 string `json:"ActionCode"`                 // ROL-2
+	Role                       *ServiceCode `json:"Role"`                       // ROL-3
+	RolePerson                 *XCN `json:"RolePerson"`                 // ROL-4
+	RoleBeginDateTime          string `json:"RoleBeginDateTime"`          // ROL-5
+	RoleEndDateTime            string `json:"RoleEndDateTime"`            // ROL-6
+	RoleDuration               *ServiceCode `json:"RoleDuration"`               // ROL-7
+	RoleActionReason           *ServiceCode `json:"RoleActionReason"`           // ROL-8
+	ProviderType               *ServiceCode `json:"ProviderType"`               // ROL-9
+	OrganizationUnitType       *ServiceCode `json:"OrganizationUnitType"`       // ROL-10
+	OfficeHomeAddressBirthplace *XAD `json:"OfficeHomeAddressBirthplace"` // ROL-11
+	Phone                      *XTN `json:"Phone"`                      // ROL-12
+	PersonIdentifier           *PatientLocation `json:"PersonIdentifier"`           // ROL-13
+}
+
+
 // Generic Extended Composite ID and Name For Persons Used in Many Cases
 type XCN struct {
 	ID                     string `json:"ID"`                     // PV2-13.1
@@ -498,11 +515,31 @@ type HL7Message struct {
 	MSH *MSH `json:"MSH"`
 	EVN *EVN `json:"EVN"`
 	PID *PID `json:"PID"`
+	ROL *ROL `json:"ROL"`
 	PV1 *PV1 `json:"PV1"`
 	PV2 *PV2 `json:"PV2"`
 	OBX *OBX `json:"OBX"`
 	NK1 *NK1 `json:"NK1"`
 	OBR *OBR `json:"OBR"`
+}
+
+func NewROLSegment(p *random.Patient) *ROL {
+
+	rol := &ROL{
+		RoleInstanceID:             &EntityIdentifier{}, 
+		Role:                       &ServiceCode{},      
+		RolePerson:                 &XCN{},             
+		RoleDuration:               &ServiceCode{},      
+		RoleActionReason:           &ServiceCode{},      
+		ProviderType:               &ServiceCode{},      
+		OrganizationUnitType:       &ServiceCode{},      
+		OfficeHomeAddressBirthplace: &XAD{},             
+		Phone:                      &XTN{},             
+		PersonIdentifier:           &PatientLocation{},
+	}
+
+	return rol
+
 }
 
 func NewOBXSegment(p *random.Patient) *OBX {
@@ -714,6 +751,7 @@ func NewHL7Message(p *random.Patient) *HL7Message {
 		MSH: NewMSHSegment(p),
 		EVN: NewEVNSegment(p),
 		PID: NewPIDSegment(p),
+		ROL: NewROLSegment(p),
 		PV1: NewPV1Segment(p),
 		PV2: NewPV2Segment(p),
 		OBX: NewOBXSegment(p),
@@ -785,6 +823,8 @@ func SegmentFinder(s string) interface{} {
 		return &EVN{}
 	case "PID":
 		return &PID{}
+	case "ROL":
+		return &ROL{}
 	case "PV1":
 		return &PV1{}
 	case "PV2":
@@ -810,6 +850,8 @@ func (msg *HL7Message) SegmentAssigner(s interface{}) *HL7Message {
 		msg.EVN = v
 	case *PID:
 		msg.PID = v
+	case *ROL:
+		msg.ROL = v
 	case *PV1:
 		msg.PV1 = v
 	case *PV2:
@@ -832,6 +874,7 @@ func MessageBuilder(msg *HL7Message) string {
 		message.CreateHL7(msg.MSH, "MSH"),
 		message.CreateHL7(msg.EVN, "EVN"),
 		message.CreateHL7(msg.PID, "PID"),
+		message.CreateHL7(msg.ROL, "ROL"),
 		message.CreateHL7(msg.PV1, "PV1"),
 		message.CreateHL7(msg.PV2, "PV2"),
 		message.CreateHL7(msg.OBX, "OBX"),
