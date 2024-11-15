@@ -37,20 +37,22 @@ type EVN struct {
 	EventFacility        string `json:"EventFacility"`        // EVN-7
 }
 
-type PatientAddress struct {
-	StreetAddress              string `json:"StreetAddress"`              // PID-11.1
-	OtherDesignation           string `json:"OtherDesignation"`           // PID.11.2
-	City                       string `json:"City"`                       // PID-11.3
-	State                      string `json:"State"`                      // PID-11.4
-	ZipCode                    string `json:"ZipCode"`                    // PID-11.5
-	Country                    string `json:"Country"`                    // PID-11.6
-	AddressType                string `json:"AddressType"`                // PID-11.7
-	OtherGeographicDesignation string `json:"OtherGeographicDesignation"` // PID-11.8
-	CountyParishCode           string `json:"CountryParishCode"`          //PID-11.9
-	CensusTract                string `json:"CensusTract"`                //PID-11.10
+// Generic Extended Address Used In Many cases
+type XAD struct {
+	StreetAddress              string `json:"StreetAddress"`              // X.x.1
+	OtherDesignation           string `json:"OtherDesignation"`           // X.x.2
+	City                       string `json:"City"`                       // X.x.3
+	State                      string `json:"State"`                      // X.x.4
+	ZipCode                    string `json:"ZipCode"`                    // X.x.5
+	Country                    string `json:"Country"`                    // X.x.6
+	AddressType                string `json:"AddressType"`                // X.x.7
+	OtherGeographicDesignation string `json:"OtherGeographicDesignation"` // X.x.8
+	CountyParishCode           string `json:"CountryParishCode"`          // X.x.9
+	CensusTract                string `json:"CensusTract"`                // X.x.10
 }
 
-type PatientName struct {
+// Extended Persons Name Generic Used in Other Cases
+type XPN struct {
 	LastName               string `json:"LastName"`               // PID-5.1
 	FirstName              string `json:"FirstName"`              // PID-5.2
 	MiddleInitial          string `json:"MiddleInitial"`          // PID-5.3
@@ -67,18 +69,39 @@ type PatientName struct {
 	ProfessionalSuffix     string `json:"ProfessionalSuffix"`     // PID-5.14
 }
 
+type XTN struct {
+	TelephoneNumber                 string `json:"TelephoneNumber"`                 // XTN.1
+	TelecommunicationUseCode        string `json:"TelecommunicationUseCode"`        // XTN.2
+	TelecommunicationEquipmentType  string `json:"TelecommunicationEquipmentType"`  // XTN.3
+	EmailAddress                    string `json:"EmailAddress"`                    // XTN.4
+	CountryCode                     string `json:"CountryCode"`                     // XTN.5
+	AreaCode                        string `json:"AreaCode"`                        // XTN.6
+	LocalNumber                     string `json:"LocalNumber"`                     // XTN.7
+	Extension                       string `json:"Extension"`                       // XTN.8
+	AnyText                         string `json:"AnyText"`                         // XTN.9
+	ExtensionPrefix                 string `json:"ExtensionPrefix"`                 // XTN.10
+	SpeedDialCode                   string `json:"SpeedDialCode"`                   // XTN.11
+	UnformattedTelephoneNumber      string `json:"UnformattedTelephoneNumber"`      // XTN.12
+	EffectiveStartDate              string `json:"EffectiveStartDate"`              // XTN.13
+	ExpirationDate                  string `json:"ExpirationDate"`                  // XTN.14
+	ExpirationReason                string `json:"ExpirationReason"`                // XTN.15
+	ProtectionCode                  string `json:"ProtectionCode"`                  // XTN.16
+	SharedTelecommunicationIdentifier string `json:"SharedTelecommunicationIdentifier"` // XTN.17
+	PreferenceOrder                 string `json:"PreferenceOrder"`                 // XTN.18
+}
+
 type PID struct {
 	SetID                   string          `json:"SetID"`                   // PID-1
 	PatientID               string          `json:"PatientID"`               // PID-2
 	PatientIdentifierList   string          `json:"PatientIdentifierList"`   // PID-3
 	AlternatePatientID      string          `json:"AlternatePatientID"`      // PID-4
-	PatientName             *PatientName    `json:"PatientName"`             // PID-5
+	PatientName             *XPN    `json:"PatientName"`             // PID-5
 	MotherMaidenName        string          `json:"MotherMaidenName"`        // PID-6
 	DateOfBirth             string          `json:"DateOfBirth"`             // PID-7
 	Sex                     string          `json:"Sex"`                     // PID-8
 	PatientAlias            string          `json:"PatientAlias"`            // PID-9
 	Race                    string          `json:"Race"`                    // PID-10
-	PatientAddress          *PatientAddress `json:"PatientAddress"`          // PID-11
+	PatientAddress          *XAD		`json:"PatientAddress"`          // PID-11
 	CountyCode              string          `json:"CountyCode"`              // PID-12
 	HomePhone               string          `json:"HomePhone"`               // PID-13
 	BusinessPhone           string          `json:"BusinessPhone"`           // PID-14
@@ -185,7 +208,7 @@ type PV2 struct {
 	EstimatedLengthOfInpatientStay string 	`json:"EstimatedLengthOfInpatientStay"` // PV2-10
 	ActualLengthOfInpatientStay  string 	`json:"ActualLengthOfInpatientStay"`  // PV2-11
 	VisitDescription             string 	`json:"VisitDescription"`             // PV2-12
-	ReferralSourceCode           *ReferralCode 	`json:"ReferralSourceCode"`           // PV2-13
+	ReferralSourceCode           *XCN 	`json:"ReferralSourceCode"`           // PV2-13
 	PreviousServiceDate          string 	`json:"PreviousServiceDate"`          // PV2-14
 	EmploymentIllnessRelated     string 	`json:"EmploymentIllnessRelated"`     // PV2-15
 	PurgeStatusCode              string 	`json:"PurgeStatusCode"`              // PV2-16
@@ -195,7 +218,7 @@ type PV2 struct {
 	ExpectedNumberOfInsurancePlans string 	`json:"ExpectedNumberOfInsurancePlans"` // PV2-20
 	VisitPublicityCode           string 	`json:"VisitPublicityCode"`           // PV2-21
 	VisitProtectionIndicator     string 	`json:"VisitProtectionIndicator"`     // PV2-22
-	ClinicOrganizationName       *OrganizationCode 	`json:"ClinicOrganizationName"`       // PV2-23
+	ClinicOrganizationName       *XON 	`json:"ClinicOrganizationName"`       // PV2-23
 	PatientStatusCode            string 	`json:"PatientStatusCode"`            // PV2-24
 	VisitPriorityCode            string 	`json:"VisitPriorityCode"`            // PV2-25
 	PreviousTreatmentDate        string 	`json:"PreviousTreatmentDate"`        // PV2-26
@@ -209,7 +232,8 @@ type PV2 struct {
 	MilitaryPartnershipCode      string 	`json:"VisitProtectionIndicator"`     // PV2-34
 }
 
-type ReferralCode struct {
+ // Generic Extended Composite ID and Name For Persons Used in Many Cases
+type XCN struct {
 	ID                     string `json:"ID"`                     // PV2-13.1
 	FamilyName             string `json:"FamilyName"`             // PV2-13.2
 	GivenName              string `json:"GivenName"`              // PV2-13.3
@@ -235,7 +259,8 @@ type ReferralCode struct {
 	AssigningAgencyOrDept  string `json:"AssigningAgencyOrDept"`  // PV2-13.23
 }
 
-type OrganizationCode struct {
+// Extended Composite Name and ID for Organization Used in many cases
+type XON struct {
 	OrganizationName	string		`json:"OrganizationName"`		// PV2-23.1
 	TypeCode		string		`json:"TypeCode"`			// PV2-23.2
 	IDNumber		string		`json:"IDNumber"`			// PV2-23.3
@@ -248,6 +273,102 @@ type OrganizationCode struct {
 	OrganizationIdentifier	string		`json:"OrganizationIdentifier"`		// PV2-23.10
 }
 
+// Generic EI Used in Many other cases
+type EntityIdentifier struct {
+	EntityIdentifier	string		`json:"EntityIdentifier"`		// X-x.1
+	NamespaceID		string		`json:"NamespaceID"`			// X-x.2
+	UniversalID		string		`json:"UniversalID"`			// X-x.3
+	UniversalType		string		`json:"UniversalType"`			// X-x.4
+}
+
+type OBX struct {
+	SetID                        string `json:"SetID"`                        // OBX-1
+	ValueType                    string `json:"ValueType"`                    // OBX-2
+	ObservationIdentifier        string `json:"ObservationIdentifier"`        // OBX-3
+	ObservationSubID             string `json:"ObservationSubID"`             // OBX-4
+	ObservationValue             string `json:"ObservationValue"`             // OBX-5
+	Units                        *ServiceCode `json:"Units"`                        // OBX-6
+	ReferencesRange              string `json:"ReferencesRange"`              // OBX-7
+	AbnormalFlags                string `json:"AbnormalFlags"`                // OBX-8
+	Probability                  string `json:"Probability"`                  // OBX-9
+	NatureOfAbnormalTest         string `json:"NatureOfAbnormalTest"`         // OBX-10
+	ObservationResultStatus      string `json:"ObservationResultStatus"`      // OBX-11
+	EffectiveDateOfReferenceRange string `json:"EffectiveDateOfReferenceRange"` // OBX-12
+	UserDefinedAccessChecks      string `json:"UserDefinedAccessChecks"`      // OBX-13
+	DateTimeOfTheObservation     string `json:"DateTimeOfTheObservation"`     // OBX-14
+	ProducerID                   *ServiceCode `json:"ProducerID"`                   // OBX-15
+	ResponsibleObserver          *XCN 	`json:"ResponsibleObserver"`          // OBX-16
+	ObservationMethod            *ServiceCode `json:"ObservationMethod"`            // OBX-17
+	EquipmentInstanceIdentifier  *EntityIdentifier `json:"EquipmentInstanceIdentifier"`  // OBX-18
+	DateTimeOfTheAnalysis        string `json:"DateTimeOfTheAnalysis"`        // OBX-19
+	ObservationSite              *ServiceCode `json:"ObservationSite"`              // OBX-20
+	ObservationInstanceIdentifier *EntityIdentifier `json:"ObservationInstanceIdentifier"` // OBX-21
+	MoodCode                     *ServiceCode `json:"MoodCode"`                     // OBX-22
+	PerformingOrganizationName   *XON `json:"PerformingOrganizationName"`   // OBX-23
+	PerformingOrganizationAddress *XAD `json:"PerformingOrganizationAddress"` // OBX-24
+	PerformingOrganizationMedicalDirector *XCN `json:"PerformingOrganizationMedicalDirector"` // OBX-25
+}
+
+type NK1 struct {
+	SetID                         string `json:"SetID"`                         // NK1-1
+	Name                          *XPN `json:"Name"`                          // NK1-2
+	Relationship                  *ServiceCode `json:"Relationship"`                  // NK1-3
+	Address                       *XAD `json:"Address"`                       // NK1-4
+	PhoneNumber                   *XTN `json:"PhoneNumber"`                   // NK1-5
+	BusinessPhoneNumber           *XTN `json:"BusinessPhoneNumber"`           // NK1-6
+	ContactRole                   *ServiceCode `json:"ContactRole"`                   // NK1-7
+	StartDate                     string `json:"StartDate"`                     // NK1-8
+	EndDate                       string `json:"EndDate"`                       // NK1-9
+	NextOfKinAssociatedPartiesJobTitle string `json:"NextOfKinAssociatedPartiesJobTitle"` // NK1-10
+	NextOfKinAssociatedPartiesJobCode *JCC `json:"NextOfKinAssociatedPartiesJobCode"` // NK1-11
+	NextOfKinAssociatedPartiesEmployeeNumber *CX `json:"NextOfKinAssociatedPartiesEmployeeNumber"` // NK1-12
+	OrganizationName              *XON `json:"OrganizationName"`              // NK1-13
+	MaritalStatus                 *ServiceCode `json:"MaritalStatus"`                 // NK1-14
+	AdministrativeSex             string `json:"AdministrativeSex"`             // NK1-15
+	DateOfBirth                   string `json:"DateOfBirth"`                   // NK1-16
+	LivingDependency              string `json:"LivingDependency"`              // NK1-17
+	AmbulatoryStatus              string `json:"AmbulatoryStatus"`              // NK1-18
+	Citizenship                   string `json:"Citizenship"`                   // NK1-19
+	PrimaryLanguage               *ServiceCode `json:"PrimaryLanguage"`               // NK1-20
+	LivingArrangement             string `json:"LivingArrangement"`             // NK1-21
+	PublicityCode                 *ServiceCode `json:"PublicityCode"`                 // NK1-22
+	ProtectionIndicator           string `json:"ProtectionIndicator"`           // NK1-23
+	StudentIndicator              string `json:"StudentIndicator"`              // NK1-24
+	Religion                      *ServiceCode `json:"Religion"`                      // NK1-25
+	MothersMaidenName             *XPN `json:"MothersMaidenName"`             // NK1-26
+	Nationality                   *ServiceCode `json:"Nationality"`                   // NK1-27
+	EthnicGroup                   *ServiceCode `json:"EthnicGroup"`                   // NK1-28
+	ContactReason                 *ServiceCode `json:"ContactReason"`                 // NK1-29
+	ContactPersonsName            *XPN `json:"ContactPersonsName"`            // NK1-30
+	ContactPersonsTelephoneNumber *XTN `json:"ContactPersonsTelephoneNumber"` // NK1-31
+	ContactPersonsAddress         *XAD `json:"ContactPersonsAddress"`         // NK1-32
+	NextOfKinAssociatedPartysIdentifiers *CX `json:"NextOfKinAssociatedPartysIdentifiers"` // NK1-33
+	JobStatus                     string `json:"JobStatus"`                     // NK1-34
+	Race                          *ServiceCode `json:"Race"`                          // NK1-35
+	Handicap                      string `json:"Handicap"`                      // NK1-36
+	ContactPersonSocialSecurityNumber string `json:"ContactPersonSocialSecurityNumber"` // NK1-37
+	NextOfKinBirthPlace           string `json:"NextOfKinBirthPlace"`           // NK1-38
+	VIPIndicator                  string `json:"VIPIndicator"`                  // NK1-39
+}
+
+type CX struct {
+	IDNumber           string `json:"IDNumber"`           // CX.1
+	CheckDigit         string `json:"CheckDigit"`         // CX.2
+	CheckDigitScheme   string `json:"CheckDigitScheme"`   // CX.3
+	AssigningAuthority string `json:"AssigningAuthority"` // CX.4
+	IdentifierTypeCode string `json:"IdentifierTypeCode"` // CX.5
+	AssigningFacility  string `json:"AssigningFacility"`  // CX.6
+	EffectiveDate      string `json:"EffectiveDate"`      // CX.7
+	ExpirationDate     string `json:"ExpirationDate"`     // CX.8
+	AssigningJurisdiction string `json:"AssigningJurisdiction"` // CX.9
+	AssigningAgencyOrDept string `json:"AssigningAgencyOrDept"` // CX.10
+}
+
+type JCC struct {
+	JobCode			string		`json:"JobCode"`
+	JobClass		string		`json:"JobClass"`
+	JobDescription		string		`json:"JobDescription"`
+}
 
 type OBR struct {
 	SetID			string		`json:"SetID"`			// OBR-1
@@ -353,6 +474,7 @@ type OBRDateTime struct {
 	DegreeOfPrecision	string		`json:"DegreeOfPrecision"`	// OBR-x.2
 }
 
+// Generic Nested Section Used in Many Cases
 type ServiceCode struct {
 	Identifier		string		`json:"Identifier"`		// OBR-x.1
 	Text			string		`json:"Text"`			// OBR-x.2
@@ -377,6 +499,7 @@ type HL7Message struct {
 	EVN *EVN `json:"EVN"`
 	PID *PID `json:"PID"`
 	PV1 *PV1 `json:"PV1"`
+	PV2 *PV2 `json:"PV2"`
 	OBR *OBR `json:"OBR"`
 }
 
@@ -419,10 +542,25 @@ func NewOBRSegment(p *random.Patient) *OBR {
 		Technician:           &Technician{},
 		Transcription:        &Technician{},
 		ScheduledDate:        &OBRDateTime{},
-}
+	}	
 
 	return obr
 
+}
+
+func NewPV2Segment(p *random.Patient) *PV2 {
+
+	pv2 := &PV2{
+		PriorPendingLocation: &PatientLocation{},
+		AccommodationCode: 	&ServiceCode{},
+		AdmitReason: 		&ServiceCode{},
+		TransferReason:		&ServiceCode{},
+		ReferralSourceCode: 	&XCN{},
+		ClinicOrganizationName:	&XON{},
+		PatientChargeAdjustmentCode: &ServiceCode{},
+	}
+
+	return pv2
 }
 
 func NewPV1Segment(p *random.Patient) *PV1 {
@@ -455,13 +593,13 @@ func NewPIDSegment(p *random.Patient) *PID {
 
 	street := "123 " + p.PatientAddress.Street
 
-	name := &PatientName{
+	name := &XPN{
 		LastName:      p.LastName,
 		FirstName:     p.FirstName,
 		MiddleInitial: "A",
 	}
 
-	address := &PatientAddress{
+	address := &XAD{
 		StreetAddress: street,
 		City:          p.PatientAddress.RegionInfo.City,
 		State:         p.PatientAddress.RegionInfo.State,
@@ -539,6 +677,7 @@ func NewHL7Message(p *random.Patient) *HL7Message {
 		EVN: NewEVNSegment(p),
 		PID: NewPIDSegment(p),
 		PV1: NewPV1Segment(p),
+		PV2: NewPV2Segment(p),
 		OBR: NewOBRSegment(p),
 	}
 
@@ -608,6 +747,8 @@ func SegmentFinder(s string) interface{} {
 		return &PID{}
 	case "PV1":
 		return &PV1{}
+	case "PV2":
+		return &PV2{}
 	case "OBR":
 		return &OBR{}
 	default:
@@ -627,6 +768,8 @@ func (msg *HL7Message) SegmentAssigner(s interface{}) *HL7Message {
 		msg.PID = v
 	case *PV1:
 		msg.PV1 = v
+	case *PV2:
+		msg.PV2 = v
 	case *OBR:
 		msg.OBR = v
 	default:
@@ -642,6 +785,7 @@ func MessageBuilder(msg *HL7Message) string {
 		message.CreateHL7(msg.EVN, "EVN"),
 		message.CreateHL7(msg.PID, "PID"),
 		message.CreateHL7(msg.PV1, "PV1"),
+		message.CreateHL7(msg.PV2, "PV2"),
 		message.CreateHL7(msg.OBR, "OBR"),
 	}
 
