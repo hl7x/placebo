@@ -397,7 +397,7 @@ type ARV struct {
 	AccessRestrictionCode	*ServiceCode	`json:"AccessRestrictionCode"`	// ARV-2
 	AccessRestrictionValue	*ServiceCode	`json:"AccessRestrictionValue"`	// ARV-3
 	AccessRestrictionReason	*ServiceCode	`json:"AccessRestrictionReason"`// ARV-4
-	RestrictionInstruction	string		`json:"RestrictionInstruction"`	// ARV-5
+	AccessRestrictionInstruction	string		`json:"AccessRestrictionInstruction"`	// ARV-5
 	AccessRestrictionDate	*DateRange	`json:"AccessRestrictionDate"`	// ARV-6
 }
 
@@ -530,11 +530,24 @@ type HL7Message struct {
 	EVN *EVN `json:"EVN"`
 	PID *PID `json:"PID"`
 	ROL *ROL `json:"ROL"`
+	ARV *ARV `json:"ARV"`
 	PV1 *PV1 `json:"PV1"`
 	PV2 *PV2 `json:"PV2"`
 	OBX *OBX `json:"OBX"`
 	NK1 *NK1 `json:"NK1"`
 	OBR *OBR `json:"OBR"`
+}
+
+func NewARVSegment(P *random.Patient) *ARV {
+
+	arv := &ARV{
+		AccessRestrictionCode:	&ServiceCode{},
+		AccessRestrictionValue:	&ServiceCode{},
+		AccessRestrictionReason: &ServiceCode{},
+		AccessRestrictionDate:	&DateRange{},
+	}
+
+	return arv
 }
 
 func NewROLSegment(p *random.Patient) *ROL {
@@ -766,6 +779,7 @@ func NewHL7Message(p *random.Patient) *HL7Message {
 		EVN: NewEVNSegment(p),
 		PID: NewPIDSegment(p),
 		ROL: NewROLSegment(p),
+		ARV: NewARVSegment(p),
 		PV1: NewPV1Segment(p),
 		PV2: NewPV2Segment(p),
 		OBX: NewOBXSegment(p),
@@ -839,6 +853,8 @@ func SegmentFinder(s string) interface{} {
 		return &PID{}
 	case "ROL":
 		return &ROL{}
+	case "ARV":
+		return &ARV{}
 	case "PV1":
 		return &PV1{}
 	case "PV2":
@@ -866,6 +882,8 @@ func (msg *HL7Message) SegmentAssigner(s interface{}) *HL7Message {
 		msg.PID = v
 	case *ROL:
 		msg.ROL = v
+	case *ARV:
+		msg.ARV = v
 	case *PV1:
 		msg.PV1 = v
 	case *PV2:
@@ -889,6 +907,7 @@ func MessageBuilder(msg *HL7Message) string {
 		message.CreateHL7(msg.EVN, "EVN"),
 		message.CreateHL7(msg.PID, "PID"),
 		message.CreateHL7(msg.ROL, "ROL"),
+		message.CreateHL7(msg.ARV, "ARV"),
 		message.CreateHL7(msg.PV1, "PV1"),
 		message.CreateHL7(msg.PV2, "PV2"),
 		message.CreateHL7(msg.OBX, "OBX"),
