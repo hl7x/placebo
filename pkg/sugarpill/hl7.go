@@ -387,6 +387,20 @@ type JCC struct {
 	JobDescription string `json:"JobDescription"`
 }
 
+type DateRange struct {
+	StartDate	string	`json:"StartDate"`		// X.x.1
+	EndDate		string	`json:"EndDate"`		// X.x.2
+}
+
+type ARV struct {
+	SetID		string		`json:"SetID"`			// ARV-1
+	AccessRestrictionCode	*ServiceCode	`json:"AccessRestrictionCode"`	// ARV-2
+	AccessRestrictionValue	*ServiceCode	`json:"AccessRestrictionValue"`	// ARV-3
+	AccessRestrictionReason	*ServiceCode	`json:"AccessRestrictionReason"`// ARV-4
+	RestrictionInstruction	string		`json:"RestrictionInstruction"`	// ARV-5
+	AccessRestrictionDate	*DateRange	`json:"AccessRestrictionDate"`	// ARV-6
+}
+
 type OBR struct {
 	SetID                string            `json:"SetID"`                // OBR-1
 	PlacerOrderNumber    *Placer           `json:"PlacerOrderNumber"`    // OBR-2
