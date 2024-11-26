@@ -402,15 +402,12 @@ type ARV struct {
 }
 
 type AL1 struct {
-	Identifier	string		`json:"Identifier"`		// AL1-1
-	Text		string		`json:"Text"`			// AL1-2
-	NameofCodingSystem	string	`json:"NameOfCodingSystem"`	// AL1-3
-	AlternativeIdentifier	string	`json:"AlternativeIdentifier"`	// AL1-4
-	AlternateText	string		`json:"AlternateText"`		// AL1-5
-	NameOfAlternateCodeingSystem	string	`json:"NameOfAlternateCodingSystem"`	// AL1-6
-	CodingSystemVersionID	string	`json:"CodingSystemVersionID"`	// AL1-7
-	AlternateCodingSystemVersionID	string	`json:"AlternateCodingSystemVersionID"`	// AL1-8
-	OriginalText	string		`json:"OriginalText"`		// AL1-9
+	SetID		string		`json:"SetID"`			// AL1-1
+	AllergenTypeCode *ServiceCode	`json:"AllergenTypeCode"`	// AL1-2
+	AllergenCodeDescription	*ServiceCode	`json:"AllergenCodeDescription"`	// AL1-3
+	AllergySeverityCode	*ServiceCode	`json:"AllergySeverityCode"`	// AL1-4
+	AllergyReactionCode	string	`json:"AllergyReactionCode"`	// AL1-5
+	IdentificationDate	string	`json:"IdentificationDate"`	// AL1-6
 }
 
 type OBR struct {
@@ -634,7 +631,13 @@ func NewNK1Segment(P *random.Patient) *NK1 {
 
 func NewAL1Segment(p *random.Patient) *AL1 {
 
-	return &AL1{}
+	al1 :=  &AL1{
+		AllergenTypeCode: &ServiceCode{},
+		AllergenCodeDescription: &ServiceCode{},
+		AllergySeverityCode:	&ServiceCode{},
+	}
+
+	return al1
 
 }
 
