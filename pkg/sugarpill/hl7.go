@@ -401,6 +401,18 @@ type ARV struct {
 	AccessRestrictionDate	*DateRange	`json:"AccessRestrictionDate"`	// ARV-6
 }
 
+type AL1 struct {
+	Identifier	string		`json:"Identifier"`		// AL1-1
+	Text		string		`json:"Text"`			// AL1-2
+	NameofCodingSystem	string	`json:"NameOfCodingSystem"`	// AL1-3
+	AlternativeIdentifier	string	`json:"AlternativeIdentifier"`	// AL1-4
+	AlternateText	string		`json:"AlternateText"`		// AL1-5
+	NameOfAlternateCodeingSystem	string	`json:"NameOfAlternateCodingSystem"`	// AL1-6
+	CodingSystemVersionID	string	`json:"CodingSystemVersionID"`	// AL1-7
+	AlternateCodingSystemVersionID	string	`json:"AlternateCodingSystemVersionID"`	// AL1-8
+	OriginalText	string		`json:"OriginalText"`		// AL1-9
+}
+
 type OBR struct {
 	SetID                string            `json:"SetID"`                // OBR-1
 	PlacerOrderNumber    *Placer           `json:"PlacerOrderNumber"`    // OBR-2
@@ -535,6 +547,7 @@ type HL7Message struct {
 	PV2 *PV2 `json:"PV2"`
 	OBX *OBX `json:"OBX"`
 	NK1 *NK1 `json:"NK1"`
+	AL1 *AL1 `json:"AL1"`
 	OBR *OBR `json:"OBR"`
 }
 
@@ -616,6 +629,12 @@ func NewNK1Segment(P *random.Patient) *NK1 {
 	}
 
 	return nk1
+
+}
+
+func NewAL1Segment(p *random.Patient) *AL1 {
+
+	return &AL1{}
 
 }
 
@@ -784,6 +803,7 @@ func NewHL7Message(p *random.Patient) *HL7Message {
 		PV2: NewPV2Segment(p),
 		OBX: NewOBXSegment(p),
 		NK1: NewNK1Segment(p),
+		AL1: NewAL1Segment(p),
 		OBR: NewOBRSegment(p),
 	}
 
@@ -863,6 +883,8 @@ func SegmentFinder(s string) interface{} {
 		return &OBX{}
 	case "NK1":
 		return &NK1{}
+	case "AL1":
+		return &AL1{}
 	case "OBR":
 		return &OBR{}
 	default:
@@ -892,6 +914,8 @@ func (msg *HL7Message) SegmentAssigner(s interface{}) *HL7Message {
 		msg.OBX = v
 	case *NK1:
 		msg.NK1 = v
+	case *AL1:
+		msg.AL1 = v
 	case *OBR:
 		msg.OBR = v
 	default:
@@ -912,6 +936,7 @@ func MessageBuilder(msg *HL7Message) string {
 		message.CreateHL7(msg.PV2, "PV2"),
 		message.CreateHL7(msg.OBX, "OBX"),
 		message.CreateHL7(msg.NK1, "NK1"),
+		message.CreateHL7(msg.AL1, "AL1"),
 		message.CreateHL7(msg.OBR, "OBR"),
 	}
 
