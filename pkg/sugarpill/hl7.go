@@ -571,6 +571,7 @@ type HL7Message struct {
 	ARV *ARV `json:"ARV"`
 	PV1 *PV1 `json:"PV1"`
 	PV2 *PV2 `json:"PV2"`
+	DG1 *DG1 `json:"DG1"`
 	OBX *OBX `json:"OBX"`
 	NK1 *NK1 `json:"NK1"`
 	AL1 *AL1 `json:"AL1"`
@@ -700,6 +701,20 @@ func NewOBRSegment(p *random.Patient) *OBR {
 	}
 
 	return obr
+
+}
+
+func NewDG1Segment(p *random.Patient) *DG1 {
+
+	dg1 := &DG1{
+		DiagnosisCode: &ServiceCode{},
+		Clinician:	&XCN{},
+		Identifier:	&EntityIdentifier{},
+		ParentDiagnosis:	&EntityIdentifier{},
+		DRGCCLValue:	&ServiceCode{},
+	}
+
+	return dg1
 
 }
 
@@ -833,6 +848,7 @@ func NewHL7Message(p *random.Patient) *HL7Message {
 		ARV: NewARVSegment(p),
 		PV1: NewPV1Segment(p),
 		PV2: NewPV2Segment(p),
+		DG1: NewDG1Segment(p),
 		OBX: NewOBXSegment(p),
 		NK1: NewNK1Segment(p),
 		AL1: NewAL1Segment(p),
@@ -911,6 +927,8 @@ func SegmentFinder(s string) interface{} {
 		return &PV1{}
 	case "PV2":
 		return &PV2{}
+	case "DG1":
+		return &DG1{}
 	case "OBX":
 		return &OBX{}
 	case "NK1":
@@ -942,6 +960,8 @@ func (msg *HL7Message) SegmentAssigner(s interface{}) *HL7Message {
 		msg.PV1 = v
 	case *PV2:
 		msg.PV2 = v
+	case *DG1:
+		msg.DG1 = v
 	case *OBX:
 		msg.OBX = v
 	case *NK1:
@@ -966,6 +986,7 @@ func MessageBuilder(msg *HL7Message) string {
 		message.CreateHL7(msg.ARV, "ARV"),
 		message.CreateHL7(msg.PV1, "PV1"),
 		message.CreateHL7(msg.PV2, "PV2"),
+		message.CreateHL7(msg.DG1, "DG1"),
 		message.CreateHL7(msg.OBX, "OBX"),
 		message.CreateHL7(msg.NK1, "NK1"),
 		message.CreateHL7(msg.AL1, "AL1"),
