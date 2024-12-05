@@ -248,6 +248,16 @@ type ROL struct {
 	PersonIdentifier           *PatientLocation `json:"PersonIdentifier"`           // ROL-13
 }
 
+type DB1 struct {
+	SetID			string	`json:"SetID"`			// DB1-1
+	PersonCode		string	`json:"PersonCode"`		// DB1-2
+	PersonIdentifier	*CX	`json:"PersonIdentifier"`	// DB1-3
+	Indicator		string	`json:"Indicator"`		// DB1-4
+	StartDate		string	`json:"StartDate"`		// DB1-5
+	EndDate			string	`json:"EndDate"`		// DB1-6
+	ReturnToWork		string	`json:"ReturnToWork"`		// DB1-7
+	UnableToWork		string	`json:"UnableToWork"`		// DB1-8
+}
 
 // Generic Extended Composite ID and Name For Persons Used in Many Cases
 type XCN struct {
@@ -568,6 +578,7 @@ type HL7Message struct {
 	EVN *EVN `json:"EVN"`
 	PID *PID `json:"PID"`
 	ROL *ROL `json:"ROL"`
+	DB1 *DB1 `json:"DB1"`
 	ARV *ARV `json:"ARV"`
 	PV1 *PV1 `json:"PV1"`
 	PV2 *PV2 `json:"PV2"`
@@ -578,7 +589,7 @@ type HL7Message struct {
 	OBR *OBR `json:"OBR"`
 }
 
-func NewARVSegment(P *random.Patient) *ARV {
+func NewARVSegment(p *random.Patient) *ARV {
 
 	arv := &ARV{
 		AccessRestrictionCode:	&ServiceCode{},
@@ -606,6 +617,16 @@ func NewROLSegment(p *random.Patient) *ROL {
 	}
 
 	return rol
+
+}
+
+func NewDB1Segment(p *random.Patient) *DB1 {
+
+	db1 := &DB1{
+		PersonIdentifier: &CX{},
+	}
+
+	return db1
 
 }
 
@@ -845,6 +866,7 @@ func NewHL7Message(p *random.Patient) *HL7Message {
 		EVN: NewEVNSegment(p),
 		PID: NewPIDSegment(p),
 		ROL: NewROLSegment(p),
+		DB1: NewDB1Segment(p),
 		ARV: NewARVSegment(p),
 		PV1: NewPV1Segment(p),
 		PV2: NewPV2Segment(p),
@@ -921,6 +943,8 @@ func SegmentFinder(s string) interface{} {
 		return &PID{}
 	case "ROL":
 		return &ROL{}
+	case "DB1":
+		return &DB1{}
 	case "ARV":
 		return &ARV{}
 	case "PV1":
@@ -954,6 +978,8 @@ func (msg *HL7Message) SegmentAssigner(s interface{}) *HL7Message {
 		msg.PID = v
 	case *ROL:
 		msg.ROL = v
+	case *DB1:
+		msg.DB1 = v
 	case *ARV:
 		msg.ARV = v
 	case *PV1:
@@ -983,6 +1009,7 @@ func MessageBuilder(msg *HL7Message) string {
 		message.CreateHL7(msg.EVN, "EVN"),
 		message.CreateHL7(msg.PID, "PID"),
 		message.CreateHL7(msg.ROL, "ROL"),
+		message.CreateHL7(msg.DB1, "DB1"), 
 		message.CreateHL7(msg.ARV, "ARV"),
 		message.CreateHL7(msg.PV1, "PV1"),
 		message.CreateHL7(msg.PV2, "PV2"),
