@@ -9,7 +9,7 @@ import (
 )
 
 type MSH struct {
-	Encode               string       `json:Encode`                 // MSH-1
+	Encode               string       `json:Encode`                 // MSH-2
 	SendingApplication   string       `json:"SendingApplication"`   // MSH-3
 	SendingFacility      string       `json:"SendingFacility"`      // MSH-4
 	ReceivingApplication string       `json:"ReceivingApplication"` // MSH-5
@@ -37,20 +37,22 @@ type EVN struct {
 	EventFacility        string `json:"EventFacility"`        // EVN-7
 }
 
-type PatientAddress struct {
-	StreetAddress              string `json:"StreetAddress"`              // PID-11.1
-	OtherDesignation           string `json:"OtherDesignation"`           // PID.11.2
-	City                       string `json:"City"`                       // PID-11.3
-	State                      string `json:"State"`                      // PID-11.4
-	ZipCode                    string `json:"ZipCode"`                    // PID-11.5
-	Country                    string `json:"Country"`                    // PID-11.6
-	AddressType                string `json:"AddressType"`                // PID-11.7
-	OtherGeographicDesignation string `json:"OtherGeographicDesignation"` // PID-11.8
-	CountyParishCode           string `json:"CountryParishCode"`          //PID-11.9
-	CensusTract                string `json:"CensusTract"`                //PID-11.10
+// Generic Extended Address Used In Many cases
+type XAD struct {
+	StreetAddress              string `json:"StreetAddress"`              // X.x.1
+	OtherDesignation           string `json:"OtherDesignation"`           // X.x.2
+	City                       string `json:"City"`                       // X.x.3
+	State                      string `json:"State"`                      // X.x.4
+	ZipCode                    string `json:"ZipCode"`                    // X.x.5
+	Country                    string `json:"Country"`                    // X.x.6
+	AddressType                string `json:"AddressType"`                // X.x.7
+	OtherGeographicDesignation string `json:"OtherGeographicDesignation"` // X.x.8
+	CountyParishCode           string `json:"CountryParishCode"`          // X.x.9
+	CensusTract                string `json:"CensusTract"`                // X.x.10
 }
 
-type PatientName struct {
+// Extended Persons Name Generic Used in Other Cases
+type XPN struct {
 	LastName               string `json:"LastName"`               // PID-5.1
 	FirstName              string `json:"FirstName"`              // PID-5.2
 	MiddleInitial          string `json:"MiddleInitial"`          // PID-5.3
@@ -67,37 +69,58 @@ type PatientName struct {
 	ProfessionalSuffix     string `json:"ProfessionalSuffix"`     // PID-5.14
 }
 
+type XTN struct {
+	TelephoneNumber                   string `json:"TelephoneNumber"`                   // XTN.1
+	TelecommunicationUseCode          string `json:"TelecommunicationUseCode"`          // XTN.2
+	TelecommunicationEquipmentType    string `json:"TelecommunicationEquipmentType"`    // XTN.3
+	EmailAddress                      string `json:"EmailAddress"`                      // XTN.4
+	CountryCode                       string `json:"CountryCode"`                       // XTN.5
+	AreaCode                          string `json:"AreaCode"`                          // XTN.6
+	LocalNumber                       string `json:"LocalNumber"`                       // XTN.7
+	Extension                         string `json:"Extension"`                         // XTN.8
+	AnyText                           string `json:"AnyText"`                           // XTN.9
+	ExtensionPrefix                   string `json:"ExtensionPrefix"`                   // XTN.10
+	SpeedDialCode                     string `json:"SpeedDialCode"`                     // XTN.11
+	UnformattedTelephoneNumber        string `json:"UnformattedTelephoneNumber"`        // XTN.12
+	EffectiveStartDate                string `json:"EffectiveStartDate"`                // XTN.13
+	ExpirationDate                    string `json:"ExpirationDate"`                    // XTN.14
+	ExpirationReason                  string `json:"ExpirationReason"`                  // XTN.15
+	ProtectionCode                    string `json:"ProtectionCode"`                    // XTN.16
+	SharedTelecommunicationIdentifier string `json:"SharedTelecommunicationIdentifier"` // XTN.17
+	PreferenceOrder                   string `json:"PreferenceOrder"`                   // XTN.18
+}
+
 type PID struct {
-	SetID                   string          `json:"SetID"`                   // PID-1
-	PatientID               string          `json:"PatientID"`               // PID-2
-	PatientIdentifierList   string          `json:"PatientIdentifierList"`   // PID-3
-	AlternatePatientID      string          `json:"AlternatePatientID"`      // PID-4
-	PatientName             *PatientName    `json:"PatientName"`             // PID-5
-	MotherMaidenName        string          `json:"MotherMaidenName"`        // PID-6
-	DateOfBirth             string          `json:"DateOfBirth"`             // PID-7
-	Sex                     string          `json:"Sex"`                     // PID-8
-	PatientAlias            string          `json:"PatientAlias"`            // PID-9
-	Race                    string          `json:"Race"`                    // PID-10
-	PatientAddress          *PatientAddress `json:"PatientAddress"`          // PID-11
-	CountyCode              string          `json:"CountyCode"`              // PID-12
-	HomePhone               string          `json:"HomePhone"`               // PID-13
-	BusinessPhone           string          `json:"BusinessPhone"`           // PID-14
-	PrimaryLanguage         string          `json:"PrimaryLanguage"`         // PID-15
-	MaritalStatus           string          `json:"MaritalStatus"`           // PID-16
-	Religion                string          `json:"Religion"`                // PID-17
-	PatientAccountNumber    string          `json:"PatientAccountNumber"`    // PID-18
-	SSN                     string          `json:"SSN"`                     // PID-19
-	DriversLicenseNumber    string          `json:"DriversLicenseNumber"`    // PID-20
-	MotherIdentifier        string          `json:"MotherIdentifier"`        // PID-21
-	EthnicGroup             string          `json:"EthnicGroup"`             // PID-22
-	BirthPlace              string          `json:"BirthPlace"`              // PID-23
-	MultipleBirthIndicator  string          `json:"MultipleBirthIndicator"`  // PID-24
-	BirthOrder              string          `json:"BirthOrder"`              // PID-25
-	Citizenship             string          `json:"Citizenship"`             // PID-26
-	VeteranStatus           string          `json:"VeteranStatus"`           // PID-27
-	Nationality             string          `json:"Nationality"`             // PID-28
-	PatientDeathDateAndTime string          `json:"PatientDeathDateAndTime"` // PID-29
-	PatientDeathIndicator   string          `json:"PatientDeathIndicator"`   // PID-30
+	SetID                   string `json:"SetID"`                   // PID-1
+	PatientID               string `json:"PatientID"`               // PID-2
+	PatientIdentifierList   string `json:"PatientIdentifierList"`   // PID-3
+	AlternatePatientID      string `json:"AlternatePatientID"`      // PID-4
+	PatientName             *XPN   `json:"PatientName"`             // PID-5
+	MotherMaidenName        string `json:"MotherMaidenName"`        // PID-6
+	DateOfBirth             string `json:"DateOfBirth"`             // PID-7
+	Sex                     string `json:"Sex"`                     // PID-8
+	PatientAlias            string `json:"PatientAlias"`            // PID-9
+	Race                    string `json:"Race"`                    // PID-10
+	PatientAddress          *XAD   `json:"PatientAddress"`          // PID-11
+	CountyCode              string `json:"CountyCode"`              // PID-12
+	HomePhone               string `json:"HomePhone"`               // PID-13
+	BusinessPhone           string `json:"BusinessPhone"`           // PID-14
+	PrimaryLanguage         string `json:"PrimaryLanguage"`         // PID-15
+	MaritalStatus           string `json:"MaritalStatus"`           // PID-16
+	Religion                string `json:"Religion"`                // PID-17
+	PatientAccountNumber    string `json:"PatientAccountNumber"`    // PID-18
+	SSN                     string `json:"SSN"`                     // PID-19
+	DriversLicenseNumber    string `json:"DriversLicenseNumber"`    // PID-20
+	MotherIdentifier        string `json:"MotherIdentifier"`        // PID-21
+	EthnicGroup             string `json:"EthnicGroup"`             // PID-22
+	BirthPlace              string `json:"BirthPlace"`              // PID-23
+	MultipleBirthIndicator  string `json:"MultipleBirthIndicator"`  // PID-24
+	BirthOrder              string `json:"BirthOrder"`              // PID-25
+	Citizenship             string `json:"Citizenship"`             // PID-26
+	VeteranStatus           string `json:"VeteranStatus"`           // PID-27
+	Nationality             string `json:"Nationality"`             // PID-28
+	PatientDeathDateAndTime string `json:"PatientDeathDateAndTime"` // PID-29
+	PatientDeathIndicator   string `json:"PatientDeathIndicator"`   // PID-30
 }
 
 type PatientLocation struct {
@@ -172,11 +195,563 @@ type PV1 struct {
 	VisitIndicator          string           `json:"VisitIndicator"`          // Pv1-51
 }
 
+type PV2 struct {
+	PriorPendingLocation           *PatientLocation `json:"PriorPendingLocation"`           // PV2-1
+	AccommodationCode              *ServiceCode     `json:"AccommodationCode"`              // PV2-2
+	AdmitReason                    *ServiceCode     `json:"AdmitReason"`                    // PV2-3
+	TransferReason                 *ServiceCode     `json:"TransferReason"`                 // PV2-4
+	PatientValuables               string           `json:"PatientValuables"`               // PV2-5
+	PatientValuablesLocation       string           `json:"PatientValuablesLocation"`       // PV2-6
+	VisitUserCode                  string           `json:"VisitUserCode"`                  // PV2-7
+	ExpectedAdmitDateTime          string           `json:"ExpectedAdmitDateTime"`          // PV2-8
+	ExpectedDischargeDateTime      string           `json:"ExpectedDischargeDateTime"`      // PV2-9
+	EstimatedLengthOfInpatientStay string           `json:"EstimatedLengthOfInpatientStay"` // PV2-10
+	ActualLengthOfInpatientStay    string           `json:"ActualLengthOfInpatientStay"`    // PV2-11
+	VisitDescription               string           `json:"VisitDescription"`               // PV2-12
+	ReferralSourceCode             *XCN             `json:"ReferralSourceCode"`             // PV2-13
+	PreviousServiceDate            string           `json:"PreviousServiceDate"`            // PV2-14
+	EmploymentIllnessRelated       string           `json:"EmploymentIllnessRelated"`       // PV2-15
+	PurgeStatusCode                string           `json:"PurgeStatusCode"`                // PV2-16
+	PurgeStatusDate                string           `json:"PurgeStatusDate"`                // PV2-17
+	SpecialProgramCode             string           `json:"SpecialProgramCode"`             // PV2-18
+	RetentionIndicator             string           `json:"RetentionIndicator"`             // PV2-19
+	ExpectedNumberOfInsurancePlans string           `json:"ExpectedNumberOfInsurancePlans"` // PV2-20
+	VisitPublicityCode             string           `json:"VisitPublicityCode"`             // PV2-21
+	VisitProtectionIndicator       string           `json:"VisitProtectionIndicator"`       // PV2-22
+	ClinicOrganizationName         *XON             `json:"ClinicOrganizationName"`         // PV2-23
+	PatientStatusCode              string           `json:"PatientStatusCode"`              // PV2-24
+	VisitPriorityCode              string           `json:"VisitPriorityCode"`              // PV2-25
+	PreviousTreatmentDate          string           `json:"PreviousTreatmentDate"`          // PV2-26
+	ExpectedDischargeDisposition   string           `json:"ExpectedDischargeDisposition"`   // PV2-27
+	SignatureOnFileDate            string           `json:"SignatureOnFileDate"`            // PV2-28
+	FirstSimilarIllnessDate        string           `json:"FirstSimilarIllnessDate"`        // PV2-29
+	PatientChargeAdjustmentCode    *ServiceCode     `json:"PatientChargeAdjustmentCode"`    // PV2-30
+	RecurringServiceCode           string           `json:"RecurringServiceCode"`           // PV2-31
+	BillingMediaCode               string           `json:"BillingMediaCode"`               // PV2-32
+	ExpectationOfBillTypeCode      string           `json:"ExpectationOfBillTypeCode"`      // PV2-33
+	MilitaryPartnershipCode        string           `json:"VisitProtectionIndicator"`       // PV2-34
+}
+
+type ROL struct {
+	RoleInstanceID             *EntityIdentifier `json:"RoleInstanceID"`             // ROL-1
+	ActionCode                 string `json:"ActionCode"`                 // ROL-2
+	Role                       *ServiceCode `json:"Role"`                       // ROL-3
+	RolePerson                 *XCN `json:"RolePerson"`                 // ROL-4
+	RoleBeginDateTime          string `json:"RoleBeginDateTime"`          // ROL-5
+	RoleEndDateTime            string `json:"RoleEndDateTime"`            // ROL-6
+	RoleDuration               *ServiceCode `json:"RoleDuration"`               // ROL-7
+	RoleActionReason           *ServiceCode `json:"RoleActionReason"`           // ROL-8
+	ProviderType               *ServiceCode `json:"ProviderType"`               // ROL-9
+	OrganizationUnitType       *ServiceCode `json:"OrganizationUnitType"`       // ROL-10
+	OfficeHomeAddressBirthplace *XAD `json:"OfficeHomeAddressBirthplace"` // ROL-11
+	Phone                      *XTN `json:"Phone"`                      // ROL-12
+	PersonIdentifier           *PatientLocation `json:"PersonIdentifier"`           // ROL-13
+}
+
+type DB1 struct {
+	SetID			string	`json:"SetID"`			// DB1-1
+	PersonCode		string	`json:"PersonCode"`		// DB1-2
+	PersonIdentifier	*CX	`json:"PersonIdentifier"`	// DB1-3
+	Indicator		string	`json:"Indicator"`		// DB1-4
+	StartDate		string	`json:"StartDate"`		// DB1-5
+	EndDate			string	`json:"EndDate"`		// DB1-6
+	ReturnToWork		string	`json:"ReturnToWork"`		// DB1-7
+	UnableToWork		string	`json:"UnableToWork"`		// DB1-8
+}
+
+// Generic Extended Composite ID and Name For Persons Used in Many Cases
+type XCN struct {
+	ID                     string `json:"ID"`                     // PV2-13.1
+	FamilyName             string `json:"FamilyName"`             // PV2-13.2
+	GivenName              string `json:"GivenName"`              // PV2-13.3
+	MiddleInitialOrName    string `json:"MiddleInitialOrName"`    // PV2-13.4
+	Suffix                 string `json:"Suffix"`                 // PV2-13.5
+	Prefix                 string `json:"Prefix"`                 // PV2-13.6
+	Degree                 string `json:"Degree"`                 // PV2-13.7
+	SourceTable            string `json:"SourceTable"`            // PV2-13.8
+	AssigningAuthority     string `json:"AssigningAuthority"`     // PV2-13.9
+	NameTypeCode           string `json:"NameTypeCode"`           // PV2-13.10
+	IdentifierCheckDigit   string `json:"IdentifierCheckDigit"`   // PV2-13.11
+	CheckDigitScheme       string `json:"CheckDigitScheme"`       // PV2-13.12
+	IdentifierTypeCode     string `json:"IdentifierTypeCode"`     // PV2-13.13
+	AssigningFacility      string `json:"AssigningFacility"`      // PV2-13.14
+	NameRepresentationCode string `json:"NameRepresentationCode"` // PV2-13.15
+	NameContext            string `json:"NameContext"`            // PV2-13.16
+	NameValidityRange      string `json:"NameValidityRange"`      // PV2-13.17
+	NameAssemblyOrder      string `json:"NameAssemblyOrder"`      // PV2-13.18
+	EffectiveDate          string `json:"EffectiveDate"`          // PV2-13.19
+	ExpirationDate         string `json:"ExpirationDate"`         // PV2-13.20
+	ProfessionalSuffix     string `json:"ProfessionalSuffix"`     // PV2-13.21
+	AssigningJurisdiction  string `json:"AssigningJurisdiction"`  // PV2-13.22
+	AssigningAgencyOrDept  string `json:"AssigningAgencyOrDept"`  // PV2-13.23
+}
+
+// Extended Composite Name and ID for Organization Used in many cases
+type XON struct {
+	OrganizationName       string `json:"OrganizationName"`       // PV2-23.1
+	TypeCode               string `json:"TypeCode"`               // PV2-23.2
+	IDNumber               string `json:"IDNumber"`               // PV2-23.3
+	CheckDigit             string `json:"CheckDigit"`             // PV2-23.4
+	CheckDigitScheme       string `json:"CheckDigitScheme"`       // PV2-23.5
+	AssigningAuthority     string `json:"AssigningAuthority"`     // PV2-23.6
+	IdentifierTypeCode     string `json:"IdentifierTypeCode"`     // PV2-23.7
+	AssigningFacility      string `json:"AssigningFacility"`      // PV2-23.8
+	RepresentationCode     string `json:"RepresentationCode"`     // PV2-23.9
+	OrganizationIdentifier string `json:"OrganizationIdentifier"` // PV2-23.10
+}
+
+// Generic EI Used in Many other cases
+type EntityIdentifier struct {
+	EntityIdentifier string `json:"EntityIdentifier"` // X-x.1
+	NamespaceID      string `json:"NamespaceID"`      // X-x.2
+	UniversalID      string `json:"UniversalID"`      // X-x.3
+	UniversalType    string `json:"UniversalType"`    // X-x.4
+}
+
+type DG1 struct {
+	SetID		string	`json:"SetID"`		// DG1-1
+	DiagnosisMethod	string	`json:""DiagnosisMethod`// DG1-2
+	DiagnosisCode	*ServiceCode	`json:"DiagnosisCode"` // DG1-3
+	Description	string	`json:"Description"`	// DG1-4
+	DateTime	string	`json:"DateTime"`	// DG1-5
+	Type		string	`json:"Type"`		// DG1-6
+	MajorCategory	string	`json:"MajorCategory"`	// DG1-7
+	RelatedGroup	string	`json:"RelatedGroup"`	// DG1-8
+	ApprovalIndicator	string	`json:"ApprovalIndicator"`	// DG1-9
+	GrouperReviewCode	string	`json:"GrouperReviewCode"`	// DG1-10
+	OutlierType	string	`json:"OutlierType"`	// DG1-11
+	OutlierDays	string	`json:"OutlierDays"`	// DG1-12
+	OutlierCost	string	`json:"OutlierCost"`	// DG1-13
+	GrouperVersionType	string	`json:"GrouperVersionType"`	// DG1-14
+	Priority	string	`json:"Priority"`	// DG1-15
+	Clinician	*XCN	`json:"Clinician"`	// DG1-16
+	Classification	string	`json:"Classification"`	// DG1-17
+	ConfidentialIndicator	string	`json:"ConfidentialIdenticator"`	// DG1-18
+	AttestationDateTime	string	`json:"AttestationDateTime"`		// DG1-19
+	Identifier	*EntityIdentifier	`json:"Identifier"`	// DG1-20
+	ActionCode	string	`json:"ActionCode"`	// DG1-21
+	ParentDiagnosis	*EntityIdentifier	`json:"ParentDiagnosis"`	// DG1-22
+	DRGCCLValue	*ServiceCode	`json:"DRGCCLValue"`	// DG1-23
+	DRGGroupingUsage	string	`json:"DRGGroupingUsage"`	// DG1-24
+	DRGDiagnosisStatus	string	`json:"DRGDiagnosisStatus"`	// DG1-25
+	POAIndicator		string	`json:"POAIndicator"`		// DG1-26
+}
+
+type OBX struct {
+	SetID                                 string            `json:"SetID"`                                 // OBX-1
+	ValueType                             string            `json:"ValueType"`                             // OBX-2
+	ObservationIdentifier                 string            `json:"ObservationIdentifier"`                 // OBX-3
+	ObservationSubID                      string            `json:"ObservationSubID"`                      // OBX-4
+	ObservationValue                      string            `json:"ObservationValue"`                      // OBX-5
+	Units                                 *ServiceCode      `json:"Units"`                                 // OBX-6
+	ReferencesRange                       string            `json:"ReferencesRange"`                       // OBX-7
+	AbnormalFlags                         string            `json:"AbnormalFlags"`                         // OBX-8
+	Probability                           string            `json:"Probability"`                           // OBX-9
+	NatureOfAbnormalTest                  string            `json:"NatureOfAbnormalTest"`                  // OBX-10
+	ObservationResultStatus               string            `json:"ObservationResultStatus"`               // OBX-11
+	EffectiveDateOfReferenceRange         string            `json:"EffectiveDateOfReferenceRange"`         // OBX-12
+	UserDefinedAccessChecks               string            `json:"UserDefinedAccessChecks"`               // OBX-13
+	DateTimeOfTheObservation              string            `json:"DateTimeOfTheObservation"`              // OBX-14
+	ProducerID                            *ServiceCode      `json:"ProducerID"`                            // OBX-15
+	ResponsibleObserver                   *XCN              `json:"ResponsibleObserver"`                   // OBX-16
+	ObservationMethod                     *ServiceCode      `json:"ObservationMethod"`                     // OBX-17
+	EquipmentInstanceIdentifier           *EntityIdentifier `json:"EquipmentInstanceIdentifier"`           // OBX-18
+	DateTimeOfTheAnalysis                 string            `json:"DateTimeOfTheAnalysis"`                 // OBX-19
+	ObservationSite                       *ServiceCode      `json:"ObservationSite"`                       // OBX-20
+	ObservationInstanceIdentifier         *EntityIdentifier `json:"ObservationInstanceIdentifier"`         // OBX-21
+	MoodCode                              *ServiceCode      `json:"MoodCode"`                              // OBX-22
+	PerformingOrganizationName            *XON              `json:"PerformingOrganizationName"`            // OBX-23
+	PerformingOrganizationAddress         *XAD              `json:"PerformingOrganizationAddress"`         // OBX-24
+	PerformingOrganizationMedicalDirector *XCN              `json:"PerformingOrganizationMedicalDirector"` // OBX-25
+}
+
+type NK1 struct {
+	SetID                                    string       `json:"SetID"`                                    // NK1-1
+	Name                                     *XPN         `json:"Name"`                                     // NK1-2
+	Relationship                             *ServiceCode `json:"Relationship"`                             // NK1-3
+	Address                                  *XAD         `json:"Address"`                                  // NK1-4
+	PhoneNumber                              *XTN         `json:"PhoneNumber"`                              // NK1-5
+	BusinessPhoneNumber                      *XTN         `json:"BusinessPhoneNumber"`                      // NK1-6
+	ContactRole                              *ServiceCode `json:"ContactRole"`                              // NK1-7
+	StartDate                                string       `json:"StartDate"`                                // NK1-8
+	EndDate                                  string       `json:"EndDate"`                                  // NK1-9
+	NextOfKinAssociatedPartiesJobTitle       string       `json:"NextOfKinAssociatedPartiesJobTitle"`       // NK1-10
+	NextOfKinAssociatedPartiesJobCode        *JCC         `json:"NextOfKinAssociatedPartiesJobCode"`        // NK1-11
+	NextOfKinAssociatedPartiesEmployeeNumber *CX          `json:"NextOfKinAssociatedPartiesEmployeeNumber"` // NK1-12
+	OrganizationName                         *XON         `json:"OrganizationName"`                         // NK1-13
+	MaritalStatus                            *ServiceCode `json:"MaritalStatus"`                            // NK1-14
+	AdministrativeSex                        string       `json:"AdministrativeSex"`                        // NK1-15
+	DateOfBirth                              string       `json:"DateOfBirth"`                              // NK1-16
+	LivingDependency                         string       `json:"LivingDependency"`                         // NK1-17
+	AmbulatoryStatus                         string       `json:"AmbulatoryStatus"`                         // NK1-18
+	Citizenship                              string       `json:"Citizenship"`                              // NK1-19
+	PrimaryLanguage                          *ServiceCode `json:"PrimaryLanguage"`                          // NK1-20
+	LivingArrangement                        string       `json:"LivingArrangement"`                        // NK1-21
+	PublicityCode                            *ServiceCode `json:"PublicityCode"`                            // NK1-22
+	ProtectionIndicator                      string       `json:"ProtectionIndicator"`                      // NK1-23
+	StudentIndicator                         string       `json:"StudentIndicator"`                         // NK1-24
+	Religion                                 *ServiceCode `json:"Religion"`                                 // NK1-25
+	MothersMaidenName                        *XPN         `json:"MothersMaidenName"`                        // NK1-26
+	Nationality                              *ServiceCode `json:"Nationality"`                              // NK1-27
+	EthnicGroup                              *ServiceCode `json:"EthnicGroup"`                              // NK1-28
+	ContactReason                            *ServiceCode `json:"ContactReason"`                            // NK1-29
+	ContactPersonsName                       *XPN         `json:"ContactPersonsName"`                       // NK1-30
+	ContactPersonsTelephoneNumber            *XTN         `json:"ContactPersonsTelephoneNumber"`            // NK1-31
+	ContactPersonsAddress                    *XAD         `json:"ContactPersonsAddress"`                    // NK1-32
+	NextOfKinAssociatedPartysIdentifiers     *CX          `json:"NextOfKinAssociatedPartysIdentifiers"`     // NK1-33
+	JobStatus                                string       `json:"JobStatus"`                                // NK1-34
+	Race                                     *ServiceCode `json:"Race"`                                     // NK1-35
+	Handicap                                 string       `json:"Handicap"`                                 // NK1-36
+	ContactPersonSocialSecurityNumber        string       `json:"ContactPersonSocialSecurityNumber"`        // NK1-37
+	NextOfKinBirthPlace                      string       `json:"NextOfKinBirthPlace"`                      // NK1-38
+	VIPIndicator                             string       `json:"VIPIndicator"`                             // NK1-39
+}
+
+type CX struct {
+	IDNumber              string `json:"IDNumber"`              // CX.1
+	CheckDigit            string `json:"CheckDigit"`            // CX.2
+	CheckDigitScheme      string `json:"CheckDigitScheme"`      // CX.3
+	AssigningAuthority    string `json:"AssigningAuthority"`    // CX.4
+	IdentifierTypeCode    string `json:"IdentifierTypeCode"`    // CX.5
+	AssigningFacility     string `json:"AssigningFacility"`     // CX.6
+	EffectiveDate         string `json:"EffectiveDate"`         // CX.7
+	ExpirationDate        string `json:"ExpirationDate"`        // CX.8
+	AssigningJurisdiction string `json:"AssigningJurisdiction"` // CX.9
+	AssigningAgencyOrDept string `json:"AssigningAgencyOrDept"` // CX.10
+}
+
+type JCC struct {
+	JobCode        string `json:"JobCode"`
+	JobClass       string `json:"JobClass"`
+	JobDescription string `json:"JobDescription"`
+}
+
+type DateRange struct {
+	StartDate	string	`json:"StartDate"`		// X.x.1
+	EndDate		string	`json:"EndDate"`		// X.x.2
+}
+
+type ARV struct {
+	SetID		string		`json:"SetID"`			// ARV-1
+	AccessRestrictionCode	*ServiceCode	`json:"AccessRestrictionCode"`	// ARV-2
+	AccessRestrictionValue	*ServiceCode	`json:"AccessRestrictionValue"`	// ARV-3
+	AccessRestrictionReason	*ServiceCode	`json:"AccessRestrictionReason"`// ARV-4
+	AccessRestrictionInstruction	string		`json:"AccessRestrictionInstruction"`	// ARV-5
+	AccessRestrictionDate	*DateRange	`json:"AccessRestrictionDate"`	// ARV-6
+}
+
+type AL1 struct {
+	SetID		string		`json:"SetID"`			// AL1-1
+	AllergenTypeCode *ServiceCode	`json:"AllergenTypeCode"`	// AL1-2
+	AllergenCodeDescription	*ServiceCode	`json:"AllergenCodeDescription"`	// AL1-3
+	AllergySeverityCode	*ServiceCode	`json:"AllergySeverityCode"`	// AL1-4
+	AllergyReactionCode	string	`json:"AllergyReactionCode"`	// AL1-5
+	IdentificationDate	string	`json:"IdentificationDate"`	// AL1-6
+}
+
+type OBR struct {
+	SetID                string            `json:"SetID"`                // OBR-1
+	PlacerOrderNumber    *Placer           `json:"PlacerOrderNumber"`    // OBR-2
+	FillerOrderNumber    *Filler           `json:"FillerOrderNumber"`    // OBR-3
+	UniversalServiceID   *ServiceCode      `json:"UniversalService"`     // OBR-4
+	Priority             string            `json:"Priority"`             // OBR-5
+	RequestDate          *OBRDateTime      `json:"Request"`              // OBR-6
+	ObservationDate      *OBRDateTime      `json:"Observation"`          // OBR-7
+	ObservationEndDate   *OBRDateTime      `json:"ObservationEndDate"`   // OBR-8
+	CollectionVolume     *OBRVolume        `json:"CollectionVolume"`     // OBR-9
+	CollectorID          *OBRReceptCode    `json:"Collector"`            // OBR-10
+	SpecimenAction       string            `json:"SpecimenAction"`       // OBR-11
+	DangerCode           *ServiceCode      `json:"ServiceCode"`          // OBR-12
+	ClinicalInfo         string            `json:"ClinicalInfo"`         // OBR-13
+	SpecimenRecivedDate  *OBRDateTime      `json:"SpecimenRecivedDate"`  // OBR-14
+	SpecimenSource       *OBRSource        `json:"SpecimenSource"`       // OBR-15
+	OrderingProvider     *OBRReceptCode    `json:"OrderingProvider"`     // OBR-16
+	CallbackPhone        string            `json:"CallbackPhone"`        // OBR-17
+	PlacerField1         string            `json:"PlacerField1"`         // OBR-18
+	PlacerField2         string            `json:"PlacerField2"`         // OBR-19
+	FillerField1         string            `json:"FillerField1"`         // OBR-20
+	FillerField2         string            `json:"FillerField2"`         // OBR-21
+	ResultReportDate     *OBRDateTime      `json:"ResultReportTime"`     // OBR-22
+	ChargeToPractice     *Charge           `json:"ChargeToPractice"`     // OBR-23
+	DiagnosticService    string            `json:"DiagnosticService"`    // OBR-24
+	ResultStatus         string            `json:"ResultStatus"`         // OBR-25
+	ParentResult         *ParentResultCode `json:"ParentResult"`         // OBR-26
+	Quantity             *QuantityTiming   `json:"QuantityTiming"`       // OBR-27
+	ResultCopyTo         *OBRReceptCode    `json:"ResultCopyTo"`         // OBR-28
+	ParentNumber         *OBRParentNumber  `json:"ParentNumber"`         // OBR-29
+	TransportationMode   string            `json:"TransportationMode"`   // OBR-30
+	ReasonForStudy       *ServiceCode      `json:"ReasonForStudy"`       // OBR-31
+	PrincipalInterpreter *Technician       `json:"PrincipalInterpreter"` // OBR-32
+	AssistantInterpreter *Technician       `json:"AssistantInterpreter"` // OBR-33
+	Technician           *Technician       `json:"Technician"`           // OBR-34
+	Transcription        *Technician       `json:"Transcription"`        // OBR-35
+	ScheduledDate        *OBRDateTime      `json:"ScheduledDate"`        // OBR-36
+}
+
+type Technician struct {
+	Technician string `json:"Technician"` // OBR-x.1
+	StartDate  string `json:"StartDate"`  // OBR-x.2
+	EndDate    string `json:"EndDate"`    // OBR-x.3
+	Location   string `json:"Location"`   // OBR-x.4
+}
+
+type OBRParentNumber struct {
+	PlacerOrderNumber string `json:"PlacerOrderNumber"` // OBR-29.1
+	FillerOrderNumber string `json:"FillerOrderNumber"` // OBR-29.2
+}
+
+type QuantityTiming struct {
+	QuantityAmount string `json:"QuantityAmount"` // OBR-27.1
+	Interval       string `json:"Interval"`       // OBR-27.2
+	Duration       string `json:"Duration"`       // OBR-27.3
+	StartDate      string `json:"StartDate"`      // OBR-27.4
+	EndDate        string `json:"EndDate"`        // OBR-27.5
+	Priority       string `json:"Priority"`       // OBR-27.6
+	Condition      string `json:"Condition"`      // OBR-27.7
+	Text           string `json:"Text"`           // OBR-27.8
+	Conjunction    string `json:"Conjunction"`    // OBR-27.9
+	OrderSequence  string `json:"OrderSequence"`  // OBR-27.10
+}
+
+type ParentResultCode struct {
+	ObservationID     string `json:"ObservationID"`     // OBR-26.1
+	ParentResultSubID string `json:"ParentResultSubID"` // OBR-26.2
+	ObservationResult string `json:"ObservationResult"` // OBR-26.3
+}
+
+type Charge struct {
+	DollarAmount string `json:"DollarAmount"` // OBR-23.1
+	ChargeCode   string `json:"ChargeCode"`   // OBR-23.2
+}
+
+type OBRSource struct {
+	SpecimenSourceCode string `json:"SpecimenSourceCode"` // OBR-15.1
+	Additives          string `json:"Additives"`          // OBR-15.2
+	FreeText           string `json:"FreeText"`           // OBR-15.3
+	BodySite           string `json:"BodySite"`           // OBR-15.4
+	SiteModifier       string `json:"SiteModifier"`       // OBR-15.5
+}
+
+type OBRReceptCode struct {
+	IDNumber   string `json:"IDNumber"`   // OBR-10.1
+	FamilyName string `json:"FamilyName"` // OBR-10.2
+	GivenName  string `json:"GivenName"`  // OBR-10.3
+	MiddleName string `json:"MiddleName"` // OBR-10.4
+	Suffix     string `json:"Suffix"`     // OBR-10.5
+	Prefix     string `json:"Prefix"`     // OBR-10.6
+	Degree     string `json:"Degree"`     // OBR-10.7
+	Source     string `json:"Source"`     // OBR-10.8
+}
+
+type OBRVolume struct {
+	Quantity string `json:"Quantity"` // OBR-9.1
+	Units    string `json:"Units"`    // OBR-9.2
+}
+
+type OBRDateTime struct {
+	EventTime         string `json:"EventTime"`         // OBR-x.1
+	DegreeOfPrecision string `json:"DegreeOfPrecision"` // OBR-x.2
+}
+
+// Generic Nested Section Used in Many Cases
+type ServiceCode struct {
+	Identifier            string `json:"Identifier"`            // OBR-x.1
+	Text                  string `json:"Text"`                  // OBR-x.2
+	CodingSystem          string `json:"CodingSystem"`          // OBR-x.3
+	AlternateIdentifier   string `json:"AlternateIdentifier"`   // OBR-x.4
+	AlternateText         string `json:"AlternateText"`         // OBR-x.5
+	AlternateCodingSystem string `json:"AlternateCodingSystem"` // OBR-x.6
+}
+
+type Filler struct {
+	UniqueFillerID    string `json:"UniqueFillerID"`    // OBR-3.1
+	FillerApplication string `json:"FillerApplication"` // OBR-3.2
+}
+
+type Placer struct {
+	UniquePlacerID    string `json:"UniquePlacerID"`    // OBR-2.1
+	PlacerApplication string `json:"PlacerApplication"` // OBR-2.2
+}
+
 type HL7Message struct {
 	MSH *MSH `json:"MSH"`
 	EVN *EVN `json:"EVN"`
 	PID *PID `json:"PID"`
+	ROL *ROL `json:"ROL"`
+	DB1 *DB1 `json:"DB1"`
+	ARV *ARV `json:"ARV"`
 	PV1 *PV1 `json:"PV1"`
+	PV2 *PV2 `json:"PV2"`
+	DG1 *DG1 `json:"DG1"`
+	OBX *OBX `json:"OBX"`
+	NK1 *NK1 `json:"NK1"`
+	AL1 *AL1 `json:"AL1"`
+	OBR *OBR `json:"OBR"`
+}
+
+func NewARVSegment(p *random.Patient) *ARV {
+
+	arv := &ARV{
+		AccessRestrictionCode:	&ServiceCode{},
+		AccessRestrictionValue:	&ServiceCode{},
+		AccessRestrictionReason: &ServiceCode{},
+		AccessRestrictionDate:	&DateRange{},
+	}
+
+	return arv
+}
+
+func NewROLSegment(p *random.Patient) *ROL {
+
+	rol := &ROL{
+		RoleInstanceID:             &EntityIdentifier{}, 
+		Role:                       &ServiceCode{},      
+		RolePerson:                 &XCN{},             
+		RoleDuration:               &ServiceCode{},      
+		RoleActionReason:           &ServiceCode{},      
+		ProviderType:               &ServiceCode{},      
+		OrganizationUnitType:       &ServiceCode{},      
+		OfficeHomeAddressBirthplace: &XAD{},             
+		Phone:                      &XTN{},             
+		PersonIdentifier:           &PatientLocation{},
+	}
+
+	return rol
+
+}
+
+func NewDB1Segment(p *random.Patient) *DB1 {
+
+	db1 := &DB1{
+		PersonIdentifier: &CX{},
+	}
+
+	return db1
+
+}
+
+func NewOBXSegment(p *random.Patient) *OBX {
+
+	obx := &OBX{
+		Units:                                 &ServiceCode{},
+		ProducerID:                            &ServiceCode{},
+		ResponsibleObserver:                   &XCN{},
+		ObservationMethod:                     &ServiceCode{},
+		EquipmentInstanceIdentifier:           &EntityIdentifier{},
+		ObservationSite:                       &ServiceCode{},
+		ObservationInstanceIdentifier:         &EntityIdentifier{},
+		MoodCode:                              &ServiceCode{},
+		PerformingOrganizationName:            &XON{},
+		PerformingOrganizationAddress:         &XAD{},
+		PerformingOrganizationMedicalDirector: &XCN{},
+	}
+
+	return obx
+}
+
+func NewNK1Segment(P *random.Patient) *NK1 {
+
+	nk1 := &NK1{
+		Name:                                     &XPN{},
+		Relationship:                             &ServiceCode{},
+		Address:                                  &XAD{},
+		PhoneNumber:                              &XTN{},
+		BusinessPhoneNumber:                      &XTN{},
+		ContactRole:                              &ServiceCode{},
+		NextOfKinAssociatedPartiesJobCode:        &JCC{},
+		NextOfKinAssociatedPartiesEmployeeNumber: &CX{},
+		OrganizationName:                         &XON{},
+		MaritalStatus:                            &ServiceCode{},
+		PrimaryLanguage:                          &ServiceCode{},
+		PublicityCode:                            &ServiceCode{},
+		Religion:                                 &ServiceCode{},
+		MothersMaidenName:                        &XPN{},
+		Nationality:                              &ServiceCode{},
+		EthnicGroup:                              &ServiceCode{},
+		ContactReason:                            &ServiceCode{},
+		ContactPersonsName:                       &XPN{},
+		ContactPersonsTelephoneNumber:            &XTN{},
+		ContactPersonsAddress:                    &XAD{},
+		NextOfKinAssociatedPartysIdentifiers:     &CX{},
+		Race:                                     &ServiceCode{},
+	}
+
+	return nk1
+
+}
+
+func NewAL1Segment(p *random.Patient) *AL1 {
+
+	al1 :=  &AL1{
+		AllergenTypeCode: &ServiceCode{},
+		AllergenCodeDescription: &ServiceCode{},
+		AllergySeverityCode:	&ServiceCode{},
+	}
+
+	return al1
+
+}
+
+func NewOBRSegment(p *random.Patient) *OBR {
+
+	obr := &OBR{
+		PlacerOrderNumber:    &Placer{},
+		FillerOrderNumber:    &Filler{},
+		UniversalServiceID:   &ServiceCode{},
+		RequestDate:          &OBRDateTime{},
+		ObservationDate:      &OBRDateTime{},
+		ObservationEndDate:   &OBRDateTime{},
+		CollectionVolume:     &OBRVolume{},
+		CollectorID:          &OBRReceptCode{},
+		DangerCode:           &ServiceCode{},
+		SpecimenRecivedDate:  &OBRDateTime{},
+		SpecimenSource:       &OBRSource{},
+		OrderingProvider:     &OBRReceptCode{},
+		ResultReportDate:     &OBRDateTime{},
+		ChargeToPractice:     &Charge{},
+		ParentResult:         &ParentResultCode{},
+		Quantity:             &QuantityTiming{},
+		ResultCopyTo:         &OBRReceptCode{},
+		ParentNumber:         &OBRParentNumber{},
+		ReasonForStudy:       &ServiceCode{},
+		PrincipalInterpreter: &Technician{},
+		AssistantInterpreter: &Technician{},
+		Technician:           &Technician{},
+		Transcription:        &Technician{},
+		ScheduledDate:        &OBRDateTime{},
+	}
+
+	return obr
+
+}
+
+func NewDG1Segment(p *random.Patient) *DG1 {
+
+	dg1 := &DG1{
+		DiagnosisCode: &ServiceCode{},
+		Clinician:	&XCN{},
+		Identifier:	&EntityIdentifier{},
+		ParentDiagnosis:	&EntityIdentifier{},
+		DRGCCLValue:	&ServiceCode{},
+	}
+
+	return dg1
+
+}
+
+func NewPV2Segment(p *random.Patient) *PV2 {
+
+	pv2 := &PV2{
+		PriorPendingLocation:        &PatientLocation{},
+		AccommodationCode:           &ServiceCode{},
+		AdmitReason:                 &ServiceCode{},
+		TransferReason:              &ServiceCode{},
+		ReferralSourceCode:          &XCN{},
+		ClinicOrganizationName:      &XON{},
+		PatientChargeAdjustmentCode: &ServiceCode{},
+	}
+
+	return pv2
 }
 
 func NewPV1Segment(p *random.Patient) *PV1 {
@@ -209,13 +784,13 @@ func NewPIDSegment(p *random.Patient) *PID {
 
 	street := "123 " + p.PatientAddress.Street
 
-	name := &PatientName{
+	name := &XPN{
 		LastName:      p.LastName,
 		FirstName:     p.FirstName,
 		MiddleInitial: "A",
 	}
 
-	address := &PatientAddress{
+	address := &XAD{
 		StreetAddress: street,
 		City:          p.PatientAddress.RegionInfo.City,
 		State:         p.PatientAddress.RegionInfo.State,
@@ -254,7 +829,7 @@ func NewMSHSegment(p *random.Patient) *MSH {
 	}
 
 	msh := &MSH{
-		Encode:               "--",
+		Encode:               "^~\\&",
 		SendingApplication:   "PLACEBO",
 		SendingFacility:      "PLACEBO",
 		ReceivingApplication: "DEMO",
@@ -271,7 +846,7 @@ func NewMSHSegment(p *random.Patient) *MSH {
 }
 
 func NewHL7EventMessage(p *random.Patient, t string, e string) string {
-	
+
 	message := NewHL7Message(p)
 	message.MSH.MessageType.MessageCode = t
 	message.MSH.MessageType.TriggerEvent = e
@@ -284,15 +859,22 @@ func NewHL7EventMessage(p *random.Patient, t string, e string) string {
 
 }
 
-
-
 func NewHL7Message(p *random.Patient) *HL7Message {
 
 	message := &HL7Message{
 		MSH: NewMSHSegment(p),
 		EVN: NewEVNSegment(p),
 		PID: NewPIDSegment(p),
+		ROL: NewROLSegment(p),
+		DB1: NewDB1Segment(p),
+		ARV: NewARVSegment(p),
 		PV1: NewPV1Segment(p),
+		PV2: NewPV2Segment(p),
+		DG1: NewDG1Segment(p),
+		OBX: NewOBXSegment(p),
+		NK1: NewNK1Segment(p),
+		AL1: NewAL1Segment(p),
+		OBR: NewOBRSegment(p),
 	}
 
 	return message
@@ -359,8 +941,26 @@ func SegmentFinder(s string) interface{} {
 		return &EVN{}
 	case "PID":
 		return &PID{}
+	case "ROL":
+		return &ROL{}
+	case "DB1":
+		return &DB1{}
+	case "ARV":
+		return &ARV{}
 	case "PV1":
 		return &PV1{}
+	case "PV2":
+		return &PV2{}
+	case "DG1":
+		return &DG1{}
+	case "OBX":
+		return &OBX{}
+	case "NK1":
+		return &NK1{}
+	case "AL1":
+		return &AL1{}
+	case "OBR":
+		return &OBR{}
 	default:
 		return nil
 	}
@@ -376,8 +976,26 @@ func (msg *HL7Message) SegmentAssigner(s interface{}) *HL7Message {
 		msg.EVN = v
 	case *PID:
 		msg.PID = v
+	case *ROL:
+		msg.ROL = v
+	case *DB1:
+		msg.DB1 = v
+	case *ARV:
+		msg.ARV = v
 	case *PV1:
 		msg.PV1 = v
+	case *PV2:
+		msg.PV2 = v
+	case *DG1:
+		msg.DG1 = v
+	case *OBX:
+		msg.OBX = v
+	case *NK1:
+		msg.NK1 = v
+	case *AL1:
+		msg.AL1 = v
+	case *OBR:
+		msg.OBR = v
 	default:
 		return nil
 	}
@@ -390,7 +1008,16 @@ func MessageBuilder(msg *HL7Message) string {
 		message.CreateHL7(msg.MSH, "MSH"),
 		message.CreateHL7(msg.EVN, "EVN"),
 		message.CreateHL7(msg.PID, "PID"),
+		message.CreateHL7(msg.ROL, "ROL"),
+		message.CreateHL7(msg.DB1, "DB1"), 
+		message.CreateHL7(msg.ARV, "ARV"),
 		message.CreateHL7(msg.PV1, "PV1"),
+		message.CreateHL7(msg.PV2, "PV2"),
+		message.CreateHL7(msg.DG1, "DG1"),
+		message.CreateHL7(msg.OBX, "OBX"),
+		message.CreateHL7(msg.NK1, "NK1"),
+		message.CreateHL7(msg.AL1, "AL1"),
+		message.CreateHL7(msg.OBR, "OBR"),
 	}
 
 	return strings.Join(segments, "\n")
