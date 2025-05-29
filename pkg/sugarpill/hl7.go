@@ -814,7 +814,7 @@ func NewPIDSegment(p *random.Patient) *PID {
 func NewEVNSegment(p *random.Patient) *EVN {
 
 	evn := &EVN{
-		EventTypeCode:    "AO1", //placeholder
+		EventTypeCode:    "A01", //placeholder
 		RecordedDateTime: p.Hl7Info.HL7Event,
 	}
 
@@ -825,7 +825,7 @@ func NewMSHSegment(p *random.Patient) *MSH {
 
 	messageType := &MessageType{
 		MessageCode:  "ADT",
-		TriggerEvent: "AO1",
+		TriggerEvent: "A01",
 	}
 
 	msh := &MSH{
