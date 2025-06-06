@@ -26,9 +26,9 @@ func TestMain(m *testing.M) {
 
 func TestNewPV1Segment(t *testing.T) {
 
-	sugarpillPatients.Patients[0].EncounterId = 123456789
-	sugarpillPatients.Patients[1].EncounterId = 0
-	sugarpillPatients.Patients[2].EncounterId = -2
+	sugarpillPatients.Patients[0].VisitId = 123456789
+	sugarpillPatients.Patients[1].VisitId = 0
+	sugarpillPatients.Patients[2].VisitId = -2
 
 	patient1 := sugarpillPatients.Patients[0]
 	patient2 := sugarpillPatients.Patients[1]
@@ -40,8 +40,8 @@ func TestNewPV1Segment(t *testing.T) {
 		expected    interface{}
 	}{
 		{"PV1 Visit Number Should Be the Same From Patient", patient1, 123456789},
-		{"PV1 Vist Number 0 Should Reflect Encounter ID 0", patient2, 0},
-		{"PV1 Visit Number Unconventional should match Encounter Id", patient3, -2},
+		{"PV1 Vist Number 0 Should Reflect Visit ID 0", patient2, 0},
+		{"PV1 Visit Number Unconventional should match Visit Id", patient3, -2},
 	}
 
 	for _, tc := range tests {

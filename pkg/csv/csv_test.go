@@ -17,7 +17,7 @@ func TestMain(m *testing.M) {
 			FirstName:      "John",
 			LastName:       "Test",
 			MRN:            "000001",
-			EncounterId:    123456,
+			VisitId:    123456,
 			Phone:          "123456789",
 			DOB:            "08/08/1955",
 			Hl7DOB:         "08081955",
@@ -34,7 +34,7 @@ func TestMain(m *testing.M) {
 
 }
 
-func TestdelimiterValidation(t *testing.T) {
+func TestDelimiterValidation(t *testing.T) {
 
 	var tests = []struct {
 		description string
@@ -43,15 +43,23 @@ func TestdelimiterValidation(t *testing.T) {
 	}{
 		{"No Error When Proper Delimiter is Provided", ",", nil},
 		{"Other Proper Delimiter Provided And No Error", "|", nil},
-		{"Error When Improper Delimiter Provided", "#", errors.New("")},
+		{"Error When Improper Delimiter Provided", "#", errors.New("Delimiter Format Not Supported.")},
 	}
 
 	for _, tc := range tests {
 		t.Run(tc.description, func(t *testing.T) {
 			got := delimiterValidation(tc.input)
-
-			if got != tc.expected {
-				t.Fatalf("Got %v, expected %v", got, tc.expected)
+			if tc.expected == nil {
+				if got != nil {
+					t.Fatalf("Expected no error, but got %v", got)
+				}
+			} else {
+				if got == nil {
+					t.Fatalf("Expected error %v, but got nil", tc.expected)
+				}
+				if got.Error() != "Delimiter Format Not Supported." {
+					t.Fatalf("Got error message %q, expected %q", got.Error(), "Delimiter Format Not Supported.")
+				}
 			}
 		})
 	}
