@@ -36,8 +36,8 @@ func TestNewPatient(t *testing.T) {
 			t.Fatalf("NewPatient()=%v should not be empty", got.LastName)
 		} else if got.MRN == "" {
 			t.Fatalf("NewPatient()=%v should not be ''", got.MRN)
-		} else if got.EncounterId == 0 {
-			t.Fatalf("NewPatient()=%v should not be 0", got.EncounterId)
+		} else if got.VisitId == 0 {
+			t.Fatalf("NewPatient()=%v should not be 0", got.VisitId)
 		} else if got.Phone == "" {
 			t.Fatalf("NewPatient()=%v should not be empty", got.Phone)
 		} else if got.DOB == "" {
@@ -95,7 +95,7 @@ func TestPatient_Mrn(t *testing.T) {
 }
 */
 
-func TestPatient_EncounterID(t *testing.T) {
+func TestPatient_VisitID(t *testing.T) {
 
 	testPatient := &Patient{}
 
@@ -103,15 +103,15 @@ func TestPatient_EncounterID(t *testing.T) {
 		description string
 		maxExpected int
 	}{
-		{"Default Case for Encounter ID", 1000000000},
+		{"Default Case for Visit ID", 1000000000},
 	}
 
 	for _, tc := range tests {
 		t.Run(tc.description, func(t *testing.T) {
-			got := testPatient.EncounterID()
+			got := testPatient.VisitID()
 
-			if (got.EncounterId < 0) || (got.EncounterId > tc.maxExpected) {
-				t.Fatalf("MrnAndencounterID()=%v expected range max to %v and got %v, out of range", got.EncounterId, tc.maxExpected, got.EncounterId)
+			if (got.VisitId < 0) || (got.VisitId > tc.maxExpected) {
+				t.Fatalf("MrnAndencounterID()=%v expected range max to %v and got %v, out of range", got.VisitId, tc.maxExpected, got.VisitId)
 			}
 		})
 	}

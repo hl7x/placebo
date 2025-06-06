@@ -27,7 +27,7 @@ func TestCreateCSV(t *testing.T) {
 		FirstName:      "Bill",
 		LastName:       "Test",
 		MRN:            "123",
-		EncounterId:    123,
+		VisitId:    123,
 		Phone:          "0000000",
 		DOB:            "00/00/0000",
 		PatientAddress: &random.Address{RegionInfo: &random.Region{}},
@@ -39,7 +39,7 @@ func TestCreateCSV(t *testing.T) {
 		FirstName:      "Jill",
 		LastName:       "Test",
 		MRN:            "123",
-		EncounterId:    123,
+		VisitId:    123,
 		Phone:          "0000000",
 		DOB:            "00/00/0000",
 		PatientAddress: &random.Address{RegionInfo: &random.Region{}},
@@ -78,7 +78,7 @@ func TestCreateCSV(t *testing.T) {
 
 	csvContent := string(csvContentBytes)
 
-	expectedHeaders := "FirstName,LastName,MRN,EncounterId,Phone,DOB,Hl7DOB,Street,StructureNumber,State,City,PostalCode,ArrivalDate,DischargeDate,Appointment,HL7Arrival,HL7Discharge,HL7Event,HL7DOB,HL7Appointment"
+	expectedHeaders := "FirstName,LastName,MRN,VisitId,Phone,DOB,Hl7DOB,Street,StructureNumber,State,City,PostalCode,ArrivalDate,DischargeDate,Appointment,HL7Arrival,HL7Discharge,HL7Event,HL7DOB,HL7Appointment"
 	expectedExamplePatient1Data := fmt.Sprintf("%v,%v,%v", examplePatient1.FirstName, examplePatient1.LastName, examplePatient1.MRN)
 	expectedExamplePatient2Data := fmt.Sprintf("%v,%v,%v", examplePatient2.FirstName, examplePatient2.LastName, examplePatient2.MRN)
 
@@ -111,7 +111,7 @@ func TestCreateHl7(t *testing.T) {
 		FirstName:      "Bill",
 		LastName:       "Test",
 		MRN:            "123",
-		EncounterId:    123,
+		VisitId:    123,
 		Phone:          "0000000",
 		DOB:            "00/00/0000",
 		PatientAddress: &random.Address{RegionInfo: &random.Region{}},
@@ -212,7 +212,7 @@ func TestCreateInteractiveHl7(t *testing.T) {
 		FirstName:      "Bill",
 		LastName:       "Test",
 		MRN:            "123",
-		EncounterId:    123,
+		VisitId:    123,
 		Phone:          "0000000",
 		DOB:            "00/00/0000",
 		PatientAddress: &random.Address{RegionInfo: &random.Region{}},

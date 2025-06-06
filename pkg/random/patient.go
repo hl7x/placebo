@@ -17,7 +17,7 @@ type Patient struct {
 	FirstName      string
 	LastName       string
 	MRN            string
-	EncounterId    int
+	VisitId    	int
 	Phone          string
 	DOB            string
 	Hl7DOB         string
@@ -54,7 +54,7 @@ func NewPatient() *Patient {
 	fakePatient := Name().
 		NewAddress().
 		Mrn().
-		EncounterID().
+		VisitID().
 		PhoneNumber().
 		DateOfBirth().
 		Hl7DateOfBirthFmt().
@@ -95,12 +95,12 @@ func (p *Patient) Mrn() *Patient {
 	return p
 }
 
-func (p *Patient) EncounterID() *Patient {
+func (p *Patient) VisitID() *Patient {
 
 	rand.Seed(time.Now().UnixNano())
-	randomEncounterID := rand.Intn(1000000000)
+	randomVisitID := rand.Intn(1000000000)
 
-	p.EncounterId = randomEncounterID
+	p.VisitId = randomVisitID
 
 	return p
 }
