@@ -3,6 +3,7 @@ package sugarpill
 import (
 	"encoding/json"
 	"strings"
+	"fmt"
 
 	"placebo/pkg/message"
 	"placebo/pkg/random"
@@ -962,6 +963,7 @@ func SegmentFinder(s string) interface{} {
 	case "OBR":
 		return &OBR{}
 	default:
+		fmt.Printf("Segment %v not found\n", s)
 		return nil
 	}
 
@@ -1026,9 +1028,25 @@ func MessageBuilder(msg *HL7Message) string {
 
 func LinesFromFile(s string) []string {
 
-	splitLines := strings.Split(s, "\n")
+	delimiter := EndOfLineFinder(s)
+	splitLines := strings.Split(s, delimiter)
 
 	return splitLines
+}
+
+func EndOfLineFinder(s string) string {
+
+	if strings.Contains(s, "\n") {
+		return "\n"
+	} 
+	if strings.Contains(s, "\r") {
+		return "\r"
+	}
+
+	fmt.Println("File End Of Line Delimiter Not Found")
+	return ""
+
+
 }
 
 // Remove 'null' segments for easier JSON display
