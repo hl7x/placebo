@@ -910,8 +910,17 @@ func (msg *HL7Message) ReadFromFile(s string) *HL7Message {
 	lines := LinesFromFile(s)
 
 	for _, line := range lines {
+		if strings.TrimSpace(line) == "" {
+			continue
+		}
+
 		segs := strings.Split(line, "|")
+		
 		segType := SegmentFinder(segs[0])
+		if segType == nil {
+			continue
+		}
+
 		onlyMessageSegs := segs[1:]
 		bind := message.MarshallHL7(onlyMessageSegs, segType)
 		msg.SegmentAssigner(bind)
@@ -962,6 +971,9 @@ func SegmentFinder(s string) interface{} {
 		return &AL1{}
 	case "OBR":
 		return &OBR{}
+	case "":
+		fmt.Println("Found the Bug!!!")
+		return nil
 	default:
 		fmt.Printf("Segment %v not found\n", s)
 		return nil
@@ -1028,10 +1040,21 @@ func MessageBuilder(msg *HL7Message) string {
 
 func LinesFromFile(s string) []string {
 
-	delimiter := EndOfLineFinder(s)
-	splitLines := strings.Split(s, delimiter)
+	rawLines := strings.FieldsFunc(s, func(r rune) bool {
+        	return r == '\n' || r == '\r'
+    	})
 
-	return splitLines
+
+    	var lines []string
+    	for _, line := range rawLines {
+        	trimmed := strings.TrimSpace(line)
+        	if trimmed != "" { // Skip completely empty lines
+            		lines = append(lines, trimmed)
+        	}
+    	}
+
+	return lines
+
 }
 
 func EndOfLineFinder(s string) string {
