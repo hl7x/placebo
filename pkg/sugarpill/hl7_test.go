@@ -3,6 +3,7 @@ package sugarpill
 import (
 	"testing"
 	"strings"
+	"reflect"
 
 	"placebo/pkg/random"
 )
@@ -170,7 +171,26 @@ func TestNewHL7EventMessage(t *testing.T) {
 	}
 }
 
+func TestSegmentFinder(t *testing.T) {
 
+	var tests = []struct{
+		description	string
+		input		string
+		expected	interface{}
+	}{
+		{"Segment String MSH returns MSH struct", "MSH", &MSH{}},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
+			got := SegmentFinder(tc.input)
+
+			if reflect.TypeOf(got) != reflect.TypeOf(tc.expected) {
+				t.Fatalf("got %v, expected %v to return", got, tc.expected)
+			}
+		})
+	}
+}
 
 /*
 

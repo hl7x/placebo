@@ -1054,21 +1054,6 @@ func LinesFromFile(s string) []string {
 
 }
 
-func EndOfLineFinder(s string) string {
-
-	if strings.Contains(s, "\n") {
-		return "\n"
-	} 
-	if strings.Contains(s, "\r") {
-		return "\r"
-	}
-
-	fmt.Println("File End Of Line Delimiter Not Found")
-	return ""
-
-
-}
-
 // Remove 'null' segments for easier JSON display
 func SanitizeLines(lines string) string {
 	split := strings.Split(lines, "\n")
