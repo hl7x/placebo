@@ -179,6 +179,7 @@ func TestSegmentFinder(t *testing.T) {
 		expected	interface{}
 	}{
 		{"Segment String MSH returns MSH struct", "MSH", &MSH{}},
+		{"Unsupported String returns nil", "POP", nil},
 	}
 
 	for _, tc := range tests {
