@@ -971,9 +971,6 @@ func SegmentFinder(s string) interface{} {
 		return &AL1{}
 	case "OBR":
 		return &OBR{}
-	case "":
-		fmt.Println("Found the Bug!!!")
-		return nil
 	default:
 		fmt.Printf("Segment %v not found\n", s)
 		return nil
