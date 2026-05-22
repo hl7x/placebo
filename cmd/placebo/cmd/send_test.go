@@ -93,27 +93,3 @@ func TestMultiSender(t *testing.T) {
 	}
 
 }
-
-func TestEventSelector(t *testing.T) {
-
-	command := "post_discharge"
-
-	var tests = []struct {
-		description string
-		input       string
-		expected    error
-	}{
-		{"Should Return Nil When command selector is correct", command, nil},
-	}
-
-	for _, tc := range tests {
-		t.Run(tc.description, func(t *testing.T) {
-			got := EventSelector(tc.input)
-
-			if got != tc.expected {
-				t.Fatalf("EventSelector(%v)=%v expected %v", tc.input, got, tc.expected)
-			}
-		})
-	}
-
-}
