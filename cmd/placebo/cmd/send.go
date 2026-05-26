@@ -131,42 +131,6 @@ func MultiSender(mes []string) error {
 	return nil
 }
 
-// Obsolete: Only works with template use.
-func EventSelector(s string) error {
-
-	dischargeEvent := []string{"admit", "discharge"}
-	admitEvent := []string{"admit"}
-	preadmitEvent := []string{"preadmit"}
-	referralEvent := []string{"referral"}
-
-	switch s {
-	case "post_discharge":
-		messages := event.Builder(dischargeEvent)
-		sent := MultiSender(messages)
-
-		return sent
-	case "post_admit":
-		message := event.Builder(admitEvent)
-		sent := MultiSender(message)
-
-		return sent
-	case "pre_admit":
-		message := event.Builder(preadmitEvent)
-		sent := MultiSender(message)
-
-		return sent
-	case "referral":
-		message := event.Builder(referralEvent)
-		sent := MultiSender(message)
-
-		return sent
-	default:
-		return errors.New("Command Not Found.")
-	}
-
-	return nil
-}
-
 func EventAndMessage(e string, s string) error {
 
 	patient := random.NewPatient()
@@ -189,7 +153,7 @@ func EventAndMessage(e string, s string) error {
 			return errors.New("Command Not Found.")
 		}
 	} else {
-			return errors.New("Command Not Found.")
+		return errors.New("Command Not Found.")
 	}
 
 	return nil
