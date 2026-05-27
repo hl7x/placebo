@@ -20,7 +20,6 @@ type Patient struct {
 	VisitId        int
 	Phone          string
 	DOB            string
-	Hl7DOB         string
 	PatientAddress *Address
 	ArrivalDate    string
 	DischargeDate  string
