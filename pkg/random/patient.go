@@ -17,7 +17,7 @@ type Patient struct {
 	FirstName      string
 	LastName       string
 	MRN            string
-	VisitId    	int
+	VisitId        int
 	Phone          string
 	DOB            string
 	Hl7DOB         string
@@ -57,7 +57,6 @@ func NewPatient() *Patient {
 		VisitID().
 		PhoneNumber().
 		DateOfBirth().
-		Hl7DateOfBirthFmt().
 		Arrival().
 		Discharge().
 		AppointmentDate().
@@ -115,6 +114,7 @@ func (p *Patient) DateOfBirth() *Patient {
 }
 
 // Obsolete
+/*
 func (p *Patient) Hl7DateOfBirthFmt() *Patient {
 
 	date := p.DOB
@@ -143,7 +143,7 @@ func (p *Patient) Hl7DateOfBirthFmt() *Patient {
 	return p
 
 }
-
+*/
 func (p *Patient) Arrival() *Patient {
 
 	currentTime := time.Now()
