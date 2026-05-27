@@ -113,37 +113,6 @@ func (p *Patient) DateOfBirth() *Patient {
 	return p
 }
 
-// Obsolete
-/*
-func (p *Patient) Hl7DateOfBirthFmt() *Patient {
-
-	date := p.DOB
-
-	split := strings.Split(date, "-")
-
-	var digits []string
-
-	for _, number := range split {
-		parse, err := strconv.Atoi(number)
-		if err != nil {
-			panic(err)
-		}
-
-		if parse < 10 {
-			number = "0" + number
-		}
-
-		digits = append(digits, number)
-	}
-
-	format := fmt.Sprintf("%v%v%v", digits[2], digits[0], digits[1])
-
-	p.Hl7DOB = format
-
-	return p
-
-}
-*/
 func (p *Patient) Arrival() *Patient {
 
 	currentTime := time.Now()
