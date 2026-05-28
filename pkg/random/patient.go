@@ -17,10 +17,9 @@ type Patient struct {
 	FirstName      string
 	LastName       string
 	MRN            string
-	VisitId    	int
+	VisitId        int
 	Phone          string
 	DOB            string
-	Hl7DOB         string
 	PatientAddress *Address
 	ArrivalDate    string
 	DischargeDate  string
@@ -57,7 +56,6 @@ func NewPatient() *Patient {
 		VisitID().
 		PhoneNumber().
 		DateOfBirth().
-		Hl7DateOfBirthFmt().
 		Arrival().
 		Discharge().
 		AppointmentDate().
@@ -112,36 +110,6 @@ func (p *Patient) DateOfBirth() *Patient {
 	p.DOB = date
 
 	return p
-}
-
-// Obsolete
-func (p *Patient) Hl7DateOfBirthFmt() *Patient {
-
-	date := p.DOB
-
-	split := strings.Split(date, "-")
-
-	var digits []string
-
-	for _, number := range split {
-		parse, err := strconv.Atoi(number)
-		if err != nil {
-			panic(err)
-		}
-
-		if parse < 10 {
-			number = "0" + number
-		}
-
-		digits = append(digits, number)
-	}
-
-	format := fmt.Sprintf("%v%v%v", digits[2], digits[0], digits[1])
-
-	p.Hl7DOB = format
-
-	return p
-
 }
 
 func (p *Patient) Arrival() *Patient {
