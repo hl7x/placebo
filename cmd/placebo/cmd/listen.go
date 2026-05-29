@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"flag"
 	"fmt"
 	"os"
 
@@ -12,7 +13,7 @@ func ListenHl7Message(f string) error {
 	switch f {
 	case "hl7":
 
-		command := os.Args[3:]
+		command := flag.Args()
 
 		if len(command) == 0 {
 

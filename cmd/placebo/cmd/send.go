@@ -3,6 +3,7 @@ package cmd
 import (
 	"bufio"
 	"errors"
+	"flag"
 	"fmt"
 	"os"
 	"strings"
@@ -26,7 +27,7 @@ func SendHl7Message(f string) error {
 		return nil
 	case "hl7":
 
-		command := os.Args[3:]
+		command := flag.Args()
 
 		if len(command) == 0 {
 
