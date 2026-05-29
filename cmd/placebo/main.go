@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"os"
 
 	"placebo/cmd/placebo/cmd"
 )
@@ -22,6 +23,8 @@ func main() {
 
 	if *port != "" {
 		cmd.Port = *port
+	} else if p := os.Getenv("PLACEBO_PORT"); p != "" {
+		cmd.Port = p
 	}
 
 	err := cmd.File(*randomFile)
