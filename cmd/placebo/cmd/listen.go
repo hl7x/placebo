@@ -1,19 +1,18 @@
 package cmd
 
 import (
-	"flag"
 	"fmt"
 	"os"
 
 	"placebo/internal/network"
 )
 
-func ListenHl7Message(f string) error {
+func ListenHl7Message(f string, args []string) error {
 
 	switch f {
 	case "hl7":
 
-		command := flag.Args()
+		command := args
 
 		if len(command) == 0 {
 

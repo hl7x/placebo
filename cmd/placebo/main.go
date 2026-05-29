@@ -16,7 +16,7 @@ var listenHl7 = flag.String("listen", "", "Recieve and print an hl7 message sent
 
 var readHl7 = flag.String("read", "", "Read HL7 message to assist with analyzing segments.\n\tSubcommand: sugarpill - use this to breakdown the message in a much more readible way")
 
-var port = flag.String("port", "", "Override the port used for sending and listening (default 9700). Can also be set via PLACEBO_PORT in a .env file.")
+var port = flag.String("port", "", "Override the port used for sending and listening (default 9700).\n\tCan also be set permanently via the PLACEBO_PORT environment variable.\n\n\tExamples:\n\t\tplacebo --port 8500 --send hl7\n\t\tplacebo --port 8500 --listen hl7\n\t\texport PLACEBO_PORT=8500")
 
 func main() {
 	flag.Parse()
@@ -32,12 +32,12 @@ func main() {
 		fmt.Println("ERROR: ", err)
 	}
 
-	err = cmd.SendHl7Message(*sendHl7)
+	err = cmd.SendHl7Message(*sendHl7, flag.Args())
 	if err != nil {
 		fmt.Println("ERROR: ", err)
 	}
 
-	err = cmd.ListenHl7Message(*listenHl7)
+	err = cmd.ListenHl7Message(*listenHl7, flag.Args())
 	if err != nil {
 		fmt.Println("ERROR: ", err)
 	}

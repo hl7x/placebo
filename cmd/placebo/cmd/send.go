@@ -3,7 +3,6 @@ package cmd
 import (
 	"bufio"
 	"errors"
-	"flag"
 	"fmt"
 	"os"
 	"strings"
@@ -20,14 +19,14 @@ var Address = "127.0.0.1"
 var Port = "9700"
 
 
-func SendHl7Message(f string) error {
+func SendHl7Message(f string, args []string) error {
 
 	switch f {
 	case "":
 		return nil
 	case "hl7":
 
-		command := flag.Args()
+		command := args
 
 		if len(command) == 0 {
 

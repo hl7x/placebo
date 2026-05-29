@@ -3,7 +3,6 @@ package cmd
 import (
 	"errors"
 	"net"
-	"os"
 	"testing"
 	"time"
 )
@@ -46,16 +45,14 @@ func TestSendHl7Message(t *testing.T) {
 		input       string
 		args        []string
 	}{
-		{"Should Return Nil When No Command Is Given", nil, "", []string{""}},
-		//		{"Should Return Nil When 'hl7' Command Is Given", nil, "hl7", []string{"placebo", "--send", "hl7"}},
-		{"Should Return Nil When Given Proper Sub Command", nil, "hl7", []string{"placebo", "--send", "hl7", "discharge"}},
-		{"Should Return Error When Given Bad Sub Command", errors.New("Command Not Found."), "hl7", []string{"placebo", "--send", "hl7", "taco"}},
+		{"Should Return Nil When No Command Is Given", nil, "", []string{}},
+		{"Should Return Nil When Given Proper Sub Command", nil, "hl7", []string{"discharge"}},
+		{"Should Return Error When Given Bad Sub Command", errors.New("Command Not Found."), "hl7", []string{"taco"}},
 	}
 
 	for _, tc := range tests {
 		t.Run(tc.description, func(t *testing.T) {
-			os.Args = tc.args
-			got := SendHl7Message(tc.input)
+			got := SendHl7Message(tc.input, tc.args)
 
 			if got != nil && tc.expected != nil {
 				if got.Error() != tc.expected.Error() {
