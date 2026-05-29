@@ -18,6 +18,26 @@ import (
 var Address = "127.0.0.1"
 var Port = "9700"
 
+func init() {
+	if p := loadEnvPort(); p != "" {
+		Port = p
+	}
+}
+
+func loadEnvPort() string {
+	data, err := os.ReadFile(".env")
+	if err != nil {
+		return ""
+	}
+	for _, line := range strings.Split(string(data), "\n") {
+		line = strings.TrimSpace(line)
+		if strings.HasPrefix(line, "PLACEBO_PORT=") {
+			return strings.TrimPrefix(line, "PLACEBO_PORT=")
+		}
+	}
+	return ""
+}
+
 func SendHl7Message(f string) error {
 
 	switch f {

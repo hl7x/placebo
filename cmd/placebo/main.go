@@ -15,8 +15,14 @@ var listenHl7 = flag.String("listen", "", "Recieve and print an hl7 message sent
 
 var readHl7 = flag.String("read", "", "Read HL7 message to assist with analyzing segments.\n\tSubcommand: sugarpill - use this to breakdown the message in a much more readible way")
 
+var port = flag.String("port", "", "Override the port used for sending and listening (default 9700). Can also be set via PLACEBO_PORT in a .env file.")
+
 func main() {
 	flag.Parse()
+
+	if *port != "" {
+		cmd.Port = *port
+	}
 
 	err := cmd.File(*randomFile)
 	if err != nil {
