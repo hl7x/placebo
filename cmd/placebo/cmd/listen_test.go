@@ -1,9 +1,38 @@
 package cmd
 
 import (
+	"net"
 	"testing"
 	"time"
 )
+
+func TestListenOnCustomPort(t *testing.T) {
+	customPort := "9803"
+
+	original := Port
+	Port = customPort
+	defer func() { Port = original }()
+
+	ready := make(chan struct{})
+	go func() {
+		// Brief pause to let the goroutine below start listening
+		time.Sleep(100 * time.Millisecond)
+		close(ready)
+	}()
+
+	done := make(chan error, 1)
+	go func() {
+		done <- ListenHl7Message("hl7", []string{})
+	}()
+
+	<-ready
+
+	conn, err := net.DialTimeout("tcp", "127.0.0.1:"+customPort, 2*time.Second)
+	if err != nil {
+		t.Fatalf("expected listener on custom port %s, got error: %v", customPort, err)
+	}
+	conn.Close()
+}
 
 // Very basic
 func TestListener(t *testing.T) {
