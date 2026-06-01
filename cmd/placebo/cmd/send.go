@@ -18,14 +18,24 @@ import (
 var Address = "127.0.0.1"
 var Port = "9700"
 
-func SendHl7Message(f string) error {
+func init() {
+	applyEnvPort()
+}
+
+func applyEnvPort() {
+	if p := os.Getenv("PLACEBO_PORT"); p != "" {
+		Port = p
+	}
+}
+
+func SendHl7Message(f string, args []string) error {
 
 	switch f {
 	case "":
 		return nil
 	case "hl7":
 
-		command := os.Args[3:]
+		command := args
 
 		if len(command) == 0 {
 
