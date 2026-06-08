@@ -48,6 +48,7 @@ func CreateHl7(patient *random.Patient) (string, error) {
 
 	hl7File := Tempdir + Hl7FileName()
 
+	// TODO: This leans on template structure, which is obsolete
 	fileText := templates.SimpleHl7Info()
 
 	t, err := template.New("txt").Parse(string(fileText))
