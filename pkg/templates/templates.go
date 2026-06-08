@@ -44,7 +44,7 @@ func DischargeHl7Info() []byte {
 	dischargeHl7 := []byte(`
 MSH|^~\&|SENDAPP|PLACEBO|RECVAPP|LAB|{{.Hl7Info.HL7Event}}0800||ADT^A03|12345|P|2.3|
 EVN|A03|{{.Hl7Info.HL7Event}}0800||
-PID|1|56789|{{.MRN}}||{{.LastName}}^{{.FirstName}}||{{.Hl7Info.HL7DOB}}|M|||{{.PatientAddress.StructureNumber}} {{.PatientAddress.Street}}^^{{.PatientAddress.RegionInfo.City}}^{{.PatientAddress.RegionInfo.State}}^12346||{.Phone}}|
+PID|1|56789|{{.MRN}}||{{.LastName}}^{{.FirstName}}||{{.Hl7Info.HL7DOB}}|M|||{{.PatientAddress.StructureNumber}} {{.PatientAddress.Street}}^^{{.PatientAddress.RegionInfo.City}}^{{.PatientAddress.RegionInfo.State}}^12346||{{.Phone}}|
 PV1|1|DC|PUNIT^RM 123^P^PUNIT|ER|||15551234567^HOUSE^GREG|1255568135^BETA^ALPHA|30104384^SMITH^JOHN|HIM||||Phys/Clinic|||123456789^BETA^ALPHA|TESTX|{{.VisitId}}||||||||||||||||||||||||||{{.Hl7Info.HL7Discharge}}||
 
 `)
@@ -71,7 +71,7 @@ func ScheduledPatientInfo() []byte {
 	scheduleSiu := []byte(`
 MSH|^~\&|SENDAPP|PLACEBO|RECVAPP|LAB|{{.Hl7Info.HL7Event}}0800||SIU^S12|12345|P|2.3|
 SCH|12345|12345|OFFICE^123^PUNIT|{{.Hl7Info.HL7Appointment}}|0900|||60|M^Minutes|Regular Appointment||ID123|||Scheduled|
-PID|1|56789|{{.MRN}}||{{.LastName}}^{{.FirstName}}||{{.Hl7Info.HL7DOB}}|M|||{{.PatientAddress.StructureNumber}} {{.PatientAddress.Street}}^^{{.PatientAddress.RegionInfo.City}}^{{.PatientAddress.RegionInfo.State}}^12345||{.Phone}}|
+PID|1|56789|{{.MRN}}||{{.LastName}}^{{.FirstName}}||{{.Hl7Info.HL7DOB}}|M|||{{.PatientAddress.StructureNumber}} {{.PatientAddress.Street}}^^{{.PatientAddress.RegionInfo.City}}^{{.PatientAddress.RegionInfo.State}}^12345||{{.Phone}}|
 RGS|1|A|
 `)
 
