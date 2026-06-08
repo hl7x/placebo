@@ -1,6 +1,10 @@
 package sugarpill
 
-import "placebo/pkg/random"
+import (
+	"fmt"
+	"math/rand"
+	"placebo/pkg/random"
+)
 
 type MSH struct {
 	Encode               string       `json:Encode`                 // MSH-2
@@ -37,10 +41,16 @@ func NewMSHSegment(p *random.Patient) *MSH {
 		DateTimeOfMessage:    p.Hl7Info.HL7Event,
 		Security:             "",
 		MessageType:          messageType,
-		MessageControlID:     "123456",
+		MessageControlID:     MessageControlID(),
 		ProcessingID:         "P",
 		VersionID:            "2.3",
 	}
 
 	return msh
+}
+
+func MessageControlID() string {
+	id := fmt.Sprintf("%d", rand.Int31())
+
+	return id
 }
