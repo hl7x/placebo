@@ -1,8 +1,8 @@
 package sugarpill
 
 import (
-	"testing"
 	"strings"
+	"testing"
 
 	"placebo/pkg/random"
 )
@@ -128,7 +128,7 @@ func TestNewMSHSegment(t *testing.T) {
 	var tests = []struct {
 		description string
 		input       *random.Patient
-		expected    interface{}
+		expected    any
 	}{
 		{"MSH Should Reflect The Patient Timestamp of the Message Event", patient1, "07041774"},
 	}
@@ -140,6 +140,9 @@ func TestNewMSHSegment(t *testing.T) {
 			if got.DateTimeOfMessage != tc.expected {
 				t.Fatalf("got %v, expected %v", got.DateTimeOfMessage, tc.expected)
 			}
+			if got.MessageControlID == "123456" {
+				t.Fatalf("got %v, expected %v", got.MessageControlID, "random message ID")
+			}
 		})
 	}
 }
@@ -150,17 +153,17 @@ func TestNewHL7EventMessage(t *testing.T) {
 
 	eventType := "ADT"
 
-	var tests = []struct{
-		description	string
-		patient		*random.Patient
-		command		string
-		expected	string
+	var tests = []struct {
+		description string
+		patient     *random.Patient
+		command     string
+		expected    string
 	}{
 		{"Patient Admit Command", patient, "A01", "A01"},
 	}
 
 	for _, tc := range tests {
-		t.Run(tc.description, func( t *testing.T) {
+		t.Run(tc.description, func(t *testing.T) {
 			got := NewHL7EventMessage(patient, eventType, tc.command)
 
 			if !strings.Contains(got, tc.expected) {
@@ -169,8 +172,6 @@ func TestNewHL7EventMessage(t *testing.T) {
 		})
 	}
 }
-
-
 
 /*
 
