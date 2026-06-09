@@ -20,6 +20,7 @@ type Patient struct {
 	VisitId        int
 	Phone          string
 	DOB            string
+	Sex            string
 	PatientAddress *Address
 	ArrivalDate    string
 	DischargeDate  string
@@ -56,6 +57,7 @@ func NewPatient() *Patient {
 		VisitID().
 		PhoneNumber().
 		DateOfBirth().
+		PatientSex().
 		Arrival().
 		Discharge().
 		AppointmentDate().
@@ -110,6 +112,17 @@ func (p *Patient) DateOfBirth() *Patient {
 	p.DOB = date
 
 	return p
+}
+
+func (p *Patient) PatientSex() *Patient {
+	sexOptions := []string{"M", "F"}
+
+	sex := sexOptions[tools.RandomSelector(sexOptions)]
+
+	p.Sex = sex
+
+	return p
+
 }
 
 func (p *Patient) Arrival() *Patient {
