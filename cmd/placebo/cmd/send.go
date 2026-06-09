@@ -198,7 +198,7 @@ func InteractivePrompt(filePath string) (string, error) {
 		return fileText, nil
 
 	} else {
-		os.Exit(1)
+		os.Exit(0)
 		return "", nil
 	}
 
@@ -228,7 +228,7 @@ func PostPrompt(filePath string) (string, error) {
 		return fileText, nil
 
 	} else {
-		os.Exit(1)
+		os.Exit(0)
 		return "", nil
 	}
 
