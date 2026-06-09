@@ -15,11 +15,14 @@ type Collection struct {
 
 type Patient struct {
 	FirstName      string
+	MiddleName     string
 	LastName       string
+	MiddleInitial  string
 	MRN            string
 	VisitId        int
 	Phone          string
 	DOB            string
+	Sex            string
 	PatientAddress *Address
 	ArrivalDate    string
 	DischargeDate  string
@@ -56,6 +59,7 @@ func NewPatient() *Patient {
 		VisitID().
 		PhoneNumber().
 		DateOfBirth().
+		PatientSex().
 		Arrival().
 		Discharge().
 		AppointmentDate().
@@ -71,14 +75,21 @@ func Name() *Patient {
 
 	first := FIRSTNAME
 
+	middle := MIDDLENAME
+
 	last := LASTNAME
 
 	number := tools.RandomSelector(first)
 
 	number2 := tools.RandomSelector(last)
 
+	number3 := tools.RandomSelector(middle)
+
 	p.FirstName = first[number]
+	p.MiddleName = middle[number3]
 	p.LastName = last[number2]
+
+	p.MiddleInitial = strings.Split(middle[number3], "")[0]
 
 	return p
 }
@@ -110,6 +121,17 @@ func (p *Patient) DateOfBirth() *Patient {
 	p.DOB = date
 
 	return p
+}
+
+func (p *Patient) PatientSex() *Patient {
+	sexOptions := []string{"M", "F"}
+
+	sex := sexOptions[tools.RandomSelector(sexOptions)]
+
+	p.Sex = sex
+
+	return p
+
 }
 
 func (p *Patient) Arrival() *Patient {
