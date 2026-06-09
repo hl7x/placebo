@@ -82,7 +82,7 @@ func TestCreateCSV(t *testing.T) {
 
 	csvContent := string(csvContentBytes)
 
-	expectedHeaders := "FirstName,MiddleName,LastName,MiddleInitial,MRN,VisitId,Phone,DOB,Sex,Street,StructureNumber,State,City,PostalCode,ArrivalDate,DischargeDate,Appointment,HL7Arrival,HL7Discharge,HL7Event,HL7DOB,HL7Appointment"
+	expectedHeaders := "FirstName,MiddleName,LastName,MiddleInitial,MRN,PatientId,VisitId,Phone,DOB,Sex,Street,StructureNumber,State,City,PostalCode,ArrivalDate,DischargeDate,Appointment,HL7Arrival,HL7Discharge,HL7Event,HL7DOB,HL7Appointment"
 	expectedExamplePatient1Data := fmt.Sprintf("%v,%v,%v,%v,%v", examplePatient1.FirstName, examplePatient1.MiddleName, examplePatient1.LastName, examplePatient1.MiddleInitial, examplePatient1.MRN)
 	expectedExamplePatient2Data := fmt.Sprintf("%v,%v,%v,%v,%v", examplePatient2.FirstName, examplePatient2.MiddleName, examplePatient2.LastName, examplePatient2.MiddleInitial, examplePatient2.MRN)
 
