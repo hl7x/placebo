@@ -15,7 +15,9 @@ type Collection struct {
 
 type Patient struct {
 	FirstName      string
+	MiddleName     string
 	LastName       string
+	MiddleInitial  string
 	MRN            string
 	VisitId        int
 	Phone          string
@@ -73,14 +75,21 @@ func Name() *Patient {
 
 	first := FIRSTNAME
 
+	middle := MIDDLENAME
+
 	last := LASTNAME
 
 	number := tools.RandomSelector(first)
 
 	number2 := tools.RandomSelector(last)
 
+	number3 := tools.RandomSelector(middle)
+
 	p.FirstName = first[number]
+	p.MiddleName = middle[number3]
 	p.LastName = last[number2]
+
+	p.MiddleInitial = strings.Split(middle[number3], "")[0]
 
 	return p
 }

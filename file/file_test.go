@@ -25,7 +25,9 @@ func TestCreateCSV(t *testing.T) {
 
 	examplePatient1 := &random.Patient{
 		FirstName:      "Bill",
+		MiddleName:     "Bob",
 		LastName:       "Test",
+		MiddleInitial:  "B",
 		MRN:            "123",
 		VisitId:        123,
 		Phone:          "0000000",
@@ -37,7 +39,9 @@ func TestCreateCSV(t *testing.T) {
 
 	examplePatient2 := &random.Patient{
 		FirstName:      "Jill",
+		MiddleName:     "Joan",
 		LastName:       "Test",
+		MiddleInitial:  "J",
 		MRN:            "123",
 		VisitId:        123,
 		Phone:          "0000000",
@@ -78,9 +82,9 @@ func TestCreateCSV(t *testing.T) {
 
 	csvContent := string(csvContentBytes)
 
-	expectedHeaders := "FirstName,LastName,MRN,VisitId,Phone,DOB,Sex,Street,StructureNumber,State,City,PostalCode,ArrivalDate,DischargeDate,Appointment,HL7Arrival,HL7Discharge,HL7Event,HL7DOB,HL7Appointment"
-	expectedExamplePatient1Data := fmt.Sprintf("%v,%v,%v", examplePatient1.FirstName, examplePatient1.LastName, examplePatient1.MRN)
-	expectedExamplePatient2Data := fmt.Sprintf("%v,%v,%v", examplePatient2.FirstName, examplePatient2.LastName, examplePatient2.MRN)
+	expectedHeaders := "FirstName,MiddleName,LastName,MiddleInitial,MRN,VisitId,Phone,DOB,Sex,Street,StructureNumber,State,City,PostalCode,ArrivalDate,DischargeDate,Appointment,HL7Arrival,HL7Discharge,HL7Event,HL7DOB,HL7Appointment"
+	expectedExamplePatient1Data := fmt.Sprintf("%v,%v,%v,%v,%v", examplePatient1.FirstName, examplePatient1.MiddleName, examplePatient1.LastName, examplePatient1.MiddleInitial, examplePatient1.MRN)
+	expectedExamplePatient2Data := fmt.Sprintf("%v,%v,%v,%v,%v", examplePatient2.FirstName, examplePatient2.MiddleName, examplePatient2.LastName, examplePatient2.MiddleInitial, examplePatient2.MRN)
 
 	if !strings.Contains(csvContent, expectedHeaders) {
 		t.Errorf("%v content does not contain the expected headers: %s", csvContent, expectedHeaders)

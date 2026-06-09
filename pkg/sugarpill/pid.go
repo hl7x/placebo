@@ -1,6 +1,10 @@
 package sugarpill
 
-import "placebo/pkg/random"
+import (
+	"fmt"
+	"placebo/pkg/random"
+	"strconv"
+)
 
 type PID struct {
 	SetID                   string `json:"SetID"`                   // PID-1
@@ -37,12 +41,13 @@ type PID struct {
 
 func NewPIDSegment(p *random.Patient) *PID {
 
-	street := "123 " + p.PatientAddress.Street
+	streetNumber := strconv.Itoa(p.PatientAddress.StructureNumber)
+	street := fmt.Sprintf("%v ", streetNumber) + p.PatientAddress.Street
 
 	name := &XPN{
 		LastName:      p.LastName,
 		FirstName:     p.FirstName,
-		MiddleInitial: "A",
+		MiddleInitial: p.MiddleInitial,
 	}
 
 	address := &XAD{

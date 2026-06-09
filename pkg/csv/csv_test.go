@@ -15,7 +15,9 @@ func TestMain(m *testing.M) {
 	testPatients := []*random.Patient{
 		{
 			FirstName:      "John",
+			MiddleName:     "William",
 			LastName:       "Test",
+			MiddleInitial:  "W",
 			MRN:            "000001",
 			VisitId:        123456,
 			Phone:          "123456789",
@@ -99,7 +101,7 @@ func TestBuilder(t *testing.T) {
 		delimiter   string
 		expected    string
 	}{
-		{"Built out struct to csv", testCollection, ",", "John,Test,000001"},
+		{"Built out struct to csv", testCollection, ",", "John,William,Test,W,000001"},
 	}
 
 	for _, tc := range tests {
@@ -123,7 +125,7 @@ func TestDataProcess(t *testing.T) {
 		delimiter   string
 		expected    string
 	}{
-		{"Process out header and body from struct", testCollection, ",", "John,Test,000001"},
+		{"Process out header and body from struct", testCollection, ",", "John,William,Test,W,000001"},
 	}
 
 	for _, tc := range tests {
@@ -142,7 +144,7 @@ func TestValueExtration(t *testing.T) {
 
 	testPatient := csvPatients.Patients[0]
 
-	slice := []string{"John", "Test", "000001"}
+	slice := []string{"John", "William", "Test", "W", "000001"}
 
 	var tests = []struct {
 		description string
@@ -170,7 +172,7 @@ func TestFieldExtraction(t *testing.T) {
 
 	testPatient := csvPatients.Patients[0]
 
-	slice := []string{"FirstName", "LastName", "MRN"}
+	slice := []string{"FirstName", "MiddleName", "LastName", "MiddleInitial", "MRN"}
 
 	var tests = []struct {
 		description string
