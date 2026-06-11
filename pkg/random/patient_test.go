@@ -60,7 +60,7 @@ func TestName(t *testing.T) {
 	}
 
 	for _, tc := range tests {
-		got := Name()
+		got := PatientName()
 		t.Run(tc.description, func(t *testing.T) {
 			for _, name := range tc.expected {
 				if strings.Contains(got.FirstName, name) {
