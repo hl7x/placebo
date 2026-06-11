@@ -1,29 +1,42 @@
 package random
 
-import "placebo/internal/tools"
+import (
+	"fmt"
+	"math/rand"
+	"time"
+)
 
 type Provider struct {
-	ID        string
-	FirstName string
-	LastName  string
+	ID            string
+	FirstName     string
+	MiddleName    string
+	MiddleInitial string
+	LastName      string
 }
 
-func ProviderName() *Provider {
-
+func NewProvider() *Provider {
 	p := &Provider{}
 
-	first := FIRSTNAME
-	last := LASTNAME
-
-	number := tools.RandomSelector(first)
-	number2 := tools.RandomSelector(last)
-
-	p.FirstName = first[number]
-	p.LastName = last[number2]
+	p.ProviderName().ProviderID()
 
 	return p
 }
 
-func ProviderID() *Provider {
+func (p *Provider) ProviderName() *Provider {
 
+	name := NewName()
+	p.FirstName = name.FirstName
+	p.MiddleName = name.MiddleName
+	p.LastName = name.LastName
+
+	return p
+}
+func (p *Provider) ProviderID() *Provider {
+
+	rand.Seed(time.Now().UnixNano())
+	randomId := rand.Intn(1000000000)
+
+	p.ID = fmt.Sprint(randomId)
+
+	return p
 }

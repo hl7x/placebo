@@ -1,5 +1,10 @@
 package random
 
+import (
+	"placebo/internal/tools"
+	"strings"
+)
+
 // Constructed using a combination of the Greek alphabet and all the designated Atlantic hurricane names from 1990 to 2000 from the World Meteorological Organization
 var FIRSTNAME = []string{
 	"ALPHA",
@@ -298,3 +303,35 @@ var MIDDLENAME = []string{
 	"Emerson",
 	"Lennox",
 	"Phoenix"}
+
+type Name struct {
+	FirstName     string
+	MiddleName    string
+	MiddleInitial string
+	LastName      string
+}
+
+func NewName() *Name {
+
+	n := &Name{}
+
+	first := FIRSTNAME
+
+	middle := MIDDLENAME
+
+	last := LASTNAME
+
+	number := tools.RandomSelector(first)
+
+	number2 := tools.RandomSelector(last)
+
+	number3 := tools.RandomSelector(middle)
+
+	n.FirstName = first[number]
+	n.MiddleName = middle[number3]
+	n.LastName = last[number2]
+
+	n.MiddleInitial = strings.Split(middle[number3], "")[0]
+
+	return n
+}

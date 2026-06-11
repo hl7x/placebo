@@ -29,6 +29,7 @@ type Patient struct {
 	DischargeDate  string
 	Appointment    string
 	Hl7Info        *Hl7Dates
+	Provider       *Provider
 }
 
 // This is a lazy way of handling HL7 structures of dates. This should be handled differently.
@@ -54,7 +55,7 @@ func NewPatients(max int) Collection {
 
 func NewPatient() *Patient {
 
-	fakePatient := Name().
+	fakePatient := PatientName().
 		NewAddress().
 		Mrn().
 		Id().
@@ -65,33 +66,23 @@ func NewPatient() *Patient {
 		Arrival().
 		Discharge().
 		AppointmentDate().
-		HL7Info()
+		HL7Info().
+		PatientProvider()
 
 	return fakePatient
 
 }
 
-func Name() *Patient {
+func PatientName() *Patient {
 
 	p := &Patient{}
 
-	first := FIRSTNAME
+	name := NewName()
 
-	middle := MIDDLENAME
-
-	last := LASTNAME
-
-	number := tools.RandomSelector(first)
-
-	number2 := tools.RandomSelector(last)
-
-	number3 := tools.RandomSelector(middle)
-
-	p.FirstName = first[number]
-	p.MiddleName = middle[number3]
-	p.LastName = last[number2]
-
-	p.MiddleInitial = strings.Split(middle[number3], "")[0]
+	p.FirstName = name.FirstName
+	p.MiddleName = name.MiddleName
+	p.LastName = name.LastName
+	p.MiddleInitial = name.MiddleInitial
 
 	return p
 }
@@ -220,5 +211,15 @@ func HL7DateConstructor(arrival string, discharge string, dob string, appointmen
 	dates.HL7Appointment = Hl7DateFormatter(appointment)
 
 	return dates
+
+}
+
+func (p *Patient) PatientProvider() *Patient {
+
+	provider := NewProvider()
+
+	p.Provider = provider
+
+	return p
 
 }
