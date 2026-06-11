@@ -30,6 +30,7 @@ type Patient struct {
 	Appointment    string
 	Hl7Info        *Hl7Dates
 	Provider       *Provider
+	Location       *Location
 }
 
 // This is a lazy way of handling HL7 structures of dates. This should be handled differently.
@@ -67,7 +68,8 @@ func NewPatient() *Patient {
 		Discharge().
 		AppointmentDate().
 		HL7Info().
-		PatientProvider()
+		PatientProvider().
+		PatientLocation()
 
 	return fakePatient
 
@@ -222,4 +224,13 @@ func (p *Patient) PatientProvider() *Patient {
 
 	return p
 
+}
+
+func (p *Patient) PatientLocation() *Patient {
+
+	location := NewLocation()
+
+	p.Location = location
+
+	return p
 }
