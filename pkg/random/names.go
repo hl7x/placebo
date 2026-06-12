@@ -316,15 +316,11 @@ func NewName() *Name {
 	n := &Name{}
 
 	first := FIRSTNAME
-
 	middle := MIDDLENAME
-
 	last := LASTNAME
 
 	number := tools.RandomSelector(first)
-
 	number2 := tools.RandomSelector(last)
-
 	number3 := tools.RandomSelector(middle)
 
 	n.FirstName = first[number]
