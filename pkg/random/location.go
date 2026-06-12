@@ -52,7 +52,7 @@ func NewFacility() string {
 
 func newBed() string {
 
-	number := fmt.Sprint(rand.Intn(1000))
+	number := fmt.Sprint(rand.Intn(500))
 
 	bedLetter := BEDLETTER[tools.RandomSelector(BEDLETTER)]
 
