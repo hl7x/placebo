@@ -12,9 +12,9 @@ func TestNewProvider(t *testing.T) {
 		description string
 		expected    []string
 	}{
-		{"Creates a randeom provider with a first name", FIRSTNAME},
-		{"Creates a randeom provider with a last name", LASTNAME},
-		{"Creates a randeom provider with a middle name", MIDDLENAME},
+		{"Creates a random provider with a first name", FIRSTNAME},
+		{"Creates a random provider with a last name", LASTNAME},
+		{"Creates a random provider with a middle name", MIDDLENAME},
 	}
 
 	for _, tc := range tests {
