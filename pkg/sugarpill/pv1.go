@@ -66,15 +66,15 @@ type PV1 struct {
 func NewPV1Segment(p *random.Patient) *PV1 {
 
 	doctor := &AttendingDoctor{
-		IDNumber:  "00002224",
-		FirstName: "Greg",
-		LastName:  "House",
+		IDNumber:  p.Provider.ID,
+		FirstName: p.Provider.FirstName,
+		LastName:  p.Provider.LastName,
 	}
 
 	location := &PatientLocation{
-		Bed:      "105A",
-		Room:     "225",
-		Facility: "Test Facility",
+		Bed:      p.Location.Bed,
+		Room:     p.Location.Room,
+		Facility: p.Location.LocationFacility,
 	}
 
 	pv1 := &PV1{
