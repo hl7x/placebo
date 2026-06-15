@@ -81,8 +81,8 @@ func NewPV1Segment(p *random.Patient) *PV1 {
 		AssignedPatientLocation: location,
 		AttendingDoctor:         doctor,
 		VisitNumber:             p.VisitId,
-		AdmitDateTime:           p.Hl7Info.HL7Arrival,
-		DischargeDateTime:       p.Hl7Info.HL7Discharge,
+		AdmitDateTime:           p.ArrivalDate.HL7(),
+		DischargeDateTime:       p.DischargeDate.HL7(),
 	}
 
 	return pv1

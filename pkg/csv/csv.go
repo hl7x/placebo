@@ -75,13 +75,22 @@ func ValueExtraction(v interface{}) []string {
 
 		switch field.Kind() {
 		case reflect.Struct:
-			// Recursively extract fields from nested struct
-			nestedFields := ValueExtraction(field.Interface())
-			fields = append(fields, nestedFields...)
+			// If the type implements fmt.Stringer, use its string value directly.
+			// This avoids recursing into types like PatientDate (wrapping time.Time)
+			// which have unexported fields that reflect cannot access.
+			if field.CanInterface() {
+				if stringer, ok := field.Interface().(fmt.Stringer); ok {
+					fields = append(fields, stringer.String())
+					continue
+				}
+				nestedFields := ValueExtraction(field.Interface())
+				fields = append(fields, nestedFields...)
+			}
 		default:
-			// Handle non-struct fields
-			fieldValue := fmt.Sprintf("%v", field.Interface())
-			fields = append(fields, fieldValue)
+			if field.CanInterface() {
+				fieldValue := fmt.Sprintf("%v", field.Interface())
+				fields = append(fields, fieldValue)
+			}
 		}
 	}
 
@@ -106,9 +115,15 @@ func FieldExtraction(v interface{}) []string {
 		}
 
 		if fieldType.Kind() == reflect.Struct {
-			nestedFields := FieldExtraction(reflect.New(fieldType).Elem().Interface())
-			for _, nestedField := range nestedFields {
-				fields = append(fields, nestedField)
+			// If the type implements fmt.Stringer, treat it as a leaf column.
+			stringerType := reflect.TypeOf((*fmt.Stringer)(nil)).Elem()
+			if fieldType.Implements(stringerType) || reflect.PointerTo(fieldType).Implements(stringerType) {
+				fields = append(fields, field.Name)
+			} else {
+				nestedFields := FieldExtraction(reflect.New(fieldType).Elem().Interface())
+				for _, nestedField := range nestedFields {
+					fields = append(fields, nestedField)
+				}
 			}
 		} else {
 			fields = append(fields, field.Name)

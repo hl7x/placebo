@@ -1,104 +1,47 @@
 package random
 
 import (
-	"fmt"
 	"math/rand"
-	"strconv"
-	"strings"
+	"time"
 )
 
-func Date() string {
+// PatientDate wraps time.Time and exposes format methods so each consumer
+// (HL7 segments, CSV templates) can request the format it needs.
+type PatientDate time.Time
 
-	month := Month()
-	day := Day()
-	year := Year()
+// HL7 returns the date formatted as YYYYMMDD, the standard HL7 date format.
+func (d PatientDate) HL7() string {
+	return time.Time(d).Format("20060102")
+}
 
-	dateOfBirth := fmt.Sprintf("%v-%v-%v", month, day, year)
+// CSV returns the date formatted as M/D/YYYY for use in CSV output.
+func (d PatientDate) CSV() string {
+	return time.Time(d).Format("1/2/2006")
+}
 
-	return dateOfBirth
+// String returns the CSV format so template rendering uses the human-readable form by default.
+func (d PatientDate) String() string {
+	return d.CSV()
+}
 
+func Date() PatientDate {
+	return PatientDate(time.Date(Year(), time.Month(Month()), Day(), 0, 0, 0, 0, time.UTC))
 }
 
 func Month() int {
-
 	max := 6
 	min := 1
-
-	month := rand.Intn(max-min) + max
-
-	return month
+	return rand.Intn(max-min) + max
 }
 
 func Day() int {
-
 	max := 15
 	min := 1
-
-	day := rand.Intn(max-min) + max
-
-	return day
-
+	return rand.Intn(max-min) + max
 }
 
 func Year() int {
-
 	max := 1970
 	min := 1920
-
-	year := rand.Intn(max-min) + max
-
-	return year
-}
-
-func Hl7DateFormatter(date string) string {
-
-	switch d := date; {
-	case strings.Contains(d, "/") == true:
-
-		split := strings.Split(date, "/")
-
-		var digits []string
-
-		for _, number := range split {
-			parse, err := strconv.Atoi(number)
-			if err != nil {
-				panic(err)
-			}
-
-			if parse < 10 {
-				number = "0" + number
-			}
-
-			digits = append(digits, number)
-		}
-
-		format := fmt.Sprintf("%v%v%v", digits[2], digits[0], digits[1])
-
-		return format
-	case strings.Contains(d, "-") == true:
-
-		split := strings.Split(date, "-")
-
-		var digits []string
-
-		for _, number := range split {
-			parse, err := strconv.Atoi(number)
-			if err != nil {
-				panic(err)
-			}
-
-			if parse < 10 {
-				number = "0" + number
-			}
-
-			digits = append(digits, number)
-		}
-
-		format := fmt.Sprintf("%v%v%v", digits[2], digits[0], digits[1])
-
-		return format
-	default:
-		return ""
-	}
-
+	return rand.Intn(max-min) + max
 }
