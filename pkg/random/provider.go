@@ -3,7 +3,6 @@ package random
 import (
 	"fmt"
 	"math/rand"
-	"time"
 )
 
 type Provider struct {
@@ -33,7 +32,6 @@ func (p *Provider) ProviderName() *Provider {
 }
 func (p *Provider) ProviderID() *Provider {
 
-	rand.Seed(time.Now().UnixNano())
 	randomId := rand.Intn(1000000000)
 
 	p.ID = fmt.Sprint(randomId)
