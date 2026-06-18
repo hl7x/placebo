@@ -31,10 +31,7 @@ func TestCreateCSV(t *testing.T) {
 		MRN:            "123",
 		VisitId:        123,
 		Phone:          "0000000",
-		DOB:            "00/00/0000",
 		PatientAddress: &random.Address{RegionInfo: &random.Region{}},
-		ArrivalDate:    "00/00/0000",
-		DischargeDate:  "00/00/0000",
 	}
 
 	examplePatient2 := &random.Patient{
@@ -45,10 +42,7 @@ func TestCreateCSV(t *testing.T) {
 		MRN:            "123",
 		VisitId:        123,
 		Phone:          "0000000",
-		DOB:            "00/00/0000",
 		PatientAddress: &random.Address{RegionInfo: &random.Region{}},
-		ArrivalDate:    "00/00/0000",
-		DischargeDate:  "00/00/0000",
 	}
 
 	mockPatients := random.Collection{
@@ -82,7 +76,7 @@ func TestCreateCSV(t *testing.T) {
 
 	csvContent := string(csvContentBytes)
 
-	expectedHeaders := "FirstName,MiddleName,LastName,MiddleInitial,MRN,PatientId,VisitId,Phone,DOB,Sex,Street,StructureNumber,State,City,PostalCode,ArrivalDate,DischargeDate,Appointment,HL7Arrival,HL7Discharge,HL7Event,HL7DOB,HL7Appointment"
+	expectedHeaders := "FirstName,MiddleName,LastName,MiddleInitial,MRN,PatientId,VisitId,Phone,DOB,Sex,Street,StructureNumber,State,City,PostalCode,ArrivalDate,DischargeDate,Appointment,EventDate"
 	expectedExamplePatient1Data := fmt.Sprintf("%v,%v,%v,%v,%v", examplePatient1.FirstName, examplePatient1.MiddleName, examplePatient1.LastName, examplePatient1.MiddleInitial, examplePatient1.MRN)
 	expectedExamplePatient2Data := fmt.Sprintf("%v,%v,%v,%v,%v", examplePatient2.FirstName, examplePatient2.MiddleName, examplePatient2.LastName, examplePatient2.MiddleInitial, examplePatient2.MRN)
 
@@ -117,11 +111,7 @@ func TestCreateHl7(t *testing.T) {
 		MRN:            "123",
 		VisitId:        123,
 		Phone:          "0000000",
-		DOB:            "00/00/0000",
 		PatientAddress: &random.Address{RegionInfo: &random.Region{}},
-		ArrivalDate:    "00/00/0000",
-		DischargeDate:  "00/00/0000",
-		Hl7Info:        &random.Hl7Dates{},
 	}
 
 	file, err := CreateHl7(examplePatient)
@@ -218,10 +208,7 @@ func TestCreateInteractiveHl7(t *testing.T) {
 		MRN:            "123",
 		VisitId:        123,
 		Phone:          "0000000",
-		DOB:            "00/00/0000",
 		PatientAddress: &random.Address{RegionInfo: &random.Region{}},
-		ArrivalDate:    "00/00/0000",
-		DischargeDate:  "00/00/0000",
 	}
 
 	template := templates.SimpleHl7Info()

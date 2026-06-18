@@ -3,10 +3,9 @@ package random
 import (
 	"fmt"
 	"math/rand"
-	"placebo/internal/tools"
-	"strconv"
-	"strings"
 	"time"
+
+	"placebo/internal/tools"
 )
 
 type Collection struct {
@@ -22,24 +21,15 @@ type Patient struct {
 	PatientId      string
 	VisitId        int
 	Phone          string
-	DOB            string
+	DOB            PatientDate
 	Sex            string
 	PatientAddress *Address
-	ArrivalDate    string
-	DischargeDate  string
-	Appointment    string
-	Hl7Info        *Hl7Dates
+	ArrivalDate    PatientDate
+	DischargeDate  PatientDate
+	Appointment    PatientDate
+	EventDate      PatientDate
 	Provider       *Provider
 	Location       *Location
-}
-
-// This is a lazy way of handling HL7 structures of dates. This should be handled differently.
-type Hl7Dates struct {
-	HL7Arrival     string
-	HL7Discharge   string
-	HL7Event       string
-	HL7DOB         string
-	HL7Appointment string
 }
 
 func NewPatients(max int) Collection {
@@ -51,7 +41,6 @@ func NewPatients(max int) Collection {
 	}
 
 	return Collection{tmp}
-
 }
 
 func NewPatient() *Patient {
@@ -67,12 +56,11 @@ func NewPatient() *Patient {
 		Arrival().
 		Discharge().
 		AppointmentDate().
-		HL7Info().
+		SetEventDate().
 		PatientProvider().
 		PatientLocation()
 
 	return fakePatient
-
 }
 
 func PatientName() *Patient {
@@ -91,39 +79,28 @@ func PatientName() *Patient {
 
 func (p *Patient) Mrn() *Patient {
 
-	rand.Seed(time.Now().UnixNano())
-	randomMrn := rand.Intn(1000000000)
-
-	p.MRN = fmt.Sprint(randomMrn)
+	p.MRN = fmt.Sprint(rand.Intn(1000000000))
 
 	return p
 }
 
 func (p *Patient) Id() *Patient {
 
-	rand.Seed(time.Now().UnixNano())
-	randomId := rand.Intn(1000000000)
-
-	p.PatientId = fmt.Sprint(randomId)
+	p.PatientId = fmt.Sprint(rand.Intn(1000000000))
 
 	return p
 }
 
 func (p *Patient) VisitID() *Patient {
 
-	rand.Seed(time.Now().UnixNano())
-	randomVisitID := rand.Intn(1000000000)
-
-	p.VisitId = randomVisitID
+	p.VisitId = rand.Intn(1000000000)
 
 	return p
 }
 
 func (p *Patient) DateOfBirth() *Patient {
 
-	date := Date()
-
-	p.DOB = date
+	p.DOB = Date()
 
 	return p
 }
@@ -131,106 +108,49 @@ func (p *Patient) DateOfBirth() *Patient {
 func (p *Patient) PatientSex() *Patient {
 	sexOptions := []string{"M", "F"}
 
-	sex := sexOptions[tools.RandomSelector(sexOptions)]
-
-	p.Sex = sex
+	p.Sex = sexOptions[tools.RandomSelector(sexOptions)]
 
 	return p
-
 }
 
 func (p *Patient) Arrival() *Patient {
 
-	currentTime := time.Now()
-
-	Arrival := currentTime.AddDate(0, 0, -5)
-
-	p.ArrivalDate = fmt.Sprintf("%v/%v/%v", int(Arrival.Month()), Arrival.Day(), Arrival.Year())
+	p.ArrivalDate = PatientDate(time.Now().AddDate(0, 0, -5))
 
 	return p
 }
 
 func (p *Patient) Discharge() *Patient {
 
-	currentTime := time.Now()
-
-	Discharge := currentTime.AddDate(0, 0, -3)
-
-	p.DischargeDate = fmt.Sprintf("%v/%v/%v", int(Discharge.Month()), Discharge.Day(), Discharge.Year())
+	p.DischargeDate = PatientDate(time.Now().AddDate(0, 0, -3))
 
 	return p
 }
 
 func (p *Patient) AppointmentDate() *Patient {
 
-	date := p.ArrivalDate
-
-	splitDate := strings.Split(date, "/")
-
-	month, err := strconv.Atoi(splitDate[0])
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	if month+1 > 12 {
-		month = 1
-	} else {
-		month++
-	}
-
-	p.Appointment = fmt.Sprintf("%v/%v/%v", month, splitDate[1], splitDate[2])
+	p.Appointment = PatientDate(time.Time(p.ArrivalDate).AddDate(0, 1, 0))
 
 	return p
 }
 
-func EventDate() string {
+func (p *Patient) SetEventDate() *Patient {
 
-	currentTime := time.Now()
-
-	time := fmt.Sprintf("%v/%v/%v", int(currentTime.Month()), currentTime.Day(), currentTime.Year())
-
-	return time
-
-}
-
-func (p *Patient) HL7Info() *Patient {
-
-	p.Hl7Info = HL7DateConstructor(p.ArrivalDate, p.DischargeDate, p.DOB, p.Appointment)
+	p.EventDate = PatientDate(time.Now())
 
 	return p
-
-}
-
-func HL7DateConstructor(arrival string, discharge string, dob string, appointment string) *Hl7Dates {
-
-	dates := &Hl7Dates{}
-	event := EventDate()
-
-	dates.HL7Arrival = Hl7DateFormatter(arrival)
-	dates.HL7Discharge = Hl7DateFormatter(discharge)
-	dates.HL7DOB = Hl7DateFormatter(dob)
-	dates.HL7Event = Hl7DateFormatter(event)
-	dates.HL7Appointment = Hl7DateFormatter(appointment)
-
-	return dates
-
 }
 
 func (p *Patient) PatientProvider() *Patient {
 
-	provider := NewProvider()
-
-	p.Provider = provider
+	p.Provider = NewProvider()
 
 	return p
-
 }
 
 func (p *Patient) PatientLocation() *Patient {
 
-	location := NewLocation()
-
-	p.Location = location
+	p.Location = NewLocation()
 
 	return p
 }

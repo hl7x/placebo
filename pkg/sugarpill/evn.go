@@ -16,7 +16,7 @@ func NewEVNSegment(p *random.Patient) *EVN {
 
 	evn := &EVN{
 		EventTypeCode:    "A01", //placeholder
-		RecordedDateTime: p.Hl7Info.HL7Event,
+		RecordedDateTime: p.EventDate.HL7(),
 	}
 
 	return evn

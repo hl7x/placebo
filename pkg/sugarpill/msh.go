@@ -38,7 +38,7 @@ func NewMSHSegment(p *random.Patient) *MSH {
 		SendingFacility:      "PLACEBO",
 		ReceivingApplication: "DEMO",
 		ReceivingFacility:    "DEMO",
-		DateTimeOfMessage:    p.Hl7Info.HL7Event,
+		DateTimeOfMessage:    p.EventDate.HL7(),
 		Security:             "",
 		MessageType:          messageType,
 		MessageControlID:     MessageControlID(),

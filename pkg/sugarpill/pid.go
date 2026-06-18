@@ -61,7 +61,7 @@ func NewPIDSegment(p *random.Patient) *PID {
 		PatientID:             "123456789",
 		PatientIdentifierList: p.MRN,
 		PatientName:           name,
-		DateOfBirth:           p.Hl7Info.HL7DOB,
+		DateOfBirth:           p.DOB.HL7(),
 		Sex:                   p.Sex,
 		PatientAddress:        address,
 		HomePhone:             p.Phone,

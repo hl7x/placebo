@@ -21,12 +21,7 @@ func TestMain(m *testing.M) {
 			MRN:            "000001",
 			VisitId:        123456,
 			Phone:          "123456789",
-			DOB:            "08/08/1955",
 			PatientAddress: &random.Address{RegionInfo: &random.Region{}},
-			ArrivalDate:    "08/08/2024",
-			DischargeDate:  "08/09/2024",
-			Appointment:    "08/08/2024",
-			Hl7Info:        &random.Hl7Dates{},
 		},
 	}
 

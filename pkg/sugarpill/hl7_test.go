@@ -3,6 +3,7 @@ package sugarpill
 import (
 	"strings"
 	"testing"
+	"time"
 
 	"placebo/pkg/random"
 )
@@ -90,20 +91,17 @@ func TestNewEVNSegment(t *testing.T) {
 
 	patient1 := sugarpillPatients.Patients[0]
 	patient2 := sugarpillPatients.Patients[1]
-	patient3 := sugarpillPatients.Patients[2]
 
-	patient1.Hl7Info.HL7Event = "01012001"
-	patient2.Hl7Info.HL7Event = "07/04/1776"
-	patient3.Hl7Info.HL7Event = ""
+	patient1.EventDate = random.PatientDate(time.Date(2001, 1, 1, 0, 0, 0, 0, time.UTC))
+	patient2.EventDate = random.PatientDate(time.Date(1776, 7, 4, 0, 0, 0, 0, time.UTC))
 
 	var tests = []struct {
 		description string
 		input       *random.Patient
-		expected    interface{}
+		expected    string
 	}{
-		{"EVN Timestamp Should Reflect Patient Event Time", patient1, "01012001"},
-		{"EVN Alternate Timestamp Format Should Still Appear", patient2, "07/04/1776"},
-		{"EVN Empty Should Reflect as Empty on EVN", patient3, ""},
+		{"EVN Timestamp Should Reflect Patient Event Time in HL7 format", patient1, "20010101"},
+		{"EVN Alternate Date Should Be Formatted as HL7", patient2, "17760704"},
 	}
 
 	for _, tc := range tests {
@@ -123,14 +121,14 @@ func TestNewMSHSegment(t *testing.T) {
 	//patient2 := sugarpillPatients.Patients[1]
 	//patient3 := sugarpillPatients.Patients[2]
 
-	patient1.Hl7Info.HL7Event = "07041774"
+	patient1.EventDate = random.PatientDate(time.Date(1774, 7, 4, 0, 0, 0, 0, time.UTC))
 
 	var tests = []struct {
 		description string
 		input       *random.Patient
 		expected    any
 	}{
-		{"MSH Should Reflect The Patient Timestamp of the Message Event", patient1, "07041774"},
+		{"MSH Should Reflect The Patient Timestamp of the Message Event", patient1, "17740704"},
 	}
 
 	for _, tc := range tests {

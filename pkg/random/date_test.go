@@ -1,28 +1,58 @@
 package random
 
 import (
-	"strings"
 	"testing"
+	"time"
 )
 
 func TestDate(t *testing.T) {
+	t.Run("Should produce a random date in the DOB year range", func(t *testing.T) {
+		got := Date()
+		year := time.Time(got).Year()
+		if year < 1970 || year > 2020 {
+			t.Fatalf("Date() year %v out of expected range 1970–2020", year)
+		}
+	})
+}
 
+func TestPatientDate_HL7(t *testing.T) {
 	var tests = []struct {
 		description string
+		input       time.Time
 		expected    string
 	}{
-		{"Should produce a random date.", "-"},
+		{"Fourth of July 1776", time.Date(1776, 7, 4, 0, 0, 0, 0, time.UTC), "17760704"},
+		{"Christmas 2000", time.Date(2000, 12, 25, 0, 0, 0, 0, time.UTC), "20001225"},
 	}
 
 	for _, tc := range tests {
 		t.Run(tc.description, func(t *testing.T) {
-			got := Date()
-			if !strings.Contains(got, tc.expected) {
-				t.Fatalf("Date=%v, expected a date with %v", got, tc.expected)
+			got := PatientDate(tc.input).HL7()
+			if got != tc.expected {
+				t.Fatalf("HL7()=%v expected %v", got, tc.expected)
 			}
 		})
 	}
+}
 
+func TestPatientDate_CSV(t *testing.T) {
+	var tests = []struct {
+		description string
+		input       time.Time
+		expected    string
+	}{
+		{"Fourth of July 1776", time.Date(1776, 7, 4, 0, 0, 0, 0, time.UTC), "7/4/1776"},
+		{"Christmas 2000", time.Date(2000, 12, 25, 0, 0, 0, 0, time.UTC), "12/25/2000"},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
+			got := PatientDate(tc.input).CSV()
+			if got != tc.expected {
+				t.Fatalf("CSV()=%v expected %v", got, tc.expected)
+			}
+		})
+	}
 }
 
 func TestMonth(t *testing.T) {
@@ -79,29 +109,6 @@ func TestYear(t *testing.T) {
 			got := Year()
 			if got < tc.expected {
 				t.Fatalf("Year()=%v expected %v", got, tc.expected)
-			}
-		})
-	}
-
-}
-
-func TestHl7DateFormatter(t *testing.T) {
-
-	var tests = []struct {
-		description string
-		input       string
-		expected    string
-	}{
-		{"Date With '-' Converted to HL7 Format", "12-25-2000", "20001225"},
-		{"Date with '/' Converted to HL7 Format", "7/4/1988", "19880704"},
-	}
-
-	for _, tc := range tests {
-		t.Run(tc.description, func(t *testing.T) {
-			got := Hl7DateFormatter(tc.input)
-
-			if got != tc.expected {
-				t.Fatalf("Hl7DateFormatter(%v)=%v expected %v", tc.input, got, tc.expected)
 			}
 		})
 	}

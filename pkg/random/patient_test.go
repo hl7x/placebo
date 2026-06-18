@@ -1,7 +1,6 @@
 package random
 
 import (
-	"fmt"
 	"strings"
 	"testing"
 	"time"
@@ -40,8 +39,8 @@ func TestNewPatient(t *testing.T) {
 			t.Fatalf("NewPatient()=%v should not be 0", got.VisitId)
 		} else if got.Phone == "" {
 			t.Fatalf("NewPatient()=%v should not be empty", got.Phone)
-		} else if got.DOB == "" {
-			t.Fatalf("NewPatient()=%v should not be empty", got.DOB)
+		} else if (time.Time(got.DOB)).IsZero() {
+			t.Fatalf("NewPatient() DOB should not be zero")
 		}
 	})
 }
@@ -121,144 +120,87 @@ func TestPatient_DateOfBirth(t *testing.T) {
 
 	testPatient := &Patient{}
 
-	var tests = []struct {
-		description string
-		expected    string
-	}{
-		{"Default Case", "-"},
-	}
-
-	for _, tc := range tests {
-		t.Run(tc.description, func(t *testing.T) {
-			got := testPatient.DateOfBirth()
-			if !strings.Contains(got.DOB, tc.expected) {
-				t.Fatalf("DateOfBirth()=%v got %v expected %v", got.DOB, got.DOB, tc.expected)
-			}
-		})
-	}
+	t.Run("Default Case", func(t *testing.T) {
+		got := testPatient.DateOfBirth()
+		year := time.Time(got.DOB).Year()
+		if year < 1970 || year > 2020 {
+			t.Fatalf("DateOfBirth() year %v out of expected range 1970–2020", year)
+		}
+	})
 }
 
 func TestPatient_Arrival(t *testing.T) {
 
 	testPatient := &Patient{}
 
-	testTime := time.Now().AddDate(0, 0, -5)
+	expected := time.Now().AddDate(0, 0, -5)
 
-	arrival := fmt.Sprintf("%v/%v/%v", int(testTime.Month()), testTime.Day(), testTime.Year())
-
-	var test = struct {
-		description string
-		expected    string
-	}{
-		"Default Case", arrival,
-	}
-
-	t.Run(test.description, func(t *testing.T) {
+	t.Run("Default Case", func(t *testing.T) {
 		got := testPatient.Arrival()
-		if got.ArrivalDate != test.expected {
-			t.Fatalf("ArrivalDate()=%v got %v and expected %v", got.ArrivalDate, got.ArrivalDate, test.expected)
+		gotTime := time.Time(got.ArrivalDate)
+		if gotTime.Year() != expected.Year() || gotTime.Month() != expected.Month() || gotTime.Day() != expected.Day() {
+			t.Fatalf("ArrivalDate() got %v expected %v", gotTime.Format("2006-01-02"), expected.Format("2006-01-02"))
 		}
 	})
-
 }
 
 func TestPatient_Discharge(t *testing.T) {
 
-	testPatient := Patient{}
+	testPatient := &Patient{}
 
-	testTime := time.Now().AddDate(0, 0, -3)
+	expected := time.Now().AddDate(0, 0, -3)
 
-	discharge := fmt.Sprintf("%v/%v/%v", int(testTime.Month()), testTime.Day(), testTime.Year())
-
-	var test = struct {
-		description string
-		expected    string
-	}{
-		"Default Test Case", discharge,
-	}
-
-	t.Run(test.description, func(t *testing.T) {
+	t.Run("Default Test Case", func(t *testing.T) {
 		got := testPatient.Discharge()
-		if got.DischargeDate != test.expected {
-			t.Fatalf("DischargeDate()=%v got %v and expected %v", got.DischargeDate, got.DischargeDate, test.expected)
+		gotTime := time.Time(got.DischargeDate)
+		if gotTime.Year() != expected.Year() || gotTime.Month() != expected.Month() || gotTime.Day() != expected.Day() {
+			t.Fatalf("DischargeDate() got %v expected %v", gotTime.Format("2006-01-02"), expected.Format("2006-01-02"))
 		}
 	})
 }
 
-func TestEventDate(t *testing.T) {
+func TestPatient_EventDate(t *testing.T) {
 
-	time := time.Now()
+	testPatient := &Patient{}
 
-	timeFormated := fmt.Sprintf("%v/%v/%v", int(time.Month()), time.Day(), time.Year())
-
-	var tests = []struct {
-		description string
-		expected    string
-	}{
-		{"Should Return Matching Current Date", timeFormated},
-	}
-
-	for _, tc := range tests {
-		t.Run(tc.description, func(t *testing.T) {
-			got := EventDate()
-
-			if got != tc.expected {
-				t.Fatalf("EventDate()=%v expected %v", got, tc.expected)
-			}
-		})
-	}
-
+	t.Run("Should Return Matching Current Date", func(t *testing.T) {
+		got := testPatient.SetEventDate()
+		gotTime := time.Time(got.EventDate)
+		now := time.Now()
+		if gotTime.Year() != now.Year() || gotTime.Month() != now.Month() || gotTime.Day() != now.Day() {
+			t.Fatalf("EventDate got %v expected today %v", gotTime.Format("2006-01-02"), now.Format("2006-01-02"))
+		}
+	})
 }
 
-func TestPatient_HL7Info(t *testing.T) {
+func TestPatient_HL7Format(t *testing.T) {
 
-	testPatient := &Patient{ArrivalDate: "12/10/1998", DischargeDate: "12/11/1998", DOB: "3/10/1978"}
+	arrival := time.Date(1998, 12, 10, 0, 0, 0, 0, time.UTC)
+	discharge := time.Date(1998, 12, 11, 0, 0, 0, 0, time.UTC)
+	dob := time.Date(1978, 3, 10, 0, 0, 0, 0, time.UTC)
 
-	hl7Info := &Hl7Dates{HL7Arrival: "19981210", HL7Discharge: "19981211", HL7DOB: "19780310"}
+	testPatient := &Patient{
+		ArrivalDate:   PatientDate(arrival),
+		DischargeDate: PatientDate(discharge),
+		DOB:           PatientDate(dob),
+	}
 
 	var tests = []struct {
 		description string
-		input       *Patient
-		expected    *Hl7Dates
-	}{
-		{"Should Return HL7 Info Based On Earlier Constructed Data", testPatient, hl7Info},
-	}
-
-	for _, tc := range tests {
-		t.Run(tc.description, func(t *testing.T) {
-			got := tc.input.HL7Info()
-
-			if got.Hl7Info.HL7Arrival != tc.expected.HL7Arrival {
-				t.Fatalf("got %v, expected %v", got.Hl7Info.HL7Arrival, tc.expected.HL7Arrival)
-			}
-
-			if got.Hl7Info.HL7Discharge != tc.expected.HL7Discharge {
-				t.Fatalf("got %v, expected %v", got.Hl7Info.HL7Discharge, tc.expected.HL7Discharge)
-			}
-
-			if got.Hl7Info.HL7DOB != tc.expected.HL7DOB {
-				t.Fatalf("got %v, expected %v", got.Hl7Info.HL7DOB, tc.expected.HL7DOB)
-			}
-		})
-	}
-}
-
-func TestHL7DateConstructor(t *testing.T) {
-
-	var tests = []struct {
-		description string
-		input       string
+		got         string
 		expected    string
 	}{
-		{"Should Return a Date Formatted for HL7", "7/4/1776", "17760704"},
+		{"ArrivalDate HL7 format", testPatient.ArrivalDate.HL7(), "19981210"},
+		{"DischargeDate HL7 format", testPatient.DischargeDate.HL7(), "19981211"},
+		{"DOB HL7 format", testPatient.DOB.HL7(), "19780310"},
+		{"ArrivalDate CSV format", testPatient.ArrivalDate.CSV(), "12/10/1998"},
+		{"DOB CSV format", testPatient.DOB.CSV(), "3/10/1978"},
 	}
 
 	for _, tc := range tests {
 		t.Run(tc.description, func(t *testing.T) {
-			got := HL7DateConstructor(tc.input, "", "", "")
-
-			if got.HL7Arrival != tc.expected {
-				t.Fatalf("HL7DateConstructor(%v)=%v expected %v", tc.input, got.HL7Arrival, tc.expected)
+			if tc.got != tc.expected {
+				t.Fatalf("got %v, expected %v", tc.got, tc.expected)
 			}
 		})
 	}
