@@ -1,13 +1,12 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"os"
-	//	"io"
 
 	"placebo/file"
 	"placebo/pkg/sugarpill"
-	//	"placebo/pkg/message"
 )
 
 func ReadHl7Message(f string) error {
@@ -34,7 +33,7 @@ func ReadHl7Message(f string) error {
 
 		return nil
 	default:
-		return nil
+		return errors.New("Usage: placebo --read sugarpill <path/to/hl7_file.txt>")
 	}
 
 	return nil
