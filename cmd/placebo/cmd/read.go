@@ -33,7 +33,7 @@ func ReadHl7Message(f string) error {
 
 		return nil
 	default:
-		return errors.New("Usage: placebo --read sugarpill <path/to/hl7_file.txt>")
+		return errors.New("Required Subcommand \n Usage: placebo --read sugarpill <path/to/hl7_file.txt>")
 	}
 
 	return nil
