@@ -19,6 +19,10 @@ func ReadHl7Message(f string) error {
 		filePath := os.Args[3:]
 
 		if len(filePath) == 0 {
+			return errors.New("Expected File\n Usage: placebo --read sugarpill <path/to/hl7_file.txt>")
+		}
+
+		if len(filePath) == 0 {
 			return nil
 		}
 
