@@ -62,6 +62,11 @@ func SendHl7Message(f string, args []string) error {
 		} else if command[0] == "file" {
 			path := command[1]
 
+			_, err := os.Stat(path)
+			if err != nil {
+				return err
+			}
+
 			sent, err := InteractivePrompt(path)
 			if err != nil {
 				return err
@@ -110,6 +115,8 @@ func SendHl7Message(f string, args []string) error {
 			}
 		}
 
+	default:
+		return errors.New("subcommand usage: placebo --send sugarpill <path/to/hl7_file.txt>")
 	}
 
 	return nil
@@ -160,10 +167,10 @@ func EventAndMessage(e string, s string) error {
 
 			fmt.Printf("HL7 Sent: \n%v\n", evn)
 		} else {
-			return errors.New("Command Not Found.")
+			return errors.New(fmt.Sprintf("Command %v Not Found", s))
 		}
 	} else {
-		return errors.New("Command Not Found.")
+		return errors.New(fmt.Sprintf("Command %v Not Found", s))
 	}
 
 	return nil
