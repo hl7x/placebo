@@ -48,7 +48,7 @@ func TestSendHl7Message(t *testing.T) {
 	}{
 		{"Should Return Nil When No Command Is Given", nil, "", []string{}},
 		{"Should Return Nil When Given Proper Sub Command", nil, "hl7", []string{"discharge"}},
-		{"Should Return Error When Given Bad Sub Command", errors.New("Command Not Found."), "hl7", []string{"taco"}},
+		{"Should Return Error When Given Bad Sub Command", errors.New("Command taco Not Found"), "hl7", []string{"taco"}},
 	}
 
 	for _, tc := range tests {
