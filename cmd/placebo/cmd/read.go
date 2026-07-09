@@ -1,13 +1,12 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"os"
-	//	"io"
 
 	"placebo/file"
 	"placebo/pkg/sugarpill"
-	//	"placebo/pkg/message"
 )
 
 func ReadHl7Message(f string) error {
@@ -18,6 +17,10 @@ func ReadHl7Message(f string) error {
 	case "sugarpill":
 
 		filePath := os.Args[3:]
+
+		if len(filePath) == 0 {
+			return errors.New("Expected File\n Usage: placebo --read sugarpill <path/to/hl7_file.txt>")
+		}
 
 		if len(filePath) == 0 {
 			return nil
@@ -34,7 +37,7 @@ func ReadHl7Message(f string) error {
 
 		return nil
 	default:
-		return nil
+		return errors.New("Required Subcommand \n Usage: placebo --read sugarpill <path/to/hl7_file.txt>")
 	}
 
 	return nil
