@@ -1,6 +1,7 @@
 package random
 
 import (
+	"fmt"
 	"math/rand"
 	"placebo/internal/tools"
 	"strings"
@@ -12,11 +13,10 @@ type Address struct {
 	RegionInfo      *Region
 }
 
-// PostalCode will be added later
 type Region struct {
 	State      string
 	City       string
-	PostalCode int
+	PostalCode string
 }
 
 func (p *Patient) NewAddress() *Patient {
@@ -38,10 +38,38 @@ func (a *Address) RegionSpecific() *Address {
 
 	r.State = state
 	r.City = city
+	r.PostalCode = ZipCode(state)
 
 	a.RegionInfo = r
 	return a
 
+}
+
+// ZipCode returns a plausible 5-digit zip code for the given state
+// abbreviation by combining the state's real leading prefix with a
+// random suffix. Unknown states fall back to prefix 000.
+func ZipCode(state string) string {
+
+	stateZipPrefix := map[string]int{
+		"AL": 350, "AK": 995, "AZ": 850, "AR": 720,
+		"CA": 900, "CO": 800, "CT": 60, "DE": 197,
+		"DC": 200, "FL": 320, "GA": 300, "HI": 967,
+		"ID": 832, "IL": 600, "IN": 460, "IA": 500,
+		"KS": 660, "KY": 400, "LA": 700, "ME": 40,
+		"MD": 210, "MA": 21, "MI": 480, "MN": 550,
+		"MS": 390, "MO": 630, "MT": 590, "NE": 680,
+		"NV": 889, "NH": 30, "NJ": 70, "NM": 870,
+		"NY": 100, "NC": 270, "ND": 580, "OH": 430,
+		"OK": 730, "OR": 970, "PA": 190, "RI": 28,
+		"SC": 290, "SD": 570, "TN": 370, "TX": 750,
+		"UT": 840, "VT": 50, "VA": 220, "WA": 980,
+		"WV": 250, "WI": 530, "WY": 820,
+	}
+
+	prefix := stateZipPrefix[state]
+	suffix := rand.Intn(100)
+
+	return fmt.Sprintf("%03d%02d", prefix, suffix)
 }
 
 func Street() *Address {

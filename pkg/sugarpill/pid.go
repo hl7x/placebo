@@ -54,6 +54,7 @@ func NewPIDSegment(p *random.Patient) *PID {
 		StreetAddress: street,
 		City:          p.PatientAddress.RegionInfo.City,
 		State:         p.PatientAddress.RegionInfo.State,
+		ZipCode:       p.PatientAddress.RegionInfo.PostalCode,
 	}
 
 	pid := &PID{

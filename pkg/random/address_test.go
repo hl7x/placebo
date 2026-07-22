@@ -45,6 +45,39 @@ func TestAddress_RegionSpecific(t *testing.T) {
 	}
 }
 
+func TestZipCode(t *testing.T) {
+	var tests = []struct {
+		description string
+		input       string
+		wantPrefix  string
+	}{
+		{"CA zip starts with 900", "CA", "900"},
+		{"Leading zero preserved for CT", "CT", "060"},
+		{"Leading zero preserved for MA", "MA", "021"},
+		{"Unknown state falls back to 000", "ZZ", "000"},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
+			got := ZipCode(tc.input)
+			if len(got) != 5 {
+				t.Fatalf("ZipCode(%q)=%q, expected a 5-digit code", tc.input, got)
+			}
+			if !strings.HasPrefix(got, tc.wantPrefix) {
+				t.Fatalf("ZipCode(%q)=%q, expected prefix %q", tc.input, got, tc.wantPrefix)
+			}
+		})
+	}
+}
+
+func TestAddress_RegionSpecificPostalCode(t *testing.T) {
+	testAddress := Address{}
+	got := testAddress.RegionSpecific()
+	if len(got.RegionInfo.PostalCode) != 5 {
+		t.Fatalf("PostalCode=%q, expected a populated 5-digit code", got.RegionInfo.PostalCode)
+	}
+}
+
 func TestStreet(t *testing.T) {
 
 	streetAddress := []string{
