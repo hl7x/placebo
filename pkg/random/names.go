@@ -1,7 +1,7 @@
 package random
 
 import (
-	"placebo/internal/tools"
+	"github.com/hl7x/placebo/internal/tools"
 	"strings"
 )
 

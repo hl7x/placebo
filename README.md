@@ -1,5 +1,8 @@
 # Placebo
 
+[![CI](https://github.com/hl7x/placebo/actions/workflows/placebo.yml/badge.svg)](https://github.com/hl7x/placebo/actions/workflows/placebo.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+
 Placebo is a command-line tool designed for creating and managing fake patient data. It's particularly useful for testing purposes in healthcare applications, offering functionalities to generate CSV files with fake patient data and to send HL7 messages simulating different patient scenarios.
 
 In addition to all of that, it has some robust features that help aid with reading HL7 messages! Useful if you're not use to reading pipes and carets.
@@ -12,12 +15,20 @@ In addition to all of that, it has some robust features that help aid with readi
 
 ## Installation
 
+### With Go
+
+```
+$ go install github.com/hl7x/placebo/cmd/placebo@latest
+```
+
+### From source
+
 Run the provided installer script in the root folder to have this tool installed.
 
 *Note*: Please run the script with elevated permissions
 
 ```
-$ sudo ./installer.sh
+$ sudo ./install.sh
 ```
 
 ## Usage
@@ -29,7 +40,8 @@ $ sudo ./installer.sh
 *FirstName* | Patient first name |
 *LastName* | Patient last name | 
 *MRN* | Patient Identifier |
-*EncounterId* | Encounter Event Identifier |
+*PatientId* | Patient account identifier |
+*VisitId* | Encounter/visit identifier |
 *Phone* | Patient phone number |
 *DOB* | Patient date of birth |
 *Street* | Patient street address |

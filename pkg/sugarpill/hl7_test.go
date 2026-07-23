@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"placebo/pkg/random"
+	"github.com/hl7x/placebo/pkg/random"
 )
 
 var sugarpillPatients random.Collection

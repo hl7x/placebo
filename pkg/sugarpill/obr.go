@@ -1,6 +1,6 @@
 package sugarpill
 
-import "placebo/pkg/random"
+import "github.com/hl7x/placebo/pkg/random"
 
 type Placer struct {
 	UniquePlacerID    string `json:"UniquePlacerID"`    // OBR-2.1

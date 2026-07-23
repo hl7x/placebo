@@ -2,8 +2,8 @@ package random
 
 import (
 	"fmt"
+	"github.com/hl7x/placebo/internal/tools"
 	"math/rand"
-	"placebo/internal/tools"
 )
 
 var FACILITY = []string{

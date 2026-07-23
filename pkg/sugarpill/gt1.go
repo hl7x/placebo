@@ -1,6 +1,6 @@
 package sugarpill
 
-import "placebo/pkg/random"
+import "github.com/hl7x/placebo/pkg/random"
 
 type GT1 struct {
 	SetID                          string       `json:"SetID"`                          // GT1-1

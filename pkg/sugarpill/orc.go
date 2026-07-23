@@ -1,6 +1,6 @@
 package sugarpill
 
-import "placebo/pkg/random"
+import "github.com/hl7x/placebo/pkg/random"
 
 type ORC struct {
 	OrderControl                  string            `json:"OrderControl"`                  // ORC-1

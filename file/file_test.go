@@ -2,11 +2,11 @@ package file
 
 import (
 	"fmt"
+	"github.com/hl7x/placebo/pkg/event"
+	"github.com/hl7x/placebo/pkg/random"
+	"github.com/hl7x/placebo/pkg/templates"
 	"log"
 	"os"
-	"placebo/pkg/event"
-	"placebo/pkg/random"
-	"placebo/pkg/templates"
 	"strings"
 	"testing"
 	"time"

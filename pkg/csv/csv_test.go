@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"placebo/pkg/random"
+	"github.com/hl7x/placebo/pkg/random"
 )
 
 var csvPatients *random.Collection

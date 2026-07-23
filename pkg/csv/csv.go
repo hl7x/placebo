@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"strings"
 
-	"placebo/pkg/random"
+	"github.com/hl7x/placebo/pkg/random"
 )
 
 // Build a CSV file from patient data

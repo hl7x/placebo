@@ -1,6 +1,6 @@
 package sugarpill
 
-import "placebo/pkg/random"
+import "github.com/hl7x/placebo/pkg/random"
 
 type EVN struct {
 	EventTypeCode        string `json:"EventTypeCode"`        // EVN-1

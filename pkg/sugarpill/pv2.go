@@ -1,6 +1,6 @@
 package sugarpill
 
-import "placebo/pkg/random"
+import "github.com/hl7x/placebo/pkg/random"
 
 type PV2 struct {
 	PriorPendingLocation           *PatientLocation `json:"PriorPendingLocation"`           // PV2-1

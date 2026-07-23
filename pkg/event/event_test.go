@@ -4,8 +4,8 @@ import (
 	"strings"
 	"testing"
 
-	"placebo/pkg/random"
-	"placebo/pkg/templates"
+	"github.com/hl7x/placebo/pkg/random"
+	"github.com/hl7x/placebo/pkg/templates"
 )
 
 func TestBuilder(t *testing.T) {

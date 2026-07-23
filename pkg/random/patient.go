@@ -5,7 +5,7 @@ import (
 	"math/rand"
 	"time"
 
-	"placebo/internal/tools"
+	"github.com/hl7x/placebo/internal/tools"
 )
 
 type Collection struct {

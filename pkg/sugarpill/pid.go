@@ -2,7 +2,7 @@ package sugarpill
 
 import (
 	"fmt"
-	"placebo/pkg/random"
+	"github.com/hl7x/placebo/pkg/random"
 	"strconv"
 )
 

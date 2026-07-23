@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	"placebo/file"
-	"placebo/pkg/sugarpill"
+	"github.com/hl7x/placebo/file"
+	"github.com/hl7x/placebo/pkg/sugarpill"
 )
 
 func ReadHl7Message(f string) error {

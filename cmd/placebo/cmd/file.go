@@ -6,8 +6,8 @@ import (
 	"os"
 	"strconv"
 
-	"placebo/file"
-	"placebo/pkg/random"
+	"github.com/hl7x/placebo/file"
+	"github.com/hl7x/placebo/pkg/random"
 )
 
 func File(f string) error {
