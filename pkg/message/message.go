@@ -8,7 +8,7 @@ import (
 )
 
 func CreateHL7(v interface{}, segment string) string {
-	
+
 	val := reflect.ValueOf(v)
 	if val.Kind() == reflect.Ptr {
 		val = val.Elem()

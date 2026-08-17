@@ -6,7 +6,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 INSTALL_DIR=/usr/local/bin
 BINARY_NAME=placebo
 BINARY_PATH="$SCRIPT_DIR/cmd/placebo/$BINARY_NAME" # Adjusted to use SCRIPT_DIR
-GO_VERSION=1.18.1 # Specify the version of Go to install if not installed
+GO_VERSION=1.21.0 # Specify the version of Go to install if not installed
 
 # Function to check if Go is installed
 check_go() {

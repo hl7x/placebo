@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"strings"
 
-	"placebo/pkg/message"
-	"placebo/pkg/random"
+	"github.com/hl7x/placebo/pkg/message"
+	"github.com/hl7x/placebo/pkg/random"
 )
 
 type HL7Message struct {

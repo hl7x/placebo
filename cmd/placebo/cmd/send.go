@@ -7,12 +7,12 @@ import (
 	"os"
 	"strings"
 
-	"placebo/file"
-	"placebo/internal/network"
-	"placebo/internal/sysCmd"
-	"placebo/pkg/event"
-	"placebo/pkg/random"
-	"placebo/pkg/sugarpill"
+	"github.com/hl7x/placebo/file"
+	"github.com/hl7x/placebo/internal/network"
+	"github.com/hl7x/placebo/internal/sysCmd"
+	"github.com/hl7x/placebo/pkg/event"
+	"github.com/hl7x/placebo/pkg/random"
+	"github.com/hl7x/placebo/pkg/sugarpill"
 )
 
 var Address = "127.0.0.1"

@@ -1,6 +1,6 @@
 package sugarpill
 
-import "placebo/pkg/random"
+import "github.com/hl7x/placebo/pkg/random"
 
 type AttendingDoctor struct {
 	IDNumber           string `json:"IDNumber"`           // PV1-7.1

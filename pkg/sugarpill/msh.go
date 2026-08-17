@@ -2,8 +2,8 @@ package sugarpill
 
 import (
 	"fmt"
+	"github.com/hl7x/placebo/pkg/random"
 	"math/rand"
-	"placebo/pkg/random"
 )
 
 type MSH struct {

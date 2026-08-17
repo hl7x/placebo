@@ -7,9 +7,9 @@ import (
 	"text/template"
 	"time"
 
-	"placebo/pkg/csv"
-	"placebo/pkg/random"
-	"placebo/pkg/templates"
+	"github.com/hl7x/placebo/pkg/csv"
+	"github.com/hl7x/placebo/pkg/random"
+	"github.com/hl7x/placebo/pkg/templates"
 )
 
 var Tempdir = "/tmp/"

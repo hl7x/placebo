@@ -4,28 +4,27 @@ import (
 	"bytes"
 	"text/template"
 
-	"placebo/pkg/random"
-	"placebo/pkg/templates"
-	"placebo/pkg/sugarpill"
+	"github.com/hl7x/placebo/pkg/random"
+	"github.com/hl7x/placebo/pkg/sugarpill"
+	"github.com/hl7x/placebo/pkg/templates"
 )
 
 /* Build HL7 message based on certain medical event for various scenarios */
 
-
 // Template approach is depricated and not supported anymore.
 
 type Event struct {
-	MessageEvent 	string
-	TriggerEvent	string
-	Patient		*random.Patient
+	MessageEvent string
+	TriggerEvent string
+	Patient      *random.Patient
 }
 
 var MessageAndTriggerEvent = map[string]map[string]string{
 	"ADT": {
-		"admit": "A01",
-		"transfer": "A02",
+		"admit":     "A01",
+		"transfer":  "A02",
 		"discharge": "A03",
-		"register": "A04",
+		"register":  "A04",
 		"pre-admit": "A05",
 	},
 	"SIU": {
@@ -41,7 +40,6 @@ func Build(patient *random.Patient, e string, t string) string {
 
 	return message
 }
-
 
 /* TODO: Transform  Event to Message String
 func EventMessage(e *Event) string {

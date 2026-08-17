@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"placebo/internal/network"
+	"github.com/hl7x/placebo/internal/network"
 )
 
 func ListenHl7Message(f string, args []string) error {
