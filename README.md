@@ -83,17 +83,17 @@ To send an HL7 message with automatically generated fake patient data, use the `
     - `placebo --send hl7`
 - **Sub-commands**:
   - `post_admit`: Generates an ADT^A01 event that admits a patient.
-    - Usage: `placebo --send hl7 post_admit`
+    - Usage: `placebo --send hl7 post-admit`
   - `post_discharge`: Generates ADT^A01 and ADT^A03 events to admit and then discharge a patient.
-    - Usage: `placebo --send hl7 post_discharge`
+    - Usage: `placebo --send hl7 post-discharge`
   - `pre_admit`: Generates an ADT^A05 event that establishes preadmit information.
-    - Usage: `placebo --send hl7 pre_admit`
+    - Usage: `placebo --send hl7 pre-admit`
   - `referral`: Generates a REF^I12 event that inform for a patient referral info.
     - Usage: `placebo --send hl7 referral`
 
 Example:
 
-    placebo --send hl7 post_discharge
+    placebo --send hl7 post-discharge
 
 This command sends an HL7 message that admits and then discharges a patient.
 
