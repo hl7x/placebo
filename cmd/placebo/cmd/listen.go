@@ -2,38 +2,30 @@ package cmd
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/hl7x/placebo/internal/network"
 )
 
-func ListenHl7Message(f string, args []string) error {
+func ListenHl7Message(args []string) error {
 
-	switch f {
-	case "hl7":
-
-		command := args
-
-		if len(command) == 0 {
-
-			err := Listener(":" + Port)
-			if err != nil {
-				fmt.Println(err)
-				os.Exit(1)
-			}
-
-		} else {
-			return nil
-		}
-
-		return nil
-
-	default:
+	if wantsHelp(args) {
+		fmt.Println(commandHelp["listen"])
 		return nil
 	}
 
-	return nil
+	if len(args) == 0 {
+		return missingSubcommand("listen")
+	}
 
+	if args[0] != "hl7" {
+		return unknownSubcommand("listen", args[0])
+	}
+
+	if len(args) > 1 {
+		return fmt.Errorf("unexpected argument %q\n\n%s", args[1], commandHelp["listen"])
+	}
+
+	return Listener(":" + Port)
 }
 
 func Listener(p string) error {

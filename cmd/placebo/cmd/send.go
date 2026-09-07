@@ -28,99 +28,75 @@ func applyEnvPort() {
 	}
 }
 
-func SendHl7Message(f string, args []string) error {
+func SendHl7Message(args []string) error {
 
-	switch f {
-	case "":
+	if wantsHelp(args) {
+		fmt.Println(commandHelp["send"])
 		return nil
-	case "hl7":
+	}
 
-		command := args
+	if len(args) == 0 {
+		return missingSubcommand("send")
+	}
 
-		if len(command) == 0 {
+	if args[0] != "hl7" {
+		return unknownSubcommand("send", args[0])
+	}
 
-			triggerType := "admit"
-			messageType := "ADT"
-			patient := random.NewPatient()
+	command := args[1:]
 
-			hl7 := event.Build(patient, messageType, triggerType)
+	if len(command) == 0 {
 
-			openPath := file.CreateInteractiveHl7(hl7)
-			sent, err := InteractivePrompt(openPath)
-			if err != nil {
-				return err
-			}
+		triggerType := "admit"
+		messageType := "ADT"
+		patient := random.NewPatient()
 
-			if sent != "" {
-				fmt.Println("HL7 Sent: \n", sent)
-			} else {
-				return nil
-			}
+		hl7 := event.Build(patient, messageType, triggerType)
 
-			return nil
+		openPath := file.CreateInteractiveHl7(hl7)
 
-		} else if command[0] == "file" {
-			path := command[1]
+		return sendFromPrompt(openPath)
+	}
 
-			_, err := os.Stat(path)
-			if err != nil {
-				return err
-			}
+	switch command[0] {
+	case "file":
 
-			sent, err := InteractivePrompt(path)
-			if err != nil {
-				return err
-			}
-
-			if sent != "" {
-				fmt.Println("HL7 Sent: \n", sent)
-			} else {
-				return nil
-			}
-
-			return nil
-
-		} else if command[0] == "last" {
-			lastFile := file.Tempdir + file.IntFile
-
-			sent, err := InteractivePrompt(lastFile)
-			if err != nil {
-				return err
-			}
-
-			if sent != "" {
-				fmt.Println("HL7 Sent: \n", sent)
-			} else {
-				return nil
-			}
-
-		} else if command[0] == "sugarpill" {
-			//testing
-			patient := random.NewPatient()
-
-			er := SugarpillProcess(patient)
-			if er != nil {
-				return er
-			}
-
-			return nil
-
-		} else {
-			triggerType := command[0]
-			messageType := "ADT"
-
-			err := EventAndMessage(messageType, triggerType)
-			if err != nil {
-				return err
-			}
+		if len(command) < 2 {
+			return errors.New("'placebo send hl7 file' needs a file\n\n\tplacebo send hl7 file <path/to/hl7_file.txt>")
 		}
 
+		path := command[1]
+
+		_, err := os.Stat(path)
+		if err != nil {
+			return err
+		}
+
+		return sendFromPrompt(path)
+
+	case "last":
+		return sendFromPrompt(file.Tempdir + file.IntFile)
+
+	case "sugarpill":
+		return SugarpillProcess(random.NewPatient())
+
 	default:
-		return errors.New("subcommand usage: placebo --send sugarpill <path/to/hl7_file.txt>")
+		return EventAndMessage("ADT", command[0])
+	}
+}
+
+func sendFromPrompt(filePath string) error {
+
+	sent, err := InteractivePrompt(filePath)
+	if err != nil {
+		return err
+	}
+
+	if sent != "" {
+		fmt.Println("HL7 Sent: \n", sent)
 	}
 
 	return nil
-
 }
 
 // Note: 9700 is the default sending port

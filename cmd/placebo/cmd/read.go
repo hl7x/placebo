@@ -3,42 +3,38 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"os"
 
 	"github.com/hl7x/placebo/file"
 	"github.com/hl7x/placebo/pkg/sugarpill"
 )
 
-func ReadHl7Message(f string) error {
+func ReadHl7Message(args []string) error {
 
-	switch f {
-	case "":
+	if wantsHelp(args) {
+		fmt.Println(commandHelp["read"])
 		return nil
-	case "sugarpill":
-
-		filePath := os.Args[3:]
-
-		if len(filePath) == 0 {
-			return errors.New("Expected File\n Usage: placebo --read sugarpill <path/to/hl7_file.txt>")
-		}
-
-		if len(filePath) == 0 {
-			return nil
-		}
-
-		hl7Content, err := file.ReadFile(filePath[0])
-		if err != nil {
-			return err
-		}
-
-		message := sugarpill.ReadHL7(hl7Content)
-
-		fmt.Println(message)
-
-		return nil
-	default:
-		return errors.New("Required Subcommand \n Usage: placebo --read sugarpill <path/to/hl7_file.txt>")
 	}
+
+	if len(args) == 0 {
+		return missingSubcommand("read")
+	}
+
+	if args[0] != "sugarpill" {
+		return unknownSubcommand("read", args[0])
+	}
+
+	if len(args) < 2 {
+		return errors.New("'placebo read sugarpill' needs a file\n\n\tplacebo read sugarpill <path/to/hl7_file.txt>")
+	}
+
+	hl7Content, err := file.ReadFile(args[1])
+	if err != nil {
+		return err
+	}
+
+	message := sugarpill.ReadHL7(hl7Content)
+
+	fmt.Println(message)
 
 	return nil
 }
