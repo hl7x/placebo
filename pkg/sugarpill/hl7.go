@@ -228,14 +228,11 @@ func MessageBuilder(msg *HL7Message) string {
 		message.CreateHL7(msg.OBX, "OBX"),
 	}
 
-	return strings.Join(segments, "\n")
+	return strings.Join(segments, message.SegmentSeparator)
 }
 
 func LinesFromFile(s string) []string {
-
-	splitLines := strings.Split(s, "\n")
-
-	return splitLines
+	return message.SplitSegments(s)
 }
 
 // Remove 'null' segments for easier JSON display

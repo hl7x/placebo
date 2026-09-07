@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/hl7x/placebo/pkg/csv"
+	"github.com/hl7x/placebo/pkg/message"
 	"github.com/hl7x/placebo/pkg/random"
 	"github.com/hl7x/placebo/pkg/templates"
 )
@@ -82,7 +83,7 @@ func CreateInteractiveHl7(tempAndPatient string) string {
 
 	defer file.Close()
 
-	_, err = file.WriteString(tempAndPatient)
+	_, err = file.WriteString(message.ForDisplay(tempAndPatient))
 	if err != nil {
 		panic(err)
 	}

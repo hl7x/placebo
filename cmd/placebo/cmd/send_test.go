@@ -6,6 +6,8 @@ import (
 	"os"
 	"testing"
 	"time"
+
+	"github.com/hl7x/placebo/internal/network"
 )
 
 func init() {
@@ -24,15 +26,9 @@ func mockServer() {
 		if err != nil {
 			return
 		}
-		go func(c net.Conn) {
-			defer c.Close()
-			buf := make([]byte, 1024)
-			_, err := c.Read(buf)
-			if err != nil {
-				return
-			}
-
-		}(conn)
+		// Stand in for a real interface engine: read the MLLP block and
+		// answer it with a framed ACK.
+		go network.RequestHandler(conn)
 	}
 }
 

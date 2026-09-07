@@ -11,6 +11,7 @@ import (
 	"github.com/hl7x/placebo/internal/network"
 	"github.com/hl7x/placebo/internal/sysCmd"
 	"github.com/hl7x/placebo/pkg/event"
+	"github.com/hl7x/placebo/pkg/message"
 	"github.com/hl7x/placebo/pkg/random"
 	"github.com/hl7x/placebo/pkg/sugarpill"
 )
@@ -46,15 +47,10 @@ func SendHl7Message(f string, args []string) error {
 			hl7 := event.Build(patient, messageType, triggerType)
 
 			openPath := file.CreateInteractiveHl7(hl7)
-			sent, err := InteractivePrompt(openPath)
+
+			_, err := InteractivePrompt(openPath)
 			if err != nil {
 				return err
-			}
-
-			if sent != "" {
-				fmt.Println("HL7 Sent: \n", sent)
-			} else {
-				return nil
 			}
 
 			return nil
@@ -67,15 +63,9 @@ func SendHl7Message(f string, args []string) error {
 				return err
 			}
 
-			sent, err := InteractivePrompt(path)
+			_, err = InteractivePrompt(path)
 			if err != nil {
 				return err
-			}
-
-			if sent != "" {
-				fmt.Println("HL7 Sent: \n", sent)
-			} else {
-				return nil
 			}
 
 			return nil
@@ -83,15 +73,9 @@ func SendHl7Message(f string, args []string) error {
 		} else if command[0] == "last" {
 			lastFile := file.Tempdir + file.IntFile
 
-			sent, err := InteractivePrompt(lastFile)
+			_, err := InteractivePrompt(lastFile)
 			if err != nil {
 				return err
-			}
-
-			if sent != "" {
-				fmt.Println("HL7 Sent: \n", sent)
-			} else {
-				return nil
 			}
 
 		} else if command[0] == "sugarpill" {
@@ -126,23 +110,30 @@ func SendHl7Message(f string, args []string) error {
 // Note: 9700 is the default sending port
 func DefaultSend(templatePatient string) error {
 
-	err := network.SendClient(Address, Port, templatePatient)
+	ack, err := network.SendClient(Address, Port, templatePatient)
 	if err != nil {
 		return err
 	}
+
+	fmt.Printf("HL7 Sent: \n%v\n", message.ForDisplay(templatePatient))
+
+	if ack == "" {
+		fmt.Println("No ACK Received. The receiver took the message without acknowledging it.")
+		return nil
+	}
+
+	fmt.Printf("ACK Received: \n%v\n", message.ForDisplay(ack))
 
 	return nil
 }
 
 func MultiSender(mes []string) error {
 
-	for _, message := range mes {
-		err := DefaultSend(message)
+	for _, msg := range mes {
+		err := DefaultSend(msg)
 		if err != nil {
 			return err
 		}
-
-		fmt.Printf("HL7 Sent: \n%v\n", message)
 	}
 
 	return nil
@@ -164,8 +155,6 @@ func EventAndMessage(e string, s string) error {
 			if err != nil {
 				return err
 			}
-
-			fmt.Printf("HL7 Sent: \n%v\n", evn)
 		} else {
 			return errors.New(fmt.Sprintf("Command %v Not Found", s))
 		}
