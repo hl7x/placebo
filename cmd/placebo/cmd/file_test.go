@@ -1,8 +1,7 @@
 package cmd
 
 import (
-	"errors"
-	"os"
+	"strings"
 	"testing"
 )
 
@@ -10,24 +9,32 @@ func TestFile(t *testing.T) {
 
 	var tests = []struct {
 		description string
-		want        error
-		input       string
 		args        []string
+		wantErr     string
 	}{
-		{"Empty String", nil, "", []string{""}},
-		{"Invalid Input", errors.New("Command Not Found."), "taco", []string{""}},
-		{"Default 'csv' command", nil, "csv", []string{"placebo", "--file", "csv"}},
-		{"Default HL7 file command", nil, "hl7", []string{"placebo", "--file", "hl7"}},
-		{"Pass in Numbers", nil, "csv", []string{"placebo", "--file", "csv", "3"}},
-		{"Passing Wrong Arg Type", errors.New("strconv.ParseInt: parsing \"test\": invalid syntax"), "csv", []string{"placebo", "--file", "csv", "test"}},
+		{"No Subcommand", []string{}, "'placebo file' needs a subcommand"},
+		{"Invalid Subcommand", []string{"taco"}, `unknown subcommand "taco" for 'placebo file'`},
+		{"Default 'csv' subcommand", []string{"csv"}, ""},
+		{"Default HL7 file subcommand", []string{"hl7"}, ""},
+		{"Pass in Numbers", []string{"csv", "3"}, ""},
+		{"Passing Wrong Arg Type", []string{"csv", "test"}, `invalid patient count "test"`},
+		{"Passing Zero", []string{"csv", "0"}, `invalid patient count "0"`},
+		{"Help", []string{"help"}, ""},
 	}
 
 	for _, tc := range tests {
 		t.Run(tc.description, func(t *testing.T) {
-			os.Args = tc.args
-			got := File(tc.input)
-			if (got == nil) != (tc.want == nil) || (got != nil && got.Error() != tc.want.Error()) {
-				t.Errorf("File(%s)=%v, want %v", tc.input, got, tc.want)
+			got := File(tc.args)
+
+			if tc.wantErr == "" {
+				if got != nil {
+					t.Errorf("File(%v)=%v, want nil", tc.args, got)
+				}
+				return
+			}
+
+			if got == nil || !strings.Contains(got.Error(), tc.wantErr) {
+				t.Errorf("File(%v)=%v, want error containing %q", tc.args, got, tc.wantErr)
 			}
 		})
 	}
