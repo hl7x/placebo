@@ -41,6 +41,7 @@ $ sudo ./install.sh
 |`send` | Send an HL7 message built from fake patient data. |
 |`listen` | Receive and print HL7 messages. |
 |`read` | Break an HL7 message down into a readable structure. |
+|`version` | Show the version of placebo you are running, e.g. `placebo version` or `placebo --version`. |
 |`help` | Show help for a command, e.g. `placebo help send`. |
 
 ### Generated Header Fields

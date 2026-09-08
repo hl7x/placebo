@@ -16,11 +16,13 @@ Commands:
   send     Send an HL7 message built from fake patient data
   listen   Receive and print HL7 messages
   read     Break an HL7 message down into a readable structure
+  version  Show the version of placebo you are running
   help     Show help for a command
 
 Options:
   --port <port>   Port used for sending and listening (default 9700).
                   Can also be set with the PLACEBO_PORT environment variable.
+  --version       Show the version of placebo you are running.
 
 Run 'placebo help <command>' for details on a command.`
 
@@ -87,6 +89,16 @@ Subcommands:
 
 Examples:
   placebo read sugarpill hl7_message.txt`,
+
+	"version": `Show the version of placebo you are running, along with the commit it
+was built from and the date it was built.
+
+Usage:
+  placebo version
+
+Examples:
+  placebo version
+  placebo --version`,
 }
 
 // The commands below used to be spelled as flags. Point anyone still using
@@ -119,6 +131,11 @@ func Execute(args []string) error {
 			return nil
 		}
 
+		if isVersion(command) {
+			fmt.Println(versionString())
+			return nil
+		}
+
 		return unknownFlag(command)
 	}
 
@@ -131,6 +148,8 @@ func Execute(args []string) error {
 		return ListenHl7Message(rest)
 	case "read":
 		return ReadHl7Message(rest)
+	case "version":
+		return Version(rest)
 	case "help":
 		return Help(rest)
 	default:
@@ -202,6 +221,10 @@ func unknownFlag(arg string) error {
 
 func isHelp(arg string) bool {
 	return arg == "help" || arg == "-h" || arg == "--help"
+}
+
+func isVersion(arg string) bool {
+	return arg == "-v" || arg == "--version"
 }
 
 // wantsHelp reports whether a command was asked for its own help instead of
