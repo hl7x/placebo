@@ -29,82 +29,70 @@ func applyEnvPort() {
 	}
 }
 
-func SendHl7Message(f string, args []string) error {
+func SendHl7Message(args []string) error {
 
-	switch f {
-	case "":
+	if wantsHelp(args) {
+		fmt.Println(commandHelp["send"])
 		return nil
-	case "hl7":
-
-		command := args
-
-		if len(command) == 0 {
-
-			triggerType := "admit"
-			messageType := "ADT"
-			patient := random.NewPatient()
-
-			hl7 := event.Build(patient, messageType, triggerType)
-
-			openPath := file.CreateInteractiveHl7(hl7)
-
-			_, err := InteractivePrompt(openPath)
-			if err != nil {
-				return err
-			}
-
-			return nil
-
-		} else if command[0] == "file" {
-			path := command[1]
-
-			_, err := os.Stat(path)
-			if err != nil {
-				return err
-			}
-
-			_, err = InteractivePrompt(path)
-			if err != nil {
-				return err
-			}
-
-			return nil
-
-		} else if command[0] == "last" {
-			lastFile := file.Tempdir + file.IntFile
-
-			_, err := InteractivePrompt(lastFile)
-			if err != nil {
-				return err
-			}
-
-		} else if command[0] == "sugarpill" {
-			//testing
-			patient := random.NewPatient()
-
-			er := SugarpillProcess(patient)
-			if er != nil {
-				return er
-			}
-
-			return nil
-
-		} else {
-			triggerType := command[0]
-			messageType := "ADT"
-
-			err := EventAndMessage(messageType, triggerType)
-			if err != nil {
-				return err
-			}
-		}
-
-	default:
-		return errors.New("subcommand usage: placebo --send sugarpill <path/to/hl7_file.txt>")
 	}
 
-	return nil
+	if len(args) == 0 {
+		return missingSubcommand("send")
+	}
 
+	if args[0] != "hl7" {
+		return unknownSubcommand("send", args[0])
+	}
+
+	command := args[1:]
+
+	if len(command) == 0 {
+
+		triggerType := "admit"
+		messageType := "ADT"
+		patient := random.NewPatient()
+
+		hl7 := event.Build(patient, messageType, triggerType)
+
+		openPath := file.CreateInteractiveHl7(hl7)
+
+		return sendFromPrompt(openPath)
+	}
+
+	switch command[0] {
+	case "file":
+
+		if len(command) < 2 {
+			return errors.New("'placebo send hl7 file' needs a file\n\n\tplacebo send hl7 file <path/to/hl7_file.txt>")
+		}
+
+		path := command[1]
+
+		_, err := os.Stat(path)
+		if err != nil {
+			return err
+		}
+
+		return sendFromPrompt(path)
+
+	case "last":
+		return sendFromPrompt(file.Tempdir + file.IntFile)
+
+	case "sugarpill":
+		return SugarpillProcess(random.NewPatient())
+
+	default:
+		return EventAndMessage("ADT", command[0])
+	}
+}
+
+// The message and any ACK are printed by DefaultSend, once the prompt has
+// actually sent it.
+func sendFromPrompt(filePath string) error {
+
+	_, err := InteractivePrompt(filePath)
+
+	return err
 }
 
 // Note: 9700 is the default sending port

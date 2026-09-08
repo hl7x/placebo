@@ -1,66 +1,65 @@
 package cmd
 
 import (
-	"errors"
 	"fmt"
-	"os"
 	"strconv"
 
 	"github.com/hl7x/placebo/file"
 	"github.com/hl7x/placebo/pkg/random"
 )
 
-func File(f string) error {
+func File(args []string) error {
 
-	switch f {
-	case "":
+	if wantsHelp(args) {
+		fmt.Println(commandHelp["file"])
 		return nil
+	}
+
+	if len(args) == 0 {
+		return missingSubcommand("file")
+	}
+
+	switch args[0] {
 	case "csv":
 
-		command := os.Args[3:]
+		amount := 1
 
-		if len(command) == 0 {
-			patients := random.NewPatients(1)
-			file, err := file.CreateCSV(patients)
+		if len(args) > 1 {
+			parsed, err := strconv.Atoi(args[1])
 			if err != nil {
-				return err
+				return fmt.Errorf("invalid patient count %q: expected a number", args[1])
 			}
 
-			fmt.Printf("File Created: %v\n", file)
-			return nil
+			amount = parsed
 		}
 
-		intParse, err := strconv.ParseInt(os.Args[3], 10, 0)
+		if amount < 1 {
+			return fmt.Errorf("invalid patient count %q: expected a number greater than 0", args[1])
+		}
+
+		patients := random.NewPatients(amount)
+		created, err := file.CreateCSV(patients)
 		if err != nil {
 			return err
 		}
 
-		amount := int(intParse)
-
-		if amount > 0 {
-			patients := random.NewPatients(amount)
-			file, err := file.CreateCSV(patients)
-			if err != nil {
-				return err
-			}
-
-			fmt.Printf("File Created: %v\n", file)
-			return nil
-		} else {
-
-			return nil
-		}
-	case "hl7":
-		patient := random.NewPatient()
-		file, err := file.CreateHl7(patient)
-		if err != nil {
-			return err
-		}
-
-		fmt.Printf("File Created: %v\n", file)
+		fmt.Printf("File Created: %v\n", created)
 
 		return nil
+
+	case "hl7":
+
+		patient := random.NewPatient()
+		created, err := file.CreateHl7(patient)
+		if err != nil {
+			return err
+		}
+
+		fmt.Printf("File Created: %v\n", created)
+
+		return nil
+
 	default:
-		return errors.New("Command Not Found.")
+		return unknownSubcommand("file", args[0])
 	}
 }

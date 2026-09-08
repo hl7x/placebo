@@ -22,7 +22,7 @@ func TestListenOnCustomPort(t *testing.T) {
 
 	done := make(chan error, 1)
 	go func() {
-		done <- ListenHl7Message("hl7", []string{})
+		done <- ListenHl7Message([]string{"hl7"})
 	}()
 
 	<-ready

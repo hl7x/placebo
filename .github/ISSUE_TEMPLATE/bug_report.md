@@ -11,7 +11,7 @@ A clear and concise description of the bug.
 
 ## Steps to reproduce
 
-1. Command run (e.g. `placebo --file csv 4`)
+1. Command run (e.g. `placebo file csv 4`)
 2. ...
 
 ## Expected behavior

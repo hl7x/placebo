@@ -1,9 +1,9 @@
 package cmd
 
 import (
-	"errors"
 	"net"
 	"os"
+	"strings"
 	"testing"
 	"time"
 
@@ -38,25 +38,30 @@ func TestSendHl7Message(t *testing.T) {
 
 	var tests = []struct {
 		description string
-		expected    error
-		input       string
 		args        []string
+		wantErr     string
 	}{
-		{"Should Return Nil When No Command Is Given", nil, "", []string{}},
-		{"Should Return Nil When Given Proper Sub Command", nil, "hl7", []string{"discharge"}},
-		{"Should Return Error When Given Bad Sub Command", errors.New("Command taco Not Found"), "hl7", []string{"taco"}},
+		{"Should Error When No Subcommand Is Given", []string{}, "'placebo send' needs a subcommand"},
+		{"Should Error When Given Bad Subcommand", []string{"taco"}, `unknown subcommand "taco" for 'placebo send'`},
+		{"Should Return Nil When Given Proper Sub Command", []string{"hl7", "discharge"}, ""},
+		{"Should Return Error When Given Bad Sub Command", []string{"hl7", "taco"}, "Command taco Not Found"},
+		{"Should Error When 'file' Has No Path", []string{"hl7", "file"}, "'placebo send hl7 file' needs a file"},
+		{"Help", []string{"help"}, ""},
 	}
 
 	for _, tc := range tests {
 		t.Run(tc.description, func(t *testing.T) {
-			got := SendHl7Message(tc.input, tc.args)
+			got := SendHl7Message(tc.args)
 
-			if got != nil && tc.expected != nil {
-				if got.Error() != tc.expected.Error() {
-					t.Fatalf("SendHl7Message(%v)=%v expected %v", tc.input, got, tc.expected)
+			if tc.wantErr == "" {
+				if got != nil {
+					t.Fatalf("SendHl7Message(%v)=%v, want nil", tc.args, got)
 				}
-			} else if got != tc.expected {
-				t.Fatalf("SendHl7Message(%v)=%v, expected %v", tc.input, got, tc.expected)
+				return
+			}
+
+			if got == nil || !strings.Contains(got.Error(), tc.wantErr) {
+				t.Fatalf("SendHl7Message(%v)=%v, want error containing %q", tc.args, got, tc.wantErr)
 			}
 		})
 	}
