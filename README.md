@@ -134,6 +134,15 @@ It can also be set permanently with the `PLACEBO_PORT` environment variable:
 
     export PLACEBO_PORT=8500
 
+### MLLP Transport
+
+`placebo` speaks MLLP (Minimal Lower Layer Protocol), the framing every HL7 interface engine expects on a TCP connection. Messages go out wrapped as `<VT>message<FS><CR>` (`0x0B` ... `0x1C 0x0D`) with segments terminated by carriage returns, so `placebo` interoperates with Mirth, Rhapsody, Cloverleaf, Iguana, and Epic Bridges rather than only with itself.
+
+- **Sending**: `placebo send hl7` frames the message, then waits up to 10 seconds for an acknowledgement and prints it. A receiver that never acknowledges is not treated as a failure; the message is already delivered.
+- **Listening**: `placebo listen hl7` reads framed messages (a sender may put several on one connection) and replies to each with an `MSH` + `MSA|AA` acknowledgement. Without that reply a real sender would hold the connection open waiting.
+
+A message that arrives without framing is still printed, along with a warning, so a misconfigured sender is obvious rather than silent.
+
 ### Read HL7 Message
 
 For a better help at reading HL7 messages, you can tap into the `sugarpill` feature and have the file presented in a more readible structure.
