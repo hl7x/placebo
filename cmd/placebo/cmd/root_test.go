@@ -19,6 +19,9 @@ func TestExecute(t *testing.T) {
 		{"Help For An Unknown Command", []string{"help", "taco"}, `unknown command "taco"`},
 		{"Unknown Command", []string{"taco"}, `unknown command "taco"`},
 		{"Unknown Flag", []string{"--taco"}, "unknown flag --taco"},
+		{"Version Command", []string{"version"}, ""},
+		{"Version Flag", []string{"--version"}, ""},
+		{"Short Version Flag", []string{"-v"}, ""},
 		{"Retired Flag Points At The Command", []string{"--send", "hl7"}, `"send" is a command now, not a flag`},
 		{"Retired Flag Without Dashes Is A Command", []string{"file", "hl7"}, ""},
 	}

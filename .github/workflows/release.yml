@@ -1,0 +1,37 @@
+# Save as .github/workflows/release.yml
+
+name: release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  goreleaser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          # GoReleaser needs full history to build the changelog.
+          fetch-depth: 0
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - uses: goreleaser/goreleaser-action@v6
+        with:
+          distribution: goreleaser
+          version: "~> v2"
+          args: release --clean
+        env:
+          # Provided automatically. Publishes the release on hl7x/placebo.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # PAT you create. Needed to push the cask to hl7x/homebrew-tap —
+          # the default GITHUB_TOKEN cannot write to another repository.
+          HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}

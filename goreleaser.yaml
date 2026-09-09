@@ -1,0 +1,105 @@
+version: 2
+
+project_name: placebo
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: placebo
+    main: ./cmd/placebo
+    binary: placebo
+    env:
+      - CGO_ENABLED=0
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w
+      - -X main.version={{ .Version }}
+      - -X main.commit={{ .Commit }}
+      - -X main.date={{ .CommitDate }}
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+
+archives:
+  - id: placebo
+    ids:
+      - placebo
+    name_template: >-
+      {{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}
+    formats:
+      - tar.gz
+    format_overrides:
+      - goos: windows
+        formats:
+          - zip
+    files:
+      - README.md
+      - LICENSE
+
+nfpms:
+  - id: placebo
+    ids:
+      - placebo
+    package_name: placebo
+    vendor: hl7x
+    homepage: https://hl7x.com
+    maintainer: nickjmancari@gmail.com
+    description: Generate, send, and read HL7 v2 messages from the terminal.
+    license: MIT
+    formats:
+      - deb
+      - rpm
+      - apk
+
+checksum:
+  name_template: checksums.txt
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^chore:"
+      - "^ci:"
+
+homebrew_casks:
+  - name: placebo
+    repository:
+      owner: hl7x
+      name: homebrew-tap
+      branch: main
+      token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
+    homepage: https://github.com/hl7x/placebo
+    description: "Generate, send, and read HL7 v2 messages from the terminal"
+    commit_author:
+      name: goreleaserbot
+      email: bot@goreleaser.com
+    commit_msg_template: "placebo: update to {{ .Tag }}"
+    # Unsigned binaries get quarantined by Gatekeeper. Without this, macOS
+    # users see "placebo is damaged and cannot be opened".
+    hooks:
+      post:
+        install: |
+          if OS.mac?
+            system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/placebo"]
+          end
+
+release:
+  draft: false
+  prerelease: auto
+  footer: |
+    **Install**
+
+    ```
+    brew install hl7x/tap/placebo
+    ```
+
+    Or grab a binary below.
