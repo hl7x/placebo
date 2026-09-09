@@ -15,6 +15,54 @@ In addition to all of that, it has some robust features that help aid with readi
 
 ## Installation
 
+Tagged releases are built by [GoReleaser](https://goreleaser.com) and published on the
+[releases page](https://github.com/hl7x/placebo/releases) for Linux, macOS, and Windows on both
+`amd64` and `arm64`. Pick whichever of the following fits your machine.
+
+### Homebrew (macOS, Linux)
+
+```
+$ brew install hl7x/tap/placebo
+```
+
+Upgrade later with `brew upgrade placebo`.
+
+### Linux packages (deb, rpm, apk)
+
+Each release ships `.deb`, `.rpm`, and `.apk` packages. Download the one matching your
+distribution and architecture from the [releases page](https://github.com/hl7x/placebo/releases/latest),
+then install it:
+
+```
+$ sudo dpkg -i placebo_<version>_amd64.deb      # Debian, Ubuntu
+$ sudo rpm -i placebo-<version>.x86_64.rpm      # Fedora, RHEL, openSUSE
+$ sudo apk add --allow-untrusted placebo_<version>_x86_64.apk   # Alpine
+```
+
+### Pre-built binary
+
+Archives are named `placebo_<version>_<os>_<arch>.tar.gz` (`.zip` on Windows). To grab one from
+the terminal:
+
+```
+$ VERSION=0.1.0
+$ curl -sSL -o placebo.tar.gz \
+    https://github.com/hl7x/placebo/releases/download/v${VERSION}/placebo_${VERSION}_darwin_arm64.tar.gz
+$ tar -xzf placebo.tar.gz
+$ sudo mv placebo /usr/local/bin/
+```
+
+Substitute `linux`/`darwin`/`windows` and `amd64`/`arm64` as needed. Every release also includes a
+`checksums.txt` you can verify against:
+
+```
+$ sha256sum --check --ignore-missing checksums.txt
+```
+
+*Note*: macOS binaries are unsigned. If Gatekeeper quarantines a binary you downloaded manually,
+clear it with `xattr -dr com.apple.quarantine /usr/local/bin/placebo`. The Homebrew cask does this
+for you.
+
 ### With Go
 
 ```
@@ -29,6 +77,12 @@ Run the provided installer script in the root folder to have this tool installed
 
 ```
 $ sudo ./install.sh
+```
+
+Confirm whichever route you took with:
+
+```
+$ placebo version
 ```
 
 ## Usage
