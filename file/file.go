@@ -10,7 +10,7 @@ import (
 	"github.com/hl7x/placebo/pkg/csv"
 	"github.com/hl7x/placebo/pkg/message"
 	"github.com/hl7x/placebo/pkg/random"
-	"github.com/hl7x/placebo/pkg/templates"
+	"github.com/hl7x/placebo/pkg/sugarpill"
 )
 
 var Tempdir = "/tmp/"
@@ -50,7 +50,8 @@ func CreateHl7(patient *random.Patient) (string, error) {
 	hl7File := Tempdir + Hl7FileName()
 
 	// TODO: This leans on template structure, which is obsolete
-	fileText := templates.SimpleHl7Info()
+	//fileText := templates.SimpleHl7Info()
+	fileText := sugarpill.NewHL7EventMessage(patient, "ADT", "A01")
 
 	t, err := template.New("txt").Parse(string(fileText))
 	if err != nil {

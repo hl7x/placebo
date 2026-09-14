@@ -2,14 +2,15 @@ package file
 
 import (
 	"fmt"
-	"github.com/hl7x/placebo/pkg/event"
-	"github.com/hl7x/placebo/pkg/random"
-	"github.com/hl7x/placebo/pkg/templates"
 	"log"
 	"os"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/hl7x/placebo/pkg/event"
+	"github.com/hl7x/placebo/pkg/random"
+	"github.com/hl7x/placebo/pkg/templates"
 )
 
 func TestCreateCSV(t *testing.T) {
@@ -112,6 +113,8 @@ func TestCreateHl7(t *testing.T) {
 		VisitId:        123,
 		Phone:          "0000000",
 		PatientAddress: &random.Address{RegionInfo: &random.Region{}},
+		Provider:       &random.Provider{},
+		Location:       &random.Location{},
 	}
 
 	file, err := CreateHl7(examplePatient)
