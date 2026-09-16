@@ -7,6 +7,10 @@ Placebo is a command-line tool designed for creating and managing fake patient d
 
 In addition to all of that, it has some robust features that help aid with reading HL7 messages! Useful if you're not used to reading pipes and carets.
 
+
+<img width="1200" height="600" alt="new_demo" src="https://github.com/user-attachments/assets/9c593c97-f3e9-46f3-8153-90bba651de8b" />
+
+
 ## Features
 
 - **CSV File Generation**: Create CSV files with automatically generated fake patient data.
