@@ -49,8 +49,20 @@ func File(args []string) error {
 
 	case "hl7":
 
+		if len(args) > 1 {
+			patient := random.NewPatient()
+			created, err := file.CreateHl7(patient, "ADT", args[1])
+			if err != nil {
+				return err
+			}
+
+			fmt.Printf("File Created: %v\n", created)
+
+			return nil
+		}
+
 		patient := random.NewPatient()
-		created, err := file.CreateHl7(patient)
+		created, err := file.CreateHl7(patient, "ADT", "admit")
 		if err != nil {
 			return err
 		}

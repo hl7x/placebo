@@ -8,9 +8,9 @@ import (
 	"time"
 
 	"github.com/hl7x/placebo/pkg/csv"
+	"github.com/hl7x/placebo/pkg/event"
 	"github.com/hl7x/placebo/pkg/message"
 	"github.com/hl7x/placebo/pkg/random"
-	"github.com/hl7x/placebo/pkg/templates"
 )
 
 var Tempdir = "/tmp/"
@@ -45,27 +45,25 @@ func CreateCSV(patients random.Collection) (string, error) {
 
 }
 
-func CreateHl7(patient *random.Patient) (string, error) {
+func CreateHl7(patient *random.Patient, e string, m string) (string, error) {
 
 	hl7File := Tempdir + Hl7FileName()
 
-	// TODO: This leans on template structure, which is obsolete
-	fileText := templates.SimpleHl7Info()
-
-	t, err := template.New("txt").Parse(string(fileText))
-	if err != nil {
-		return "", err
-	}
+	fileText := message.ForDisplay(event.Build(patient, e, m))
 
 	file, err := os.Create(hl7File)
 	if err != nil {
 		return "", err
 	}
 
-	err = t.Execute(file, patient)
+	defer file.Close()
+
+	_, err = file.WriteString(message.ForDisplay(fileText))
 	if err != nil {
-		return "", err
+		panic(err)
 	}
+
+	file.Sync()
 
 	return hl7File, nil
 
