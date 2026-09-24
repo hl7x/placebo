@@ -117,7 +117,7 @@ func TestCreateHl7(t *testing.T) {
 		Location:       &random.Location{},
 	}
 
-	file, err := CreateHl7(examplePatient)
+	file, err := CreateHl7(examplePatient, "ADT", "admit")
 	if err != nil {
 		t.Errorf("Expected no error, got %v", err)
 	}
