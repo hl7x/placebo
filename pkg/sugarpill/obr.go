@@ -118,20 +118,38 @@ type OBR struct {
 
 func NewOBRSegment(p *random.Patient) *OBR {
 
+	placer := &Placer{
+		UniquePlacerID:    p.Order.PlacerNumber,
+		PlacerApplication: "PLACEBO",
+	}
+
+	filler := &Filler{
+		UniqueFillerID:    p.Order.FillerNumber,
+		FillerApplication: "LAB",
+	}
+
+	test := &ServiceCode{
+		Identifier:   p.Order.Test.Code,
+		Text:         p.Order.Test.Name,
+		CodingSystem: "LN",
+	}
+
 	obr := &OBR{
-		PlacerOrderNumber:    &Placer{},
-		FillerOrderNumber:    &Filler{},
-		UniversalServiceID:   &ServiceCode{},
-		RequestDate:          &OBRDateTime{},
-		ObservationDate:      &OBRDateTime{},
+		SetID:                "1",
+		PlacerOrderNumber:    placer,
+		FillerOrderNumber:    filler,
+		UniversalServiceID:   test,
+		RequestDate:          &OBRDateTime{EventTime: p.EventDate.HL7()},
+		ObservationDate:      &OBRDateTime{EventTime: p.EventDate.HL7()},
 		ObservationEndDate:   &OBRDateTime{},
+		ResultStatus:         p.Order.ResultStatus,
 		CollectionVolume:     &OBRVolume{},
 		CollectorID:          &OBRReceptCode{},
 		DangerCode:           &ServiceCode{},
 		SpecimenRecivedDate:  &OBRDateTime{},
 		SpecimenSource:       &OBRSource{},
 		OrderingProvider:     &OBRReceptCode{},
-		ResultReportDate:     &OBRDateTime{},
+		ResultReportDate:     &OBRDateTime{EventTime: p.EventDate.HL7()},
 		ChargeToPractice:     &Charge{},
 		ParentResult:         &ParentResultCode{},
 		Quantity:             &QuantityTiming{},

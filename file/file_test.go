@@ -105,6 +105,9 @@ func TestCreateHl7(t *testing.T) {
 
 	Tempdir = testDir + "/"
 
+	// Every segment of a built message reads off the patient, so the fixture
+	// has to carry the parts a message is assembled from, not just the
+	// fields this test asserts on.
 	examplePatient := &random.Patient{
 		FirstName:      "Bill",
 		LastName:       "Test",
@@ -112,9 +115,13 @@ func TestCreateHl7(t *testing.T) {
 		VisitId:        123,
 		Phone:          "0000000",
 		PatientAddress: &random.Address{RegionInfo: &random.Region{}},
+		Provider:       &random.Provider{},
+		Location:       &random.Location{},
+		Order:          &random.Order{},
+		Document:       &random.Document{},
 	}
 
-	file, err := CreateHl7(examplePatient)
+	file, err := CreateHl7(examplePatient, "ADT", "admit")
 	if err != nil {
 		t.Errorf("Expected no error, got %v", err)
 	}
