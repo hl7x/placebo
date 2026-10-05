@@ -244,3 +244,59 @@ func TestNewPatientHasEverySegmentsData(t *testing.T) {
 		t.Fatal("random.NewPatient() is missing data a segment is built from")
 	}
 }
+
+// SCH-11 is a timing quantity, the same datatype OBR-27 carries. Modelling it
+// as its components rather than a caret-joined string is what lets a message
+// read off the wire come back as something readable, which is the whole point
+// of the sugarpill view.
+func TestSCHTimingQuantityReadsAsComponents(t *testing.T) {
+
+	// A full TQ in SCH-11: quantity 1, duration 30, start, end, priority.
+	raw := `SCH|998^PLACEBO||||||ROUTINE^ROUTINE APPOINTMENT|NORMAL|30|MIN^MINUTES|1^^30^20261102090000^20261102093000^R|`
+
+	msg := (&HL7Message{}).ReadFromFile(raw)
+
+	if msg.SCH.AppointmentTimingQuantity == nil {
+		t.Fatalf("got nil, expected SCH-11 to read into its components")
+	}
+
+	var tests = []struct {
+		description string
+		got         string
+		expected    string
+	}{
+		{"SCH-11.1 Is The Quantity", msg.SCH.AppointmentTimingQuantity.QuantityAmount, "1"},
+		{"SCH-11.3 Is The Duration", msg.SCH.AppointmentTimingQuantity.Duration, "30"},
+		{"SCH-11.4 Is The Start Date", msg.SCH.AppointmentTimingQuantity.StartDate, "20261102090000"},
+		{"SCH-11.5 Is The End Date", msg.SCH.AppointmentTimingQuantity.EndDate, "20261102093000"},
+		{"SCH-11.6 Is The Priority", msg.SCH.AppointmentTimingQuantity.Priority, "R"},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.description, func(t *testing.T) {
+			if tc.got != tc.expected {
+				t.Fatalf("got %v, expected %v", tc.got, tc.expected)
+			}
+		})
+	}
+}
+
+// A generated appointment still carries its start date in SCH-11.4, where a
+// scheduling system reads the appointment off.
+func TestNewSCHSegmentCarriesAppointmentDate(t *testing.T) {
+
+	patient := random.NewPatient()
+
+	got := NewSCHSegment(patient).AppointmentTimingQuantity.StartDate
+
+	if got != patient.Appointment.HL7() {
+		t.Fatalf("got %v, expected %v", got, patient.Appointment.HL7())
+	}
+
+	// The rendered field puts that date in the fourth component.
+	rendered := strings.Split(MessageBuilder(&HL7Message{SCH: NewSCHSegment(patient)}), "|")
+
+	if rendered[11] != "^^^"+patient.Appointment.HL7()+"^^^^^^" {
+		t.Fatalf("got %v, expected the start date in the fourth component", rendered[11])
+	}
+}

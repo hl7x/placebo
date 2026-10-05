@@ -19,7 +19,7 @@ type SCH struct {
 	AppointmentType           *ServiceCode      `json:"AppointmentType"`           // SCH-8
 	AppointmentDuration       string            `json:"AppointmentDuration"`       // SCH-9
 	AppointmentDurationUnits  *ServiceCode      `json:"AppointmentDurationUnits"`  // SCH-10
-	AppointmentTimingQuantity string            `json:"AppointmentTimingQuantity"` // SCH-11
+	AppointmentTimingQuantity *QuantityTiming   `json:"AppointmentTimingQuantity"` // SCH-11
 	PlacerContactPerson       *XCN              `json:"PlacerContactPerson"`       // SCH-12
 	PlacerContactPhoneNumber  *XTN              `json:"PlacerContactPhoneNumber"`  // SCH-13
 	PlacerContactAddress      *XAD              `json:"PlacerContactAddress"`      // SCH-14
@@ -61,9 +61,9 @@ func NewSCHSegment(p *random.Patient) *SCH {
 		AppointmentType:          &ServiceCode{Identifier: "NORMAL"},
 		AppointmentDuration:      "30",
 		AppointmentDurationUnits: &ServiceCode{Identifier: "MIN", Text: "MINUTES"},
-		// SCH-11 is a timing quantity; its fourth component is the start
-		// date, which is what a scheduling system reads the appointment off.
-		AppointmentTimingQuantity: "^^^" + p.Appointment.HL7(),
+		// SCH-11 is a timing quantity, the same datatype OBR-27 carries. Its
+		// start date is what a scheduling system reads the appointment off.
+		AppointmentTimingQuantity: &QuantityTiming{StartDate: p.Appointment.HL7()},
 		PlacerContactPerson:       &XCN{},
 		PlacerContactPhoneNumber:  &XTN{},
 		PlacerContactAddress:      &XAD{},
