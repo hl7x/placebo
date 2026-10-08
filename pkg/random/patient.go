@@ -30,6 +30,8 @@ type Patient struct {
 	EventDate      PatientDate
 	Provider       *Provider
 	Location       *Location
+	Order          *Order
+	Document       *Document
 }
 
 func NewPatients(max int) Collection {
@@ -58,7 +60,9 @@ func NewPatient() *Patient {
 		AppointmentDate().
 		SetEventDate().
 		PatientProvider().
-		PatientLocation()
+		PatientLocation().
+		PatientOrder().
+		PatientDocument()
 
 	return fakePatient
 }
@@ -151,6 +155,20 @@ func (p *Patient) PatientProvider() *Patient {
 func (p *Patient) PatientLocation() *Patient {
 
 	p.Location = NewLocation()
+
+	return p
+}
+
+func (p *Patient) PatientOrder() *Patient {
+
+	p.Order = NewOrder()
+
+	return p
+}
+
+func (p *Patient) PatientDocument() *Patient {
+
+	p.Document = NewDocument()
 
 	return p
 }

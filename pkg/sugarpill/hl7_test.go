@@ -162,7 +162,7 @@ func TestNewHL7EventMessage(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.description, func(t *testing.T) {
-			got := NewHL7EventMessage(patient, eventType, tc.command)
+			got := NewHL7EventMessage(patient, eventType, tc.command, DefaultLayout)
 
 			if !strings.Contains(got, tc.expected) {
 				t.Fatalf("got %v, expected to contain %v", got, tc.expected)

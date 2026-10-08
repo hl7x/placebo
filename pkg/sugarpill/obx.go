@@ -33,7 +33,17 @@ type OBX struct {
 func NewOBXSegment(p *random.Patient) *OBX {
 
 	obx := &OBX{
-		Units:                                 &ServiceCode{},
+		SetID: "1",
+		// NM is a numeric value. A document notification swaps this for TX
+		// when the message type is applied, since a note travels as text.
+		ValueType:                             "NM",
+		ObservationIdentifier:                 p.Order.Test.Code + "^" + p.Order.Test.Name + "^LN",
+		ObservationValue:                      p.Order.ResultValue,
+		Units:                                 &ServiceCode{Identifier: p.Order.Test.Units},
+		ReferencesRange:                       p.Order.Test.ReferenceRange(),
+		AbnormalFlags:                         p.Order.AbnormalFlag,
+		ObservationResultStatus:               p.Order.ResultStatus,
+		DateTimeOfTheObservation:              p.EventDate.HL7(),
 		ProducerID:                            &ServiceCode{},
 		ResponsibleObserver:                   &XCN{},
 		ObservationMethod:                     &ServiceCode{},

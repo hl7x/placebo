@@ -15,6 +15,7 @@ In addition to all of that, it has some robust features that help aid with readi
 
 - **CSV File Generation**: Create CSV files with automatically generated fake patient data.
 - **HL7 Message Sending**: Send HL7 messages with automatically generated fake patient data.
+- **Multiple Message Types**: Build admits, orders, results, appointments, referrals and document notifications, each carrying the segments its type is defined around.
 - **HL7 Message Reading**: Feed `placebo` an hl7 file and get readible structure of the hl7 message.
 
 ## Installation
@@ -135,38 +136,82 @@ To create a CSV file with fake patient data, use the following command:
 
 To create a HL7 message file with fake patient data:
 
-    placebo file hl7
+    placebo file hl7 [message type] [scenario]
 
 - This command creates a random HL7 file with a fake patient at `/tmp/`.
+- With nothing further it builds an `ADT^A01` admit.
+- Name a [message type](#message-types) to build another kind of message, and a scenario to pick the trigger event within it.
+- Example: `placebo file hl7 oru` writes a lab result, `placebo file hl7 siu reschedule` writes a rescheduled appointment.
+- `placebo file hl7 types` lists every message type and scenario.
 
 ### Send HL7 Messages
 
 <p align="center"> <b>Supported Segments</b> </p>
-<p align="center"> <b>MSH | EVN | PID | PD1 | ROL | DB1 | ARV | NK1 | PV1 | PV2 | GT1 | IN1 | AL1 | DG1 | ORC | OBR | NTE | OBX</b> </p>
+<p align="center"> <b>MSH | EVN | PID | PD1 | ROL | DB1 | ARV | NK1 | PV1 | PV2 | GT1 | IN1 | AL1 | DG1 | SCH | RF1 | TXA | ORC | OBR | NTE | OBX</b> </p>
 
-To send an HL7 message with automatically generated fake patient data, use the `placebo send hl7` command. This feature supports various healthcare scenarios through different subcommands.
+To send an HL7 message with automatically generated fake patient data, use the `placebo send hl7` command.
 
+    placebo send hl7 [message type] [scenario]
     placebo send hl7 [subcommand]
 
 - **Basic Usage**: Sends an HL7 message to the default address `127.0.0.1:9700`.
     - `placebo send hl7`
-- **Preset ADT scenarios**:
-  - `admit`: Generates an ADT^A01 event that admits a patient.
-    - Usage: `placebo send hl7 admit`
-  - `transfer`: Generates an ADT^A02 event that transfers a patient.
-    - Usage: `placebo send hl7 transfer`
-  - `discharge`: Generates an ADT^A03 event that discharges a patient.
-    - Usage: `placebo send hl7 discharge`
-  - `register`: Generates an ADT^A04 event that registers a patient.
-    - Usage: `placebo send hl7 register`
-  - `pre-admit`: Generates an ADT^A05 event that establishes preadmit information.
-    - Usage: `placebo send hl7 pre-admit`
+- With nothing further, an `ADT^A01` admit is opened in your editor before it is sent.
+- A scenario on its own is read as an ADT event, so `placebo send hl7 discharge` still means `ADT^A03`.
 
 Example:
 
     placebo send hl7 discharge
 
 This command sends an HL7 message that discharges a patient.
+
+### Message Types
+
+A message type decides which segments the message carries. An order message is built from `ORC` and `OBR`; an appointment is built from `SCH`. Only the segments that type is defined around are sent, so a lab result does not arrive with an insurance segment stapled to it.
+
+Name the type first, then the scenario:
+
+    placebo send hl7 oru
+    placebo send hl7 siu reschedule
+    placebo file hl7 ref referral
+
+Leaving the scenario off uses the first one listed for that type. Run `placebo send hl7 types` for this table at the terminal.
+
+|Message Type | Description | Segments |
+| --- | --- | --- |
+|`ADT` | Patient administration | MSH EVN PID PD1 ROL DB1 ARV NK1 PV1 PV2 GT1 IN1 AL1 DG1 |
+|`ORM` | Order | MSH PID PV1 ORC OBR DG1 NTE |
+|`ORU` | Observation result | MSH PID PV1 ORC OBR OBX NTE |
+|`SIU` | Scheduling | MSH SCH PID PV1 PV2 NTE |
+|`REF` | Patient referral | MSH RF1 PID PV1 DG1 NTE |
+|`MDM` | Document notification | MSH EVN PID PV1 TXA OBX |
+
+#### Scenarios
+
+|Message Type | Scenario | Event | Description |
+| --- | --- | --- | --- |
+|`ADT` | `admit` | ADT^A01 | Admit a patient |
+|`ADT` | `transfer` | ADT^A02 | Transfer a patient |
+|`ADT` | `discharge` | ADT^A03 | Discharge a patient |
+|`ADT` | `register` | ADT^A04 | Register a patient |
+|`ADT` | `pre-admit` | ADT^A05 | Establish preadmit information |
+|`ADT` | `update` | ADT^A08 | Update patient information |
+|`ADT` | `cancel-admit` | ADT^A11 | Cancel an admit |
+|`ADT` | `cancel-discharge` | ADT^A13 | Cancel a discharge |
+|`ORM` | `order` | ORM^O01 | Place a new order |
+|`ORU` | `result` | ORU^R01 | Report an observation result |
+|`SIU` | `schedule` | SIU^S12 | Book a new appointment |
+|`SIU` | `reschedule` | SIU^S13 | Reschedule an appointment |
+|`SIU` | `cancel` | SIU^S15 | Cancel an appointment |
+|`SIU` | `no-show` | SIU^S26 | Record a patient who did not arrive |
+|`REF` | `referral` | REF^I12 | Refer a patient |
+|`REF` | `modify` | REF^I13 | Modify a referral |
+|`REF` | `cancel` | REF^I14 | Cancel a referral |
+|`MDM` | `document` | MDM^T02 | Notify of a new document |
+|`MDM` | `status-change` | MDM^T04 | Notify of a document status change |
+|`MDM` | `addendum` | MDM^T06 | Notify of a document addendum |
+
+Order and result messages carry a generated lab test with a value placed against its own reference range, so results come back flagged normal, high or low rather than always reading the same.
 
 #### Helpful Auxiliary `send` Subcommands
 
@@ -175,6 +220,7 @@ This command sends an HL7 message that discharges a patient.
 |`file` | Edit an existing HL7 file and send it when you are done. | `placebo send hl7 file /path/to/hl7_message.txt` |
 |`last` | Open last sent hl7 message in an interactive prompt. | `placebo send hl7 last` |
 |`sugarpill` | Construct a hl7 message with assistance using an easy to read interactive prompt. | `placebo send hl7 sugarpill` |
+|`types` | List every message type and scenario placebo can build. | `placebo send hl7 types` |
 
 ### Receive HL7 Messages
 

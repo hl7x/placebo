@@ -44,7 +44,12 @@ func TestSendHl7Message(t *testing.T) {
 		{"Should Error When No Subcommand Is Given", []string{}, "'placebo send' needs a subcommand"},
 		{"Should Error When Given Bad Subcommand", []string{"taco"}, `unknown subcommand "taco" for 'placebo send'`},
 		{"Should Return Nil When Given Proper Sub Command", []string{"hl7", "discharge"}, ""},
+		{"Should Send Another Message Type", []string{"hl7", "oru"}, ""},
+		{"Should Send A Message Type And Scenario", []string{"hl7", "siu", "reschedule"}, ""},
+		{"Should List Message Types", []string{"hl7", "types"}, ""},
 		{"Should Return Error When Given Bad Sub Command", []string{"hl7", "taco"}, "Command taco Not Found"},
+		{"Should Error On A Bad Scenario Within A Type", []string{"hl7", "oru", "taco"}, "ORU scenarios: result"},
+		{"Should Error On An Unknown Message Type", []string{"hl7", "taco", "admit"}, "unknown message type"},
 		{"Should Error When 'file' Has No Path", []string{"hl7", "file"}, "'placebo send hl7 file' needs a file"},
 		{"Help", []string{"help"}, ""},
 	}

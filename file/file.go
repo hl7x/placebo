@@ -8,9 +8,9 @@ import (
 	"time"
 
 	"github.com/hl7x/placebo/pkg/csv"
+	"github.com/hl7x/placebo/pkg/event"
 	"github.com/hl7x/placebo/pkg/message"
 	"github.com/hl7x/placebo/pkg/random"
-	"github.com/hl7x/placebo/pkg/templates"
 )
 
 var Tempdir = "/tmp/"
@@ -45,14 +45,11 @@ func CreateCSV(patients random.Collection) (string, error) {
 
 }
 
-func CreateHl7(patient *random.Patient) (string, error) {
+func CreateHl7(patient *random.Patient, e string, trigger string) (string, error) {
 
 	hl7File := Tempdir + Hl7FileName()
 
-	// TODO: This leans on template structure, which is obsolete
-	fileText := templates.SimpleHl7Info()
-
-	t, err := template.New("txt").Parse(string(fileText))
+	fileText, err := event.Build(patient, e, trigger)
 	if err != nil {
 		return "", err
 	}
@@ -62,7 +59,12 @@ func CreateHl7(patient *random.Patient) (string, error) {
 		return "", err
 	}
 
-	err = t.Execute(file, patient)
+	defer file.Close()
+
+	// A file is written for someone to open in an editor, so its segments
+	// are separated by newlines. A bare carriage return overwrites the line
+	// it is on, which makes a valid message look truncated.
+	_, err = file.WriteString(message.ForDisplay(fileText))
 	if err != nil {
 		return "", err
 	}

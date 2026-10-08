@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+
+	"github.com/hl7x/placebo/pkg/event"
 )
 
 const Usage = `placebo generates fake patient data for testing healthcare applications.
@@ -31,41 +33,54 @@ var commandHelp = map[string]string{
 
 Usage:
   placebo file csv [number of patients]
-  placebo file hl7
+  placebo file hl7 [message type] [scenario]
 
 Subcommands:
   csv   Create a CSV file. Pass a number to generate more than one patient.
-  hl7   Create an HL7 message file for a single patient.
+  hl7   Create an HL7 message file for a single patient. Defaults to an
+        ADT^A01 admit. Name a message type to build another kind of message,
+        and a scenario to pick the trigger event within it.
+  hl7 types
+        List every message type and scenario placebo can build.
 
 Examples:
   placebo file csv
   placebo file csv 4
-  placebo file hl7`,
+  placebo file hl7
+  placebo file hl7 discharge
+  placebo file hl7 oru
+  placebo file hl7 siu reschedule`,
 
 	"send": `Send an HL7 message with automatically generated fake patient data.
 Messages go to 127.0.0.1:9700 unless --port says otherwise.
 
 Usage:
+  placebo send hl7 [message type] [scenario]
   placebo send hl7 [subcommand]
 
-With no subcommand, an ADT^A01 admit is built and opened in your text editor
-so you can edit it before it is sent.
+With nothing further, an ADT^A01 admit is built and opened in your text
+editor so you can edit it before it is sent.
+
+A message type builds a different kind of message, and a scenario picks the
+trigger event within it. A scenario on its own is read as an ADT event, so
+'placebo send hl7 discharge' still means ADT^A03. Each message type carries
+only the segments that type is defined around, so an order message is not
+sent with an insurance segment stapled to it.
 
 Subcommands:
   file <path>      Edit an existing HL7 file and send it when you are done.
   last             Reopen the last sent HL7 message in an interactive prompt.
   sugarpill        Build a message through an easy-to-read interactive prompt.
+  types            List every message type and scenario placebo can build.
 
-Preset ADT scenarios:
-  admit            ADT^A01 event that admits a patient.
-  transfer         ADT^A02 event that transfers a patient.
-  discharge        ADT^A03 event that discharges a patient.
-  register         ADT^A04 event that registers a patient.
-  pre-admit        ADT^A05 event that establishes preadmit info.
+Message types and scenarios:
+{{types}}
 
 Examples:
   placebo send hl7
   placebo send hl7 discharge
+  placebo send hl7 oru
+  placebo send hl7 siu reschedule
   placebo send hl7 file /tmp/import_hl7636272.txt
   placebo send hl7 --port 8500`,
 
@@ -99,6 +114,14 @@ Usage:
 Examples:
   placebo version
   placebo --version`,
+}
+
+// The message type catalog is generated from the registry rather than written
+// out here, so a type added to the registry shows up in help on its own.
+func init() {
+	for command, help := range commandHelp {
+		commandHelp[command] = strings.ReplaceAll(help, "{{types}}", event.Catalog())
+	}
 }
 
 // The commands below used to be spelled as flags. Point anyone still using

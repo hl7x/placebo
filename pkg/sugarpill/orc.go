@@ -30,13 +30,34 @@ type ORC struct {
 
 func NewORCSegment(p *random.Patient) *ORC {
 
+	placer := &EntityIdentifier{
+		EntityIdentifier: p.Order.PlacerNumber,
+		NamespaceID:      "PLACEBO",
+	}
+
+	filler := &EntityIdentifier{
+		EntityIdentifier: p.Order.FillerNumber,
+		NamespaceID:      "LAB",
+	}
+
+	provider := &XCN{
+		ID:         p.Provider.ID,
+		FamilyName: p.Provider.LastName,
+		GivenName:  p.Provider.FirstName,
+	}
+
 	orc := &ORC{
-		PlacerOrderNumber:             &EntityIdentifier{},
-		FillerOrderNumber:             &EntityIdentifier{},
+		// NW is a new order. A result message overwrites this with RE when
+		// the message type is applied, since the order already exists by
+		// the time results travel.
+		OrderControl:                  "NW",
+		PlacerOrderNumber:             placer,
+		FillerOrderNumber:             filler,
 		PlacerGroupNumber:             &EntityIdentifier{},
+		DateTimeOfTransaction:         p.EventDate.HL7(),
 		EnteredBy:                     &XCN{},
 		VerifiedBy:                    &XCN{},
-		OrderingProvider:              &XCN{},
+		OrderingProvider:              provider,
 		EntererLocation:               &PatientLocation{},
 		CallbackPhoneNumber:           &XTN{},
 		OrderControlCodeReason:        &ServiceCode{},

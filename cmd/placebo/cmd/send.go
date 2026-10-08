@@ -48,11 +48,17 @@ func SendHl7Message(args []string) error {
 
 	if len(command) == 0 {
 
-		triggerType := "admit"
-		messageType := "ADT"
+		messageType, triggerType, err := event.Resolve(nil)
+		if err != nil {
+			return err
+		}
+
 		patient := random.NewPatient()
 
-		hl7 := event.Build(patient, messageType, triggerType)
+		hl7, err := event.Build(patient, messageType, triggerType)
+		if err != nil {
+			return err
+		}
 
 		openPath := file.CreateInteractiveHl7(hl7)
 
@@ -81,8 +87,18 @@ func SendHl7Message(args []string) error {
 	case "sugarpill":
 		return SugarpillProcess(random.NewPatient())
 
+	case "types":
+		fmt.Println(event.Catalog())
+		return nil
+
 	default:
-		return EventAndMessage("ADT", command[0])
+
+		messageType, triggerType, err := event.Resolve(command)
+		if err != nil {
+			return err
+		}
+
+		return EventAndMessage(messageType, triggerType)
 	}
 }
 
@@ -131,26 +147,12 @@ func EventAndMessage(e string, s string) error {
 
 	patient := random.NewPatient()
 
-	if e != "" {
-
-		evt := event.MessageAndTriggerEvent[e][s]
-
-		if evt != "" {
-
-			evn := event.Build(patient, e, s)
-
-			err := DefaultSend(evn)
-			if err != nil {
-				return err
-			}
-		} else {
-			return errors.New(fmt.Sprintf("Command %v Not Found", s))
-		}
-	} else {
-		return errors.New(fmt.Sprintf("Command %v Not Found", s))
+	evn, err := event.Build(patient, e, s)
+	if err != nil {
+		return err
 	}
 
-	return nil
+	return DefaultSend(evn)
 }
 
 func InteractivePrompt(filePath string) (string, error) {

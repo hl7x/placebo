@@ -14,6 +14,13 @@ func CreateHL7(v interface{}, segment string) string {
 		val = val.Elem()
 	}
 
+	// A segment a message does not carry renders as nothing at all. Callers
+	// reach here with a nil segment whenever a message was built for a type
+	// that leaves it out, or came back from JSON with it removed.
+	if !val.IsValid() || val.Kind() != reflect.Struct {
+		return ""
+	}
+
 	fields := []string{segment}
 	for i := 0; i < val.NumField(); i++ {
 		field := val.Field(i)
